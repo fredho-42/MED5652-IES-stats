@@ -1,0 +1,1453 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>4&nbsp; Estimation, precision, and sample size (Week 8) – IES Statistical Labs</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../chapters/09-comparison.html" rel="next">
+<link href="../chapters/07-descriptive.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-3294577322a5a8aac4f27c9836f2d0c7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/08-estimation.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Estimation, precision, and sample size (Week 8)</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="../index.html" class="sidebar-logo-link">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">IES Statistical Labs</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/04-prep1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">R and R Studio (Week 4)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/05-prep2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data and data handling (Week 5)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/07-descriptive.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Describing and visualising data (Week 7)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/08-estimation.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Estimation, precision, and sample size (Week 8)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/09-comparison.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Hypothesis tests and measures of association (Week 9)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/10-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Correlation and simple linear regression (Week 10)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/11-adjustment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Multiple linear and logistic regression (Week 11)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/12-summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Summary</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/99-glossary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Glossary</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#chapter-intended-learning-outcomes" id="toc-chapter-intended-learning-outcomes" class="nav-link active" data-scroll-target="#chapter-intended-learning-outcomes"><span class="header-section-number">4.1</span> Chapter intended learning outcomes</a></li>
+  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup"><span class="header-section-number">4.2</span> Setup</a></li>
+  <li><a href="#point-estimate-and-standard-error-by-hand" id="toc-point-estimate-and-standard-error-by-hand" class="nav-link" data-scroll-target="#point-estimate-and-standard-error-by-hand"><span class="header-section-number">4.3</span> Point estimate and standard error, by hand</a></li>
+  <li><a href="#from-standard-error-to-a-confidence-interval" id="toc-from-standard-error-to-a-confidence-interval" class="nav-link" data-scroll-target="#from-standard-error-to-a-confidence-interval"><span class="header-section-number">4.4</span> From standard error to a confidence interval</a>
+  <ul class="collapse">
+  <li><a href="#saying-what-the-interval-means-and-what-it-doesnt" id="toc-saying-what-the-interval-means-and-what-it-doesnt" class="nav-link" data-scroll-target="#saying-what-the-interval-means-and-what-it-doesnt"><span class="header-section-number">4.4.1</span> Saying what the interval means, and what it doesn’t</a></li>
+  </ul></li>
+  <li><a href="#a-confidence-interval-for-a-proportion" id="toc-a-confidence-interval-for-a-proportion" class="nav-link" data-scroll-target="#a-confidence-interval-for-a-proportion"><span class="header-section-number">4.5</span> A confidence interval for a proportion</a>
+  <ul class="collapse">
+  <li><a href="#the-standard-error-of-a-proportion-by-hand" id="toc-the-standard-error-of-a-proportion-by-hand" class="nav-link" data-scroll-target="#the-standard-error-of-a-proportion-by-hand"><span class="header-section-number">4.5.1</span> The standard error of a proportion, by hand</a></li>
+  <li><a href="#the-same-interval-from-prop.test" id="toc-the-same-interval-from-prop.test" class="nav-link" data-scroll-target="#the-same-interval-from-prop.test"><span class="header-section-number">4.5.2</span> The same interval from <code>prop.test()</code></a></li>
+  </ul></li>
+  <li><a href="#confidence-interval-for-a-difference-in-means" id="toc-confidence-interval-for-a-difference-in-means" class="nav-link" data-scroll-target="#confidence-interval-for-a-difference-in-means"><span class="header-section-number">4.6</span> Confidence interval for a difference in means</a>
+  <ul class="collapse">
+  <li><a href="#which-way-round-is-the-difference" id="toc-which-way-round-is-the-difference" class="nav-link" data-scroll-target="#which-way-round-is-the-difference"><span class="header-section-number">4.6.1</span> Which way round is the difference?</a></li>
+  </ul></li>
+  <li><a href="#confidence-interval-for-a-difference-in-proportions" id="toc-confidence-interval-for-a-difference-in-proportions" class="nav-link" data-scroll-target="#confidence-interval-for-a-difference-in-proportions"><span class="header-section-number">4.7</span> Confidence interval for a difference in proportions</a></li>
+  <li><a href="#width-and-sample-size-without-programming" id="toc-width-and-sample-size-without-programming" class="nav-link" data-scroll-target="#width-and-sample-size-without-programming"><span class="header-section-number">4.8</span> Width and sample size, without programming</a></li>
+  <li><a href="#sample-size-and-power" id="toc-sample-size-and-power" class="nav-link" data-scroll-target="#sample-size-and-power"><span class="header-section-number">4.9</span> Sample size and power</a></li>
+  <li><a href="#worked-example-a-confidence-interval-for-age" id="toc-worked-example-a-confidence-interval-for-age" class="nav-link" data-scroll-target="#worked-example-a-confidence-interval-for-age"><span class="header-section-number">4.10</span> Worked example: a confidence interval for age</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">4.11</span> Exercises</a></li>
+  <li><a href="#writing-exercise" id="toc-writing-exercise" class="nav-link" data-scroll-target="#writing-exercise"><span class="header-section-number">4.12</span> Writing exercise</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-08-estimation" class="quarto-section-identifier"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Estimation, precision, and sample size (Week 8)</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Chapter 3 taught us to describe a variable with a mean and a standard deviation. Take a different sample from the same population and both numbers come out different. That wobble isn’t a flaw in the method and it isn’t something to apologise for in a write-up. It’s measurable, and measuring it is what turns a number into an estimate we can defend. Sampling variability and the central limit theorem, from this week’s seminar, are what make it predictable enough to measure.</p>
+<p>Two terms that sound alike carry the whole chapter, and they aren’t interchangeable. The standard deviation describes the spread of the <em>data</em>. The standard error describes the precision of an <em>estimate</em>. Out of the second comes the confidence interval, which we calculate by hand before checking it against R’s own functions, since a formula met once from the inside is harder to misread later. The same intervals cover the difference between two groups as well as a single mean, and each one has to be stated in the units of the problem: an interval nobody can put into a sentence hasn’t really been interpreted. The machinery also runs backwards. An interval narrows as the sample grows, so fixing the width we want tells us the sample we need, which is how a study gets sized before anyone has collected anything.</p>
+<section id="chapter-intended-learning-outcomes" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="chapter-intended-learning-outcomes"><span class="header-section-number">4.1</span> Chapter intended learning outcomes</h2>
+<p>By the end of this chapter you will be able to:</p>
+<ol type="1">
+<li>Calculate a standard error and construct a confidence interval by formula for a mean and for a proportion from first principle, and reproduce each using <code>t.test()</code> and <code>prop.test()</code></li>
+<li>Construct confidence intervals for a difference in means and a difference in proportions</li>
+<li>Interpret each interval in the units and context of the problem, in writing</li>
+<li>Compare how an interval’s width responds to sample size</li>
+<li>Calculate a sample size for a two-group comparison using <code>power.prop.test()</code> and <code>power.t.test()</code>, and explain why the requirement changes with the assumed effect size</li>
+</ol>
+</section>
+<section id="setup" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="setup"><span class="header-section-number">4.2</span> Setup</h2>
+<p>As in Chapter 3, we read the data with <code>read_csv()</code> and turn the six coded variables into factors against the dictionary. This chapter also brings in a second dataset for the first time: <code>strep_tb</code>. Unlike <code>nhanes_mph</code>, <code>strep_tb</code> is built into the <code>medicaldata</code> package.</p>
+<p><code>medicaldata</code> is the first package this book uses that doesn’t come with the tidyverse, so it almost certainly isn’t on your machine yet. It has to be installed before it can be loaded. Run <code>install.packages('medicaldata')</code> once in the console. Once it’s installed, <code>library(medicaldata)</code> below works for this session, exactly like every other package we load.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(medicaldata)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>nhanes <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">'data'</span>, <span class="st">'mph_nhanes_20241107.csv'</span>))</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>dictionary <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">'data'</span>, <span class="st">'mph_nhanes_20241107_dictionary.csv'</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Two small things about that chunk. There’s no <code>library(ggplot2)</code>, because this chapter draws no plots and there’s no reason to load a package we aren’t going to use. And <code>dictionary</code> is read in even though no code below refers to it, because it’s the thing we reach for the moment we’re unsure what a column means. Every chapter reads it for that reason, not because the chapter’s own code needs it.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>nhanes <span class="ot">&lt;-</span> nhanes <span class="sc">|&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">gender =</span> <span class="fu">factor</span>(gender,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>),</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">'Male'</span>, <span class="st">'Female'</span>)),</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">eth =</span> <span class="fu">factor</span>(eth,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>),</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">'Mexican American'</span>, <span class="st">'Other Hispanic'</span>, <span class="st">'White'</span>, <span class="st">'Black'</span>, <span class="st">'Others'</span>)),</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">edu =</span> <span class="fu">factor</span>(edu,</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>),</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">'Less than high school'</span>, <span class="st">'High school graduate'</span>, <span class="st">'Above high school'</span>)),</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">smoking =</span> <span class="fu">factor</span>(smoking,</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">'Never'</span>, <span class="st">'Previous'</span>, <span class="st">'Current'</span>)),</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">phq.c =</span> <span class="fu">factor</span>(phq.c,</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">'0 Normal'</span>, <span class="st">'1 Mild symptoms'</span>, <span class="st">'2 Possible depression'</span>),</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">'Normal'</span>, <span class="st">'Mild symptoms'</span>, <span class="st">'Possible depression'</span>),</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">ordered =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">blm.cvd =</span> <span class="fu">factor</span>(blm.cvd,</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">'No'</span>, <span class="st">'Yes'</span>))</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>This is the same recode we introduced in Chapter 3. See Chapter 3 for the reasoning behind each variable. We repeat it here, unchanged, so this chapter stands on its own too.</p>
+</section>
+<section id="point-estimate-and-standard-error-by-hand" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="point-estimate-and-standard-error-by-hand"><span class="header-section-number">4.3</span> Point estimate and standard error, by hand</h2>
+<p>A mean handed to a health board with no sense of how precise it is invites a decision the data may not actually support. A point estimate is our ‘best guess’ from the data, most commonly the mean, and on its own it says nothing about how precise it is. The standard error attaches that precision, calculated from two quantities already familiar from Chapter 3: the standard deviation, <code>sd()</code>, and the sample size, <code>n()</code>. Let’s apply this to sedentary time (<code>sed</code>):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>sed_stats <span class="ot">&lt;-</span> nhanes <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(sed)) <span class="sc">|&gt;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_sed =</span> <span class="fu">mean</span>(sed),</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd_sed =</span> <span class="fu">sd</span>(sed),</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_sed =</span> <span class="fu">n</span>()</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">se_sed =</span> sd_sed <span class="sc">/</span> <span class="fu">sqrt</span>(n_sed))</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>sed_stats</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 4
+  mean_sed sd_sed n_sed se_sed
+     &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;
+1     6.56   10.9 34434 0.0588</code></pre>
+</div>
+</div>
+<p><code>sqrt()</code> is base R’s square root function. The standard error of a mean is the standard deviation divided by the square root of the sample size, the algebra behind the seminar’s precision argument: as <code>n</code> grows, the denominator grows and the standard error shrinks.</p>
+<p><code>sed</code> was shown in Chapter 3 to be right-skewed, with a long tail of participants reporting many sedentary hours. That skew doesn’t disqualify it from a confidence interval on its <em>mean</em>, because of the Central Limit Theorem. As the sample size grows, the <em>sampling distribution</em> gets closer to a bell-shaped normal distribution.</p>
+</section>
+<section id="from-standard-error-to-a-confidence-interval" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="from-standard-error-to-a-confidence-interval"><span class="header-section-number">4.4</span> From standard error to a confidence interval</h2>
+<p>A 95% confidence interval for a mean is the point estimate plus or minus 1.96 standard errors. 1.96 is the value that cuts off the middle 95% of a normal distribution:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>sed_stats <span class="ot">&lt;-</span> sed_stats <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">ci_lower =</span> mean_sed <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> se_sed,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">ci_upper =</span> mean_sed <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> se_sed</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>sed_stats</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 6
+  mean_sed sd_sed n_sed se_sed ci_lower ci_upper
+     &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+1     6.56   10.9 34434 0.0588     6.45     6.68</code></pre>
+</div>
+</div>
+<p>R has a function that does this directly. <code>t.test()</code> expects a single numeric vector, not a data frame, so we pull <code>sed</code> out of <code>nhanes</code> with <code>$</code>. <code>nhanes$sed</code> reads as ‘the <code>sed</code> column, inside <code>nhanes</code>’, and it returns that column on its own, as a plain vector of numbers, rather than a data frame containing it. That’s different from <code>select(sed)</code>, which keeps a one-column data frame instead of pulling the column out. <code>t.test()</code> then returns the mean and its 95% confidence interval without any of the arithmetic above:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(nhanes<span class="sc">$</span>sed)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    One Sample t-test
+
+data:  nhanes$sed
+t = 111.73, df = 34433, p-value &lt; 2.2e-16
+alternative hypothesis: true mean is not equal to 0
+95 percent confidence interval:
+ 6.449124 6.679429
+sample estimates:
+mean of x 
+ 6.564277 </code></pre>
+</div>
+</div>
+<p><code>t.test()</code> also reports a test statistic, degrees of freedom, and a p-value. These belong to a hypothesis test, which is Chapter 5’s subject. For now, look only at the confidence interval, and check that it closely matches the interval we calculated by hand above.</p>
+<p>One thing <code>t.test()</code> does quietly is it ignores all missing values. We passed it <code>nhanes$sed</code> whole, missing values and all, with no <code>filter()</code> and no <code>na.rm = TRUE</code>, and it ran anyway. It drops missing values itself, before calculating. The evidence is in the output: the degrees of freedom are 34,433, one less than the 34,434 participants we filtered down to by hand, which is why the two intervals agree at all. So whenever we run a <code>t.test()</code> in R, we should count the missing values ourselves.</p>
+<p>The two intervals are close but not identical, because <code>t.test()</code> doesn’t use a fixed multiplier of 1.96. It uses a value from the t-distribution, which is usually a better match to the actual sampling distribution, since it depends on the sample size through its degrees of freedom (<code>n - 1</code>). For a sample size this large, the normal and t-distributions are very similar and shouldn’t make a material difference. In practice, we’d use <code>t.test()</code> rather than working this out by hand every time, but the formula above is exactly what it’s doing underneath.</p>
+<section id="saying-what-the-interval-means-and-what-it-doesnt" class="level3" data-number="4.4.1">
+<h3 data-number="4.4.1" class="anchored" data-anchor-id="saying-what-the-interval-means-and-what-it-doesnt"><span class="header-section-number">4.4.1</span> Saying what the interval means, and what it doesn’t</h3>
+<p>We now have an interval. Writing it down correctly is a separate skill from calculating it, and it’s the one the seminar spent time on, contrasting the right sentence with the wrong one. Here is the right one, for the interval we just built:</p>
+<blockquote class="blockquote">
+<p>Mean sedentary time was 6.56 hours/day (95% CI: 6.45 to 6.68 hours/day).</p>
+</blockquote>
+<p>And here is the wrong one, which is the single most common error in this part of the course:</p>
+<blockquote class="blockquote">
+<p>There is a 95% probability that the true mean sedentary time lies between 6.45 and 6.68 hours/day.</p>
+</blockquote>
+<p>The true mean sedentary time in the population is a fixed number. We don’t know it, but it isn’t moving around, and it doesn’t have a 95% chance of being anywhere. What moves is the <em>interval</em>. Draw a different sample and we get a different mean, a different standard error, and so a different pair of numbers. The 95% belongs to that procedure: of all the intervals we could build this way, 95% of them would contain the true value. This particular interval either contains it or it doesn’t, and we have no way of knowing which.</p>
+<p>In practice the fix is easy, because the correct sentence is the shorter one. State the estimate, put the interval after it, and stop. The moment we write ‘probability’, ‘chance’, or ‘there’s a 95% likelihood the true value is’, we have said something about the parameter that the interval doesn’t support. Every interval in the rest of this book gets reported the first way, and so should yours.</p>
+</section>
+</section>
+<section id="a-confidence-interval-for-a-proportion" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="a-confidence-interval-for-a-proportion"><span class="header-section-number">4.5</span> A confidence interval for a proportion</h2>
+<p><code>strep_tb</code>, from the <code>medicaldata</code> package, records the 1948 MRC streptomycin trial: a randomised controlled trial of streptomycin against tuberculosis in 107 patients, generally considered the first modern randomised controlled trial. Each patient was assigned to the <code>Streptomycin</code> or <code>Control</code> arm and followed up. Patients in the control arm received bed rest alone, not a placebo. <code>improved</code> records whether their chest X-ray had improved at six months. As with any new dataset, we look at what actually came in before writing code against it:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(strep_tb)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 107
+Columns: 13
+$ patient_id          &lt;chr&gt; "0001", "0002", "0003", "0004", "0005", "0006"…
+$ arm                 &lt;fct&gt; Control, Control, Control, Control, Control, C…
+$ dose_strep_g        &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ dose_PAS_g          &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ gender              &lt;fct&gt; M, F, F, M, F, M, F, M, F, M, F, M, F, M, F, M…
+$ baseline_condition  &lt;fct&gt; 1_Good, 1_Good, 1_Good, 1_Good, 1_Good, 1_Good…
+$ baseline_temp       &lt;fct&gt; 1_98-98.9F, 3_100-100.9F, 1_98-98.9F, 1_98-98.…
+$ baseline_esr        &lt;fct&gt; 2_11-20, 2_11-20, 3_21-50, 3_21-50, 3_21-50, 3…
+$ baseline_cavitation &lt;fct&gt; yes, no, no, no, no, no, yes, yes, yes, yes, n…
+$ strep_resistance    &lt;fct&gt; 1_sens_0-8, 1_sens_0-8, 1_sens_0-8, 1_sens_0-8…
+$ radiologic_6m       &lt;fct&gt; 6_Considerable_improvement, 5_Moderate_improve…
+$ rad_num             &lt;dbl&gt; 6, 5, 5, 5, 5, 6, 5, 5, 5, 5, 6, 5, 5, 5, 5, 6…
+$ improved            &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE…</code></pre>
+</div>
+</div>
+<p><code>arm</code> and <code>gender</code> are already factors. <code>improved</code>, the outcome we care about here, is <strong>logical</strong>: <code>TRUE</code> or <code>FALSE</code>, not a factor. R stores <code>TRUE</code> and <code>FALSE</code> as 1 and 0, which will matter again shortly.</p>
+<p>Below we will look at the proportion of the outcome. <code>table()</code>, already met in Chapter 3, counts how many patients fall into each category of <code>improved</code>, and <code>prop.table()</code> converts those counts to proportions:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(strep_tb<span class="sc">$</span>improved)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+FALSE  TRUE 
+   52    55 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(<span class="fu">table</span>(strep_tb<span class="sc">$</span>improved))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    FALSE      TRUE 
+0.4859813 0.5140187 </code></pre>
+</div>
+</div>
+<section id="the-standard-error-of-a-proportion-by-hand" class="level3" data-number="4.5.1">
+<h3 data-number="4.5.1" class="anchored" data-anchor-id="the-standard-error-of-a-proportion-by-hand"><span class="header-section-number">4.5.1</span> The standard error of a proportion, by hand</h3>
+<p>A proportion is an estimate like any other, so it has a standard error too. The formula is different from the one for a mean, because a proportion carries its own variability: once we know p, we know how spread out a yes/no variable is, so there’s no separate SD to measure. The standard error of a proportion is the square root of p × (1 − p) ÷ n.</p>
+<p><code>sum()</code> of a logical vector counts how many values are <code>TRUE</code>, since R stores <code>TRUE</code> as 1 and <code>FALSE</code> as 0. So <code>sum(strep_tb$improved)</code> is the number of patients who improved, out of <code>nrow(strep_tb)</code> in total.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>tb_stats <span class="ot">&lt;-</span> strep_tb <span class="sc">|&gt;</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_improved =</span> <span class="fu">sum</span>(improved),</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_total =</span> <span class="fu">n</span>(),</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">p_improved =</span> n_improved <span class="sc">/</span> n_total,</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">se_improved =</span> <span class="fu">sqrt</span>(p_improved <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> p_improved) <span class="sc">/</span> n_total)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>tb_stats</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 4
+  n_improved n_total p_improved se_improved
+       &lt;int&gt;   &lt;int&gt;      &lt;dbl&gt;       &lt;dbl&gt;
+1         55     107      0.514      0.0483</code></pre>
+</div>
+</div>
+<p>The confidence interval is then built exactly the way it was for a mean: the estimate, plus or minus 1.96 standard errors.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>tb_stats<span class="sc">$</span>p_improved <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> tb_stats<span class="sc">$</span>se_improved</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.4193158</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>tb_stats<span class="sc">$</span>p_improved <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> tb_stats<span class="sc">$</span>se_improved</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.6087216</code></pre>
+</div>
+</div>
+</section>
+<section id="the-same-interval-from-prop.test" class="level3" data-number="4.5.2">
+<h3 data-number="4.5.2" class="anchored" data-anchor-id="the-same-interval-from-prop.test"><span class="header-section-number">4.5.2</span> The same interval from <code>prop.test()</code></h3>
+<p><code>prop.test()</code> returns a confidence interval for a proportion directly, given a count of successes (<code>x</code>) and a total (<code>n</code>), with none of the arithmetic above:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.test</span>(<span class="at">x =</span> tb_stats<span class="sc">$</span>n_improved, <span class="at">n =</span> tb_stats<span class="sc">$</span>n_total)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    1-sample proportions test with continuity correction
+
+data:  tb_stats$n_improved out of tb_stats$n_total, null probability 0.5
+X-squared = 0.037383, df = 1, p-value = 0.8467
+alternative hypothesis: true p is not equal to 0.5
+95 percent confidence interval:
+ 0.4159553 0.6110633
+sample estimates:
+        p 
+0.5140187 </code></pre>
+</div>
+</div>
+<p>The two intervals are close but not identical, and for the same kind of reason the hand-built and <code>t.test()</code> intervals differed earlier. The ± 1.96 version above is the textbook approximation, and it works well when n is large and p isn’t near 0 or 1. <code>prop.test()</code> uses a better method that behaves more sensibly in small samples and never runs past 0 or 1, which the approximation happily will if pushed too far. With 107 patients and a proportion near a half, both are perfectly reasonable and they agree to within a small margin of error.</p>
+<p>Giving <code>prop.test()</code> the count and total directly, rather than a cross-tabulated table, avoids any doubt about which of the two categories we’re counting. A table of <code>improved</code> alone would still show both proportions clearly, but a table fed straight into <code>prop.test()</code> reports the proportion for only whichever category comes first, which is not necessarily the one we want.</p>
+<p>By default, <code>prop.test()</code> also tests whether this proportion differs from 50%. That default comparison isn’t of interest here, and it isn’t the subject of this chapter. The 95% confidence interval it reports alongside is what we want.</p>
+</section>
+</section>
+<section id="confidence-interval-for-a-difference-in-means" class="level2" data-number="4.6">
+<h2 data-number="4.6" class="anchored" data-anchor-id="confidence-interval-for-a-difference-in-means"><span class="header-section-number">4.6</span> Confidence interval for a difference in means</h2>
+<p><code>t.test()</code> also compares two groups directly, using <strong>formula syntax</strong>. <code>chol ~ gender</code> reads as ‘<code>chol</code>, modelled by <code>gender</code>’. R splits <code>chol</code> into the groups defined by <code>gender</code> and compares them:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(chol <span class="sc">~</span> gender, <span class="at">data =</span> nhanes <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(gender)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Welch Two Sample t-test
+
+data:  chol by gender
+t = -15.318, df = 38908, p-value &lt; 2.2e-16
+alternative hypothesis: true difference in means between group Male and group Female is not equal to 0
+95 percent confidence interval:
+ -0.1901172 -0.1469821
+sample estimates:
+  mean in group Male mean in group Female 
+            4.885939             5.054489 </code></pre>
+</div>
+</div>
+<p>Notice there’s no <code>$</code> anywhere in that call, even though <code>chol</code> and <code>gender</code> both are only found inside <code>nhanes</code>. The <code>data =</code> argument tells <code>t.test()</code> which data frame to search for names like <code>chol</code> and <code>gender</code>, so it looks them up there itself instead of us pulling each one out by hand first with <code>$</code>. <code>$</code> is still the right tool for getting a single column on its own, the way <code>nhanes$sed</code> was above; a formula’s <code>data =</code> argument does that lookup for every variable named in the formula at once.</p>
+<p>This is the same pairing we showed descriptively in Chapter 3’s boxplot and Table 1: cholesterol by gender. Now it’s attached to a confidence interval for the <em>difference</em> in means between the two groups. By default, <code>t.test()</code> doesn’t assume the two groups have equal variance, i.e.&nbsp;<em>Welch’s t-test</em>. That’s a sensible default and not something we need to adjust here.</p>
+<section id="which-way-round-is-the-difference" class="level3" data-number="4.6.1">
+<h3 data-number="4.6.1" class="anchored" data-anchor-id="which-way-round-is-the-difference"><span class="header-section-number">4.6.1</span> Which way round is the difference?</h3>
+<p>Both ends of that interval are negative, and a negative difference in cholesterol isn’t obviously meaningful until we know what has been subtracted from what. R tells us, on the line beginning ‘alternative hypothesis’: <em>true difference in means between group Male and group Female</em>. So it has taken the men’s mean and subtracted the women’s.</p>
+<p>That order isn’t R’s choice, and it isn’t alphabetical. It’s the order the factor’s levels are in, which we set ourselves in the setup chunk:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(nhanes<span class="sc">$</span>gender)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Male"   "Female"</code></pre>
+</div>
+</div>
+<p><code>'Male'</code> is first, so men are group 1 and women are group 2, and the difference runs first minus second. A negative interval therefore says the first group is <em>lower</em>: mean cholesterol is lower in men than in women, by somewhere between 0.15 and 0.19 mmol/L.</p>
+<p>It is useful to check the alternative-hypothesis line before reading any two-group interval. If we’d rather write the comparison the other way round, which is often more natural to read, we flip the whole thing together. ‘Cholesterol was 0.17 mmol/L higher in women than in men (95% CI: 0.15 to 0.19)’ says exactly the same as R’s output, with every sign reversed. What we must never do is flip the words and leave the numbers, or flip one end of the interval and not the other. The direction of the estimate and the direction of the interval have to agree.</p>
+</section>
+</section>
+<section id="confidence-interval-for-a-difference-in-proportions" class="level2" data-number="4.7">
+<h2 data-number="4.7" class="anchored" data-anchor-id="confidence-interval-for-a-difference-in-proportions"><span class="header-section-number">4.7</span> Confidence interval for a difference in proportions</h2>
+<p>The same idea extends to two proportions: how many improved in each trial arm. <code>group_by()</code> and <code>summarise()</code>, already familiar from Chapter 3, give us the count and the number improved in each arm:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>strep_arm_summary <span class="ot">&lt;-</span> strep_tb <span class="sc">|&gt;</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(arm) <span class="sc">|&gt;</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_arm =</span> <span class="fu">n</span>(),</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_improved =</span> <span class="fu">sum</span>(improved),</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">prop_improved =</span> n_improved <span class="sc">/</span> n_arm</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>strep_arm_summary</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 4
+  arm          n_arm n_improved prop_improved
+  &lt;fct&gt;        &lt;int&gt;      &lt;int&gt;         &lt;dbl&gt;
+1 Streptomycin    55         38         0.691
+2 Control         52         17         0.327</code></pre>
+</div>
+</div>
+<p><code>prop_improved</code> here is exactly what <code>mean(improved)</code> would give directly. <code>mean()</code> of a logical vector is a shortcut worth knowing: R treats <code>TRUE</code> as 1 and <code>FALSE</code> as 0, so the mean of a column of <code>TRUE</code>/<code>FALSE</code> values is the proportion that are <code>TRUE</code>.</p>
+<p>If we pass the two counts and the two totals to <code>prop.test()</code>, rather than a cross-tabulated table, it compares the two proportions unambiguously. <code>prop 1</code> and <code>prop 2</code> below correspond, in order, to the two rows of <code>strep_arm_summary</code> above:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.test</span>(<span class="at">x =</span> strep_arm_summary<span class="sc">$</span>n_improved, <span class="at">n =</span> strep_arm_summary<span class="sc">$</span>n_arm)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    2-sample test for equality of proportions with continuity
+    correction
+
+data:  strep_arm_summary$n_improved out of strep_arm_summary$n_arm
+X-squared = 12.756, df = 1, p-value = 0.0003548
+alternative hypothesis: two.sided
+95 percent confidence interval:
+ 0.168726 0.559246
+sample estimates:
+   prop 1    prop 2 
+0.6909091 0.3269231 </code></pre>
+</div>
+</div>
+<p>The confidence interval is for the difference in the proportion improved between the two arms. Before reading it, check the direction, exactly as we did for the difference in means above. The same rule applies: R takes the first group and subtracts the second, and the order comes from the factor’s levels.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(strep_tb<span class="sc">$</span>arm)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Streptomycin" "Control"     </code></pre>
+</div>
+</div>
+<p><code>'Streptomycin'</code> is first, so <code>prop 1</code> is the streptomycin arm and <code>prop 2</code> is the control arm, and the difference runs streptomycin minus control. Both ends of the interval are positive, which therefore says the streptomycin arm improved <em>more</em>. Had the two levels been the other way round, every number in that interval would have carried a minus sign and meant exactly the same thing. Chapter 5 puts this same factor the other way round on purpose, which is exactly why checking the levels here first matters.</p>
+<p>The heading says ‘with continuity correction’: <code>prop.test()</code> applies a small adjustment by default that nudges the p-value up and the interval slightly wider. Chapter 5 explains what it does, so leave it for now, but notice that the p-value printed here, 0.0004, is the one that adjustment produces. That p-value itself belongs to a hypothesis test, which is still Chapter 5’s subject.</p>
+<p>Because <code>strep_tb</code> is a randomised trial rather than an observational study, a difference this large and this precisely estimated supports a causal reading in a way that an association in <code>nhanes_mph</code> would not. We can quite safely conclude, from the findings, that streptomycin improved the proportion of patients with X-ray improvement by about 36 percentage points, compared with bed rest alone. We say percentage points rather than percent here: percent would describe how much bigger one proportion is relative to the other, not the size of the gap between them, which is what this interval actually estimates.</p>
+</section>
+<section id="width-and-sample-size-without-programming" class="level2" data-number="4.8">
+<h2 data-number="4.8" class="anchored" data-anchor-id="width-and-sample-size-without-programming"><span class="header-section-number">4.8</span> Width and sample size, without programming</h2>
+<p>The seminar’s rule was that a confidence interval narrows as sample size grows. We can show this directly, by computing the same interval on the full sample and on two smaller subsets of it. <code>slice_sample()</code>, from <code>dplyr</code>, keeps a random fraction of the rows. <code>set.seed()</code>, from base R, fixes the sequence of ‘random’ numbers R uses, so the same subset gets drawn every time this code is run, rather than a different one each time.</p>
+<p>The full sample. This time we save the result into an object with <code>&lt;-</code> as well as printing it, because we want to reuse its numbers in a moment:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>tt_full <span class="ot">&lt;-</span> <span class="fu">t.test</span>(nhanes<span class="sc">$</span>chol)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>tt_full</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    One Sample t-test
+
+data:  nhanes$chol
+t = 902.16, df = 39175, p-value &lt; 2.2e-16
+alternative hypothesis: true mean is not equal to 0
+95 percent confidence interval:
+ 4.962511 4.984121
+sample estimates:
+mean of x 
+ 4.973316 </code></pre>
+</div>
+</div>
+<p>A 50% subset:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>chol_50 <span class="ot">&lt;-</span> nhanes <span class="sc">|&gt;</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(chol)) <span class="sc">|&gt;</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_sample</span>(<span class="at">prop =</span> <span class="fl">0.5</span>)</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>tt_50 <span class="ot">&lt;-</span> <span class="fu">t.test</span>(chol_50<span class="sc">$</span>chol)</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>tt_50</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    One Sample t-test
+
+data:  chol_50$chol
+t = 637.89, df = 19587, p-value &lt; 2.2e-16
+alternative hypothesis: true mean is not equal to 0
+95 percent confidence interval:
+ 4.955667 4.986217
+sample estimates:
+mean of x 
+ 4.970942 </code></pre>
+</div>
+</div>
+<p>A 10% subset:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>chol_10 <span class="ot">&lt;-</span> nhanes <span class="sc">|&gt;</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(chol)) <span class="sc">|&gt;</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_sample</span>(<span class="at">prop =</span> <span class="fl">0.1</span>)</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>tt_10 <span class="ot">&lt;-</span> <span class="fu">t.test</span>(chol_10<span class="sc">$</span>chol)</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>tt_10</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    One Sample t-test
+
+data:  chol_10$chol
+t = 289.21, df = 3916, p-value &lt; 2.2e-16
+alternative hypothesis: true mean is not equal to 0
+95 percent confidence interval:
+ 4.933782 5.001132
+sample estimates:
+mean of x 
+ 4.967457 </code></pre>
+</div>
+</div>
+<p>The point estimates are similar across all three, because all three are samples from the same population. But the confidence interval widens as the sample size drops.</p>
+<p>That’s hard to see across three blocks of output, so let’s put the three intervals in one small table. A <code>t.test()</code> result isn’t a data frame, but <code>$</code> still works on it, pulling out one named piece at a time exactly as it pulls one column out of a data frame. <code>tt_full$conf.int</code> is the pair of numbers at the ends of the interval, and <code>[1]</code> and <code>[2]</code> take the lower and the upper one, the same square-bracket indexing we used in Chapter 2. <code>data.frame()</code>, from Chapter 1, builds the table out of them, and <code>mutate()</code> adds the column we actually care about:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>widths <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">sample =</span> <span class="fu">c</span>(<span class="st">'Full'</span>, <span class="st">'50% subset'</span>, <span class="st">'10% subset'</span>),</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="fu">c</span>(<span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(nhanes<span class="sc">$</span>chol)), <span class="fu">nrow</span>(chol_50), <span class="fu">nrow</span>(chol_10)),</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">lower =</span> <span class="fu">c</span>(tt_full<span class="sc">$</span>conf.int[<span class="dv">1</span>], tt_50<span class="sc">$</span>conf.int[<span class="dv">1</span>], tt_10<span class="sc">$</span>conf.int[<span class="dv">1</span>]),</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">upper =</span> <span class="fu">c</span>(tt_full<span class="sc">$</span>conf.int[<span class="dv">2</span>], tt_50<span class="sc">$</span>conf.int[<span class="dv">2</span>], tt_10<span class="sc">$</span>conf.int[<span class="dv">2</span>])</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">width =</span> upper <span class="sc">-</span> lower)</span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>widths</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      sample     n    lower    upper      width
+1       Full 39176 4.962511 4.984121 0.02161000
+2 50% subset 19588 4.955667 4.986217 0.03054926
+3 10% subset  3917 4.933782 5.001132 0.06734956</code></pre>
+</div>
+</div>
+<p>Now the pattern is one column instead of six numbers on three screens. Cut the sample in half and the interval gets about 40% wider; cut it to a tenth and it’s roughly three times wider than we started. That last number is the useful one to hold onto. Ten times less data did not make the interval ten times wider, it made it about three times wider, and three is roughly the square root of ten. That’s the SE = s/√n formula showing up in an actual result. Precision improves with the square root of the sample size, not with the sample size itself. That’s exactly why doubling a study’s size buys much less than it feels like it should.</p>
+</section>
+<section id="sample-size-and-power" class="level2" data-number="4.9">
+<h2 data-number="4.9" class="anchored" data-anchor-id="sample-size-and-power"><span class="header-section-number">4.9</span> Sample size and power</h2>
+<p>The same logic runs in reverse. Instead of asking how precise an estimate from a given sample size will be, we can size a study in advance to detect a given effect. <code>strep_tb</code> supplies the natural example, since it’s a trial with a binary outcome, and <code>strep_arm_summary</code> above already has the proportion improved in each arm: roughly 33% in the control arm and 69% in the streptomycin arm.</p>
+<p><code>power.prop.test()</code>, from base R, answers a practical question: how large would a two-arm trial need to be to reliably detect a gap this size? We give it the two proportions, a significance level, and a target power:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">power.prop.test</span>(<span class="at">p1 =</span> <span class="fl">0.33</span>, <span class="at">p2 =</span> <span class="fl">0.69</span>, <span class="at">sig.level =</span> <span class="fl">0.05</span>, <span class="at">power =</span> <span class="fl">0.8</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+     Two-sample comparison of proportions power calculation 
+
+              n = 29.0615
+             p1 = 0.33
+             p2 = 0.69
+      sig.level = 0.05
+          power = 0.8
+    alternative = two.sided
+
+NOTE: n is number in *each* group</code></pre>
+</div>
+</div>
+<p><code>sig.level = 0.05</code> is the Type I error rate the seminar introduced. <code>power = 0.8</code> is the conventional target: an 80% chance of detecting the effect if it’s really there. <code>n</code> is the number <strong>per group</strong> required. The gap observed in the original trial was unusually large. A smaller assumed gap needs a correspondingly larger trial:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">power.prop.test</span>(<span class="at">p1 =</span> <span class="fl">0.33</span>, <span class="at">p2 =</span> <span class="fl">0.45</span>, <span class="at">sig.level =</span> <span class="fl">0.05</span>, <span class="at">power =</span> <span class="fl">0.8</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+     Two-sample comparison of proportions power calculation 
+
+              n = 258.158
+             p1 = 0.33
+             p2 = 0.45
+      sig.level = 0.05
+          power = 0.8
+    alternative = two.sided
+
+NOTE: n is number in *each* group</code></pre>
+</div>
+</div>
+<p>The same function, <code>power.t.test()</code>, sizes a study around a continuous outcome instead, using the variability of <code>chol</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>chol_sd <span class="ot">&lt;-</span> nhanes <span class="sc">|&gt;</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(chol)) <span class="sc">|&gt;</span></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">sd_chol =</span> <span class="fu">sd</span>(chol)) <span class="sc">|&gt;</span></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(sd_chol)</span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a><span class="fu">power.t.test</span>(<span class="at">delta =</span> <span class="fl">0.5</span>, <span class="at">sd =</span> chol_sd, <span class="at">sig.level =</span> <span class="fl">0.05</span>, <span class="at">power =</span> <span class="fl">0.8</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+     Two-sample t test power calculation 
+
+              n = 75.72811
+          delta = 0.5
+             sd = 1.091122
+      sig.level = 0.05
+          power = 0.8
+    alternative = two.sided
+
+NOTE: n is number in *each* group</code></pre>
+</div>
+</div>
+<p><code>pull()</code>, from <code>dplyr</code>, extracts a single column as a plain vector instead of a one-column tibble. We need this because <code>power.t.test()</code> expects a single number for <code>sd</code>, not a table containing one. <code>delta</code> is the assumed difference in means the study is being sized to detect. As with the proportions above, a smaller assumed difference requires a larger sample:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">power.t.test</span>(<span class="at">delta =</span> <span class="fl">0.2</span>, <span class="at">sd =</span> chol_sd, <span class="at">sig.level =</span> <span class="fl">0.05</span>, <span class="at">power =</span> <span class="fl">0.8</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+     Two-sample t test power calculation 
+
+              n = 468.1853
+          delta = 0.2
+             sd = 1.091122
+      sig.level = 0.05
+          power = 0.8
+    alternative = two.sided
+
+NOTE: n is number in *each* group</code></pre>
+</div>
+</div>
+<p>Both functions size a study <em>before</em> it is run, from an assumed effect. Power calculated after the fact, from a result already in hand, only re-expresses the p-value already obtained and adds nothing. The seminar’s point about post-hoc power applies to both <code>power.prop.test()</code> and <code>power.t.test()</code> equally.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Try it yourself: assumed effect size
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Re-run <code>power.prop.test()</code> with <code>p2</code> set closer and closer to <code>p1</code> (for example 0.40, then 0.35), keeping <code>power = 0.8</code>. Watch what happens to <code>n</code>, and say in one sentence what it means for a researcher planning a trial to detect a genuinely small effect.</p>
+</div>
+</div>
+</section>
+<section id="worked-example-a-confidence-interval-for-age" class="level2" data-number="4.10">
+<h2 data-number="4.10" class="anchored" data-anchor-id="worked-example-a-confidence-interval-for-age"><span class="header-section-number">4.10</span> Worked example: a confidence interval for age</h2>
+<p>A mean on its own says nothing about how much confidence we should place in it. So how precisely can we pin down the average age of participants in this sample? <code>age</code> hasn’t appeared elsewhere in this chapter, which makes it a fair test of the machinery just built.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>age_stats <span class="ot">&lt;-</span> nhanes <span class="sc">|&gt;</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(age)) <span class="sc">|&gt;</span></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_age =</span> <span class="fu">mean</span>(age),</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd_age =</span> <span class="fu">sd</span>(age),</span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_age =</span> <span class="fu">n</span>()</span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">se_age =</span> sd_age <span class="sc">/</span> <span class="fu">sqrt</span>(n_age),</span>
+<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">ci_lower =</span> mean_age <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> se_age,</span>
+<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">ci_upper =</span> mean_age <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> se_age</span>
+<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb49-13"><a href="#cb49-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-14"><a href="#cb49-14" aria-hidden="true" tabindex="-1"></a>age_stats</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 6
+  mean_age sd_age n_age se_age ci_lower ci_upper
+     &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+1     47.5   18.5 41765 0.0905     47.3     47.7</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(nhanes<span class="sc">$</span>age)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    One Sample t-test
+
+data:  nhanes$age
+t = 524.82, df = 41764, p-value &lt; 2.2e-16
+alternative hypothesis: true mean is not equal to 0
+95 percent confidence interval:
+ 47.33953 47.69445
+sample estimates:
+mean of x 
+ 47.51699 </code></pre>
+</div>
+</div>
+<p>The hand-calculated interval and the one from <code>t.test()</code> agree closely. Written as it would appear in a results section: the mean age of participants was 47.5 years (95% CI: 47.3 to 47.7 years). This is a statement about the precision of the <em>estimate</em> of the mean, not a description of how spread out individual ages are. That’s what the SD is for.</p>
+</section>
+<section id="exercises" class="level2" data-number="4.11">
+<h2 data-number="4.11" class="anchored" data-anchor-id="exercises"><span class="header-section-number">4.11</span> Exercises</h2>
+<p><strong>Exercise 1</strong> (ILOs 1, 2, 3). Calculate the mean and standard error of total cholesterol (<code>chol</code>), construct a 95% confidence interval by hand, and confirm it with <code>t.test()</code>. Report the result the way a results section would state it, in one sentence.</p>
+<p>Then use <code>t.test()</code> with formula syntax to obtain a 95% confidence interval for the <em>difference</em> in mean cholesterol between smoking groups, comparing current smokers with those who have never smoked. You’ll need <code>filter()</code> to restrict <code>smoking</code> to those two categories first, since <code>t.test()</code> compares exactly two groups. Write one sentence interpreting that interval, and one sentence saying how it differs in meaning from the interval you built in the first half of this exercise.</p>
+<p><strong>Exercise 2</strong> (ILOs 1, 2, 3). In <code>strep_tb</code>, find the proportion of patients with baseline cavitation present (<code>baseline_cavitation</code>) and calculate its standard error by hand, then build a 95% confidence interval from it and check the result against <code>prop.test()</code>. Then construct a 95% confidence interval for the difference in the proportion improved between men and women (<code>gender</code>). Write one interpretive sentence for each interval.</p>
+<p><strong>Exercise 3</strong> (ILOs 3, 4). Repeat the width exploration above (full sample, 50% subset, 10% subset) using <code>sed</code> instead of <code>chol</code>, and collect the three intervals into one table the way the chapter did, so their widths sit side by side. Describe what changes and what stays about the same as the sample size drops.</p>
+<p><strong>Exercise 4</strong> (ILOs 3, 5). Using <code>power.t.test()</code>, find the sample size needed to detect a difference in <code>chol</code> of 0.3 mmol/L, and again for a difference of 0.8 mmol/L, both at <code>power = 0.8</code>. Write one sentence explaining why the two required sample sizes differ so much.</p>
+</section>
+<section id="writing-exercise" class="level2" data-number="4.12">
+<h2 data-number="4.12" class="anchored" data-anchor-id="writing-exercise"><span class="header-section-number">4.12</span> Writing exercise</h2>
+<p>Using the cholesterol confidence interval from Exercise 1 and the <code>strep_tb</code> arm-improvement confidence interval from earlier in this chapter, write one sentence for each, in the same reporting style. Use the correct units, and don’t describe the interval as a probability statement about where the true value falls.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solutions
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>Exercise 1</strong></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>chol_stats <span class="ot">&lt;-</span> nhanes <span class="sc">|&gt;</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(chol)) <span class="sc">|&gt;</span></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_chol =</span> <span class="fu">mean</span>(chol),</span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd_chol =</span> <span class="fu">sd</span>(chol),</span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_chol =</span> <span class="fu">n</span>()</span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">se_chol =</span> sd_chol <span class="sc">/</span> <span class="fu">sqrt</span>(n_chol),</span>
+<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">ci_lower =</span> mean_chol <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> se_chol,</span>
+<span id="cb53-11"><a href="#cb53-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">ci_upper =</span> mean_chol <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> se_chol</span>
+<span id="cb53-12"><a href="#cb53-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb53-13"><a href="#cb53-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-14"><a href="#cb53-14" aria-hidden="true" tabindex="-1"></a>chol_stats</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 6
+  mean_chol sd_chol n_chol se_chol ci_lower ci_upper
+      &lt;dbl&gt;   &lt;dbl&gt;  &lt;int&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+1      4.97    1.09  39176 0.00551     4.96     4.98</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(nhanes<span class="sc">$</span>chol)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    One Sample t-test
+
+data:  nhanes$chol
+t = 902.16, df = 39175, p-value &lt; 2.2e-16
+alternative hypothesis: true mean is not equal to 0
+95 percent confidence interval:
+ 4.962511 4.984121
+sample estimates:
+mean of x 
+ 4.973316 </code></pre>
+</div>
+</div>
+<p>Mean total cholesterol in this sample was 4.97 mmol/L (95% CI: 4.96 to 4.98 mmol/L).</p>
+<p>For the difference between the two smoking groups:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>chol_smoking <span class="ot">&lt;-</span> nhanes <span class="sc">|&gt;</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(smoking <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">'Never'</span>, <span class="st">'Current'</span>))</span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(chol <span class="sc">~</span> smoking, <span class="at">data =</span> chol_smoking)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Welch Two Sample t-test
+
+data:  chol by smoking
+t = -1.9231, df = 13580, p-value = 0.05449
+alternative hypothesis: true difference in means between group Never and group Current is not equal to 0
+95 percent confidence interval:
+ -0.0561225720  0.0005350405
+sample estimates:
+  mean in group Never mean in group Current 
+             4.967995              4.995789 </code></pre>
+</div>
+</div>
+<p><code>smoking</code> still has three levels after the <code>filter()</code>, but only two of them have any rows left, and <code>t.test()</code> rebuilds the factor from the data it’s actually given, so the empty third group drops out on its own.</p>
+<p>Check the direction before reading the interval, as above. <code>'Never'</code> comes first in <code>smoking</code>’s levels, so R has subtracted current smokers from never smokers, and the difference is never minus current.</p>
+<p>Mean total cholesterol was -0.028 mmol/L in never smokers compared with current smokers (95% CI: -0.056 to 0.001 mmol/L), so a little lower on average in those who had never smoked. Notice that the estimate sits inside its own interval. Always check that: if it doesn’t, something is wrong, likely a sign has been flipped somewhere. The interval includes zero, so these data are consistent with no difference between the two groups, though they don’t rule out a small one either.</p>
+<p>The two intervals mean different things. The first is about a single quantity, mean cholesterol, and says how precisely this sample pins it down. The second is about a <em>comparison</em> between two groups, and the value that matters in it is zero: an interval containing zero is one where the data can’t establish which group is higher. From Chapter 5 onward, almost every interval in this course is of the second kind.</p>
+<p><strong>Exercise 2</strong></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>cav_stats <span class="ot">&lt;-</span> strep_tb <span class="sc">|&gt;</span></span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_cav =</span> <span class="fu">sum</span>(baseline_cavitation <span class="sc">==</span> <span class="st">'yes'</span>),</span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_total =</span> <span class="fu">n</span>(),</span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">p_cav =</span> n_cav <span class="sc">/</span> n_total,</span>
+<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">se_cav =</span> <span class="fu">sqrt</span>(p_cav <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> p_cav) <span class="sc">/</span> n_total)</span>
+<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb59-8"><a href="#cb59-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-9"><a href="#cb59-9" aria-hidden="true" tabindex="-1"></a>cav_stats</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 4
+  n_cav n_total p_cav se_cav
+  &lt;int&gt;   &lt;int&gt; &lt;dbl&gt;  &lt;dbl&gt;
+1    62     107 0.579 0.0477</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>cav_stats<span class="sc">$</span>p_cav <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> cav_stats<span class="sc">$</span>se_cav</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.4859025</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>cav_stats<span class="sc">$</span>p_cav <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> cav_stats<span class="sc">$</span>se_cav</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.6729761</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.test</span>(<span class="at">x =</span> cav_stats<span class="sc">$</span>n_cav, <span class="at">n =</span> cav_stats<span class="sc">$</span>n_total)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    1-sample proportions test with continuity correction
+
+data:  cav_stats$n_cav out of cav_stats$n_total, null probability 0.5
+X-squared = 2.3925, df = 1, p-value = 0.1219
+alternative hypothesis: true p is not equal to 0.5
+95 percent confidence interval:
+ 0.4801030 0.6729991
+sample estimates:
+        p 
+0.5794393 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>gender_summary <span class="ot">&lt;-</span> strep_tb <span class="sc">|&gt;</span></span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(gender) <span class="sc">|&gt;</span></span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n_gender =</span> <span class="fu">n</span>(), <span class="at">n_improved =</span> <span class="fu">sum</span>(improved))</span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a>gender_summary</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 3
+  gender n_gender n_improved
+  &lt;fct&gt;     &lt;int&gt;      &lt;int&gt;
+1 F            59         28
+2 M            48         27</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.test</span>(<span class="at">x =</span> gender_summary<span class="sc">$</span>n_improved, <span class="at">n =</span> gender_summary<span class="sc">$</span>n_gender)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    2-sample test for equality of proportions with continuity
+    correction
+
+data:  gender_summary$n_improved out of gender_summary$n_gender
+X-squared = 0.50491, df = 1, p-value = 0.4773
+alternative hypothesis: two.sided
+95 percent confidence interval:
+ -0.2963678  0.1205203
+sample estimates:
+   prop 1    prop 2 
+0.4745763 0.5625000 </code></pre>
+</div>
+</div>
+<p>The hand-built interval and the one from <code>prop.test()</code> agree closely, as they did for the proportion improved earlier in the chapter.</p>
+<p>Just over half of patients (58%) had cavitation present on their baseline chest X-ray, but the 95% confidence interval includes 50%, so these data don’t rule out the true proportion being exactly one half. The confidence interval for the difference in improvement between women (<code>prop 1</code>) and men (<code>prop 2</code>) includes zero, consistent with little or no difference in outcome by gender in this trial.</p>
+<p><strong>Exercise 3</strong></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>tt_sed_full <span class="ot">&lt;-</span> <span class="fu">t.test</span>(nhanes<span class="sc">$</span>sed)</span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a>sed_50 <span class="ot">&lt;-</span> nhanes <span class="sc">|&gt;</span></span>
+<span id="cb71-5"><a href="#cb71-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(sed)) <span class="sc">|&gt;</span></span>
+<span id="cb71-6"><a href="#cb71-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_sample</span>(<span class="at">prop =</span> <span class="fl">0.5</span>)</span>
+<span id="cb71-7"><a href="#cb71-7" aria-hidden="true" tabindex="-1"></a>tt_sed_50 <span class="ot">&lt;-</span> <span class="fu">t.test</span>(sed_50<span class="sc">$</span>sed)</span>
+<span id="cb71-8"><a href="#cb71-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-9"><a href="#cb71-9" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb71-10"><a href="#cb71-10" aria-hidden="true" tabindex="-1"></a>sed_10 <span class="ot">&lt;-</span> nhanes <span class="sc">|&gt;</span></span>
+<span id="cb71-11"><a href="#cb71-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(sed)) <span class="sc">|&gt;</span></span>
+<span id="cb71-12"><a href="#cb71-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_sample</span>(<span class="at">prop =</span> <span class="fl">0.1</span>)</span>
+<span id="cb71-13"><a href="#cb71-13" aria-hidden="true" tabindex="-1"></a>tt_sed_10 <span class="ot">&lt;-</span> <span class="fu">t.test</span>(sed_10<span class="sc">$</span>sed)</span>
+<span id="cb71-14"><a href="#cb71-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-15"><a href="#cb71-15" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
+<span id="cb71-16"><a href="#cb71-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">sample =</span> <span class="fu">c</span>(<span class="st">'Full'</span>, <span class="st">'50% subset'</span>, <span class="st">'10% subset'</span>),</span>
+<span id="cb71-17"><a href="#cb71-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="fu">c</span>(<span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(nhanes<span class="sc">$</span>sed)), <span class="fu">nrow</span>(sed_50), <span class="fu">nrow</span>(sed_10)),</span>
+<span id="cb71-18"><a href="#cb71-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">lower =</span> <span class="fu">c</span>(tt_sed_full<span class="sc">$</span>conf.int[<span class="dv">1</span>], tt_sed_50<span class="sc">$</span>conf.int[<span class="dv">1</span>],</span>
+<span id="cb71-19"><a href="#cb71-19" aria-hidden="true" tabindex="-1"></a>            tt_sed_10<span class="sc">$</span>conf.int[<span class="dv">1</span>]),</span>
+<span id="cb71-20"><a href="#cb71-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">upper =</span> <span class="fu">c</span>(tt_sed_full<span class="sc">$</span>conf.int[<span class="dv">2</span>], tt_sed_50<span class="sc">$</span>conf.int[<span class="dv">2</span>],</span>
+<span id="cb71-21"><a href="#cb71-21" aria-hidden="true" tabindex="-1"></a>            tt_sed_10<span class="sc">$</span>conf.int[<span class="dv">2</span>])</span>
+<span id="cb71-22"><a href="#cb71-22" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb71-23"><a href="#cb71-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">width =</span> upper <span class="sc">-</span> lower)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      sample     n    lower    upper     width
+1       Full 34434 6.449124 6.679429 0.2303057
+2 50% subset 17217 6.403063 6.728992 0.3259286
+3 10% subset  3443 6.219105 6.983209 0.7641046</code></pre>
+</div>
+</div>
+<p>As with <code>chol</code>, the point estimate is broadly similar across all three samples, but the confidence interval widens substantially in the 10% subset, and by almost exactly the same factor of about three. The same pattern holds for a skewed variable as for a symmetric one, because it’s the <em>sample size</em>, not the shape of the raw data, that governs the width of the interval on the mean.</p>
+<p><strong>Exercise 4</strong></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">power.t.test</span>(<span class="at">delta =</span> <span class="fl">0.3</span>, <span class="at">sd =</span> chol_stats<span class="sc">$</span>sd_chol, <span class="at">sig.level =</span> <span class="fl">0.05</span>, <span class="at">power =</span> <span class="fl">0.8</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+     Two-sample t test power calculation 
+
+              n = 208.6194
+          delta = 0.3
+             sd = 1.091122
+      sig.level = 0.05
+          power = 0.8
+    alternative = two.sided
+
+NOTE: n is number in *each* group</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">power.t.test</span>(<span class="at">delta =</span> <span class="fl">0.8</span>, <span class="at">sd =</span> chol_stats<span class="sc">$</span>sd_chol, <span class="at">sig.level =</span> <span class="fl">0.05</span>, <span class="at">power =</span> <span class="fl">0.8</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+     Two-sample t test power calculation 
+
+              n = 30.19253
+          delta = 0.8
+             sd = 1.091122
+      sig.level = 0.05
+          power = 0.8
+    alternative = two.sided
+
+NOTE: n is number in *each* group</code></pre>
+</div>
+</div>
+<p>Detecting the smaller difference (0.3 mmol/L) needs a much larger sample than detecting the larger difference (0.8 mmol/L). Smaller effects are harder to distinguish from chance variation, so we need more participants to have the same 80% chance of detecting them.</p>
+<p><strong>Writing exercise (sample answer)</strong></p>
+<p>Mean total cholesterol was 4.97 mmol/L (95% CI: 4.96 to 4.98 mmol/L). In the streptomycin trial, the proportion of patients improved was about 36 percentage points higher in the streptomycin arm than in the control arm, with a 95% confidence interval for the difference that excludes zero. This is consistent with a real difference in improvement between the two arms, rather than one attributable to chance alone.</p>
+</div>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../chapters/07-descriptive.html" class="pagination-link" aria-label="Describing and visualising data (Week 7)">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Describing and visualising data (Week 7)</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../chapters/09-comparison.html" class="pagination-link" aria-label="Hypothesis tests and measures of association (Week 9)">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Hypothesis tests and measures of association (Week 9)</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
