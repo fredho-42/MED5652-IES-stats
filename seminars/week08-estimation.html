@@ -172,15 +172,20 @@ Fred Ho
 <h2>A different 34,434 people</h2>
 <ul>
 <li>Last week’s mean sedentary time, 6.56 hours/day, came from one sample</li>
-<li>We don’t know how well this number represents the US population</li>
 <li>A different 34,434 people would have given a different number. How different, and does it matter?</li>
+<li>An estimate is only useful when we know how accurate and how precise it is</li>
+<li>In common public health applications:
+<ul>
+<li>accuracy is mainly an epidemiological question</li>
+<li>Precision is what we try to quantify here in statistics</li>
+</ul></li>
 </ul>
 </section>
 <section id="population-and-sample" class="slide level2">
 <h2>Population and sample</h2>
 <ul>
 <li>The <strong>population</strong> is what we want to measure (e.g.&nbsp;UK general population, type 2 diabetes patients)</li>
-<li>The <strong>sample</strong> is what we can afford to measure, usually a subset of the target population</li>
+<li>The <strong>sample</strong> is what we can measure, usually a subset of the target population &nbsp;</li>
 <li>We must compute statistics from the sample</li>
 <li>But what we want to say is about the population</li>
 </ul>
@@ -192,7 +197,7 @@ Fred Ho
 <ul>
 <li>The <strong>estimand</strong>: the fixed, unknown population value the question is about</li>
 <li>The <strong>estimator</strong>: the method that produces a number from a sample. It is a random variable, because who ends up in the sample is random</li>
-<li>The <strong>estimate</strong>: one particular result the estimator produced, it is ‘realised’ (i.e.&nbsp;occurred) so it is fixed</li>
+<li>The <strong>estimate</strong>: one particular result the estimator produced, it is ‘realised’ (i.e.&nbsp;occurred) so it is fixed &nbsp;</li>
 <li>What is fixed and what is random is abstract but a key foundation in understanding how we define precision</li>
 </ul>
 </div><div class="column" style="width:58%;">
@@ -267,10 +272,10 @@ Fred Ho
 <li>The standard error is the estimated spread of the estimator</li>
 <li>That spread is a property of the estimator’s own distribution</li>
 </ul></li>
-<li>Imagine applying the same estimator to different random samples, repeatedly</li>
-<li>The results of these samples will have a distribution
+<li>Imagine applying the same estimator to different random samples repeatedly
 <ul>
-<li><strong>sampling distribution</strong>: each sample yields one estimate, a single fixed draw from it</li>
+<li>The results of these samples will have a distribution</li>
+<li><strong>Sampling distribution</strong>: each sample yields one estimate, a single fixed draw from it</li>
 </ul></li>
 <li>Everything from here to the confidence interval rests on this distribution</li>
 </ul>
@@ -464,8 +469,14 @@ Reset
 <section id="what-the-demonstration-shows" class="slide level2 smaller">
 <h2>What the demonstration shows</h2>
 <ul>
-<li>The fair coin’s data distribution is symmetric: at n = 1 it is two equal spikes, at 0 and at 1</li>
-<li>The biased coin’s data distribution is skewed: at n = 1, three in four flips land at 0</li>
+<li>The fair coin’s data distribution is symmetric
+<ul>
+<li>At n = 1 it is two equal spikes, at 0 and at 1</li>
+</ul></li>
+<li>The biased coin’s data distribution is skewed
+<ul>
+<li>At n = 1, three in four flips land at 0</li>
+</ul></li>
 <li>Move up through n = 1, 5, 10, 30, 100, for either coin, and the sample mean’s own distribution drifts toward a bell shape</li>
 <li><strong>The data does not have to be normal.</strong> A skewed data still ends up to have a bell-shaped sampling distribution, it just needs a larger n to get there than a symmetric parent does</li>
 <li>The skewed case that matters for this course is <code>sed</code>, right-skewed, in Chapter 4, which refers back to what this seminar showed</li>
@@ -474,12 +485,12 @@ Reset
 <section id="the-central-limit-theorem" class="slide level2 smaller">
 <h2>The central limit theorem</h2>
 <ul>
-<li>The distribution of the sample mean approaches a normal shape as n grows</li>
+<li>The distribution of the sample mean approaches a normal dsitribution as n grows</li>
 <li>It applies no matter the shape of the underlying data
 <ul>
 <li>If the data is highly skewed, a larger sample is needed for the sample mean to follow a normal distribution approximately</li>
 </ul></li>
-<li>Textbooks often suggest a rule of thumb, n ≥ 30, for the CLT to hold. Reality is more complicated
+<li>Textbooks often suggest rules of thumb, e.g.&nbsp;n ≥ 30, for the CLT to hold. Reality is more complicated
 <ul>
 <li>For data that follows a symmetric distribution (a fair coin), n = 10 or 20 is fairly close to normal already</li>
 <li>For highly skewed data (a very biased coin), n = 100 is not necessarily enough</li>
@@ -489,9 +500,12 @@ Reset
 <section id="standard-deviation-and-standard-error" class="slide level2 smaller">
 <h2>Standard deviation and standard error</h2>
 <ul>
-<li>One of the most confused terms. Both statistics have the same units but have different subjects</li>
-<li><strong>Standard deviation (SD)</strong>: how spread out the <em>data</em> are</li>
-<li><strong>Standard error (SE)</strong>: how spread out the <em>results of the estimator</em> are</li>
+<li>Recall that any normal distribution can be charateristics by its mean and SD:
+<ul>
+<li>Mean of the sampling distribution: sample mean</li>
+<li>Mean of the sampling distribution: <strong>standard error (SE)</strong></li>
+</ul></li>
+<li>To quantify precision, we need to know the spread of the sampling distribution, i.e.&nbsp;SE</li>
 </ul>
 <p><span class="math display">\[SE = \frac{SD}{\sqrt{n}}\]</span></p>
 <ul>
@@ -1482,15 +1496,20 @@ Reset
 <section id="a-proportion-is-a-mean-too" class="slide level2 smaller">
 <h2>A proportion is a mean too</h2>
 <ul>
-<li>We work with a lot of binary data in public health, for example whether someone died</li>
+<li>We work with a lot of binary data in public health, e.g., whether someone died</li>
 <li>Binary data are often summarised as a proportion</li>
 <li><strong>A proportion is a sample mean</strong>
 <ul>
 <li>Code the outcome 1 for everyone who has it, 0 for everyone who does not</li>
 <li>The proportion with the outcome is exactly the mean of that column of 0s and 1s</li>
-<li>Example: 3 of 5 patients improved. The column is 1, 1, 1, 0, 0, and its mean is 0.6, the same 0.6 we would call a proportion</li>
+<li>Example:
+<ul>
+<li>3 of 5 patients improved</li>
+<li>The column is 1, 1, 1, 0, 0,</li>
+<li>its mean is 0.6, which is also the proportion: 60% (3/5)</li>
 </ul></li>
-<li>The CLT applies to it for the same reason it applies to any other mean, and we already saw its sampling distribution build live: coin flips coded 0 and 1 are the same thing (<a href="#//10">back to the demonstration</a>)</li>
+</ul></li>
+<li>The CLT applies to prpoportions for the same reason it applies to any other mean, and we already saw its sampling distribution build live: coin flips coded 0 and 1 are the same thing (<a href="#//10">back to the demonstration</a>)</li>
 </ul>
 </section>
 <section id="the-standard-error-of-a-proportion" class="slide level2 smaller">
@@ -1504,6 +1523,11 @@ Reset
 <li>The same SD-over-root-n shape as the formula for a mean, with sqrt(p(1-p)) playing the part of the SD</li>
 <li>For a binary variable, the spread is fixed by the proportion itself</li>
 <li>The formal name of the distribution of a binary variable is <strong>binomial distribution</strong></li>
+<li>Like the normal distribution, bionomial distribution is also characterised by 2 numberw only:
+<ul>
+<li>number of samples (<code>n</code>)</li>
+<li>proportion of event (<code>p</code>)</li>
+</ul></li>
 </ul>
 </section>
 <section id="an-example-of-a-proportion-and-its-standard-error" class="slide level2">
@@ -2009,6 +2033,8 @@ Reset
 <div class="column" style="width:46%;">
 <ul>
 <li>1.96 comes from the normal distribution the CLT delivers</li>
+<li>It is tied to the ‘95% confidence level’, or the ‘5% significance level’ which essentially say the same thing</li>
+<li>‘95%’ / ‘5%’ are just convention and arbitary but people rarely change this /</li>
 <li>With a small sample we do not know the SD. We estimate it from the same small sample, so that estimate of spread is itself uncertain</li>
 <li>The t distribution allows for that extra uncertainty
 <ul>
@@ -3663,6 +3689,7 @@ New sample
 <ul>
 <li>We can put a CI round one mean, the basis of a descriptive study</li>
 <li>The analytic studies make comparisons: men against women, treated against untreated</li>
+<li>In these cases, we are interested in the differences and ratios between these means</li>
 </ul>
 </section>
 <section id="a-ci-for-a-difference-in-means" class="slide level2 smaller">
@@ -3674,10 +3701,14 @@ New sample
 </ul></li>
 <li>This works because:
 <ul>
-<li>Each group’s mean has an approximately normal sampling distribution, based on CLT</li>
-<li>The difference between two normal quantities is itself normal. We take this as given</li>
+<li>Each group’s mean follows an approximately normal sampling distribution, based on CLT</li>
+<li>The difference between two normal quantities is itself normal (proven mathematically)</li>
 </ul></li>
-<li>Once the difference is normal, it takes the same estimate ± 1.96 SE calculation as before</li>
+<li>Since the difference is approximately normal, it takes the same estimate ± 1.96 SE calculation as before
+<ul>
+<li>How to hand calculate the CI of the differences and ratios is outside the scope of the MPH and based on more complex formula</li>
+<li>We will learn how to do it in R, and how to intepret them</li>
+</ul></li>
 </ul>
 </section>
 <section id="does-cholesterol-differ-between-women-and-men" class="slide level2">
@@ -5169,12 +5200,12 @@ New sample
 <h2>What determines the margin of error?</h2>
 <ul>
 <li>In polling, people sample based on their desired margin of error</li>
-<li>The same for descriptive epidemiological studies</li>
-<li>Three things decide a CI’s width
+<li>The same for descriptive epidemiological studies &nbsp;</li>
+<li>Three things decide a margin of error (i.e.&nbsp;CI’s width)
 <ol type="1">
 <li>How much confidence is being claimed (‘95%’)</li>
 <li>How variable the data are (SD)</li>
-<li>How many observations there are (n)</li>
+<li>How many observations there are (n) &nbsp;</li>
 </ol></li>
 <li>1 is usually fixed; 2 is based on the measurement; 3 is often what people try to determine</li>
 </ul>
@@ -5679,46 +5710,23 @@ New sample
 <li>Cut the sample in half, the CI gets about 40% wider. Cut it to a tenth, roughly three times wider</li>
 </ul>
 </section>
-<section id="try-it-how-much-bigger-to-halve-the-ci" class="slide level2">
-<h2>Try it: how much bigger, to halve the CI?</h2>
-<ul>
-<li>To halve the width of a CI, what has to happen to n?</li>
-<li>The width is 2 × 1.96 × SE, and SE = SD / sqrt(n)</li>
-<li>One line, two minutes</li>
-</ul>
-</section>
-<section id="try-it-the-answer-4" class="slide level2">
-<h2>Try it: the answer</h2>
-<ul>
-<li>Quadruple it</li>
-<li>Width = 2 × 1.96 × SD / sqrt(n): n only enters through its square root</li>
-<li>Halving the width means doubling sqrt(n), and doubling a square root means multiplying n by 4</li>
-<li>At n = 100 the real width is 4.27 hours/day. At n = 400 it’s 2.14, exactly half</li>
-<li>Precision is bought with n, and bought slowly</li>
-</ul>
-</section>
 <section id="from-precision-to-sample-size" class="slide level2">
 <h2>From precision to sample size</h2>
 <ul>
 <li>Four linked quantities
 <ul>
-<li>The effect size worth detecting</li>
-<li>The variability</li>
+<li>The effect size worth detecting (i.e.&nbsp;how big the difference between two proportions?)</li>
+<li>The variability (i.e.&nbsp;how noisy the measurement is?)</li>
 <li>The sample size</li>
 <li>The power</li>
 </ul></li>
 <li>Fix any three, and the fourth follows</li>
 </ul>
 </section>
-<section id="statistical-power" class="slide level2">
+<section id="statistical-power" class="slide level2 smaller">
 <h2>Statistical power</h2>
 <ul>
-<li><strong>Power</strong>: the probability of detecting an effect of a given size, if it is really there</li>
-</ul>
-</section>
-<section id="what-power-depends-on" class="slide level2 smaller">
-<h2>What power depends on</h2>
-<ul>
+<li><strong>Power</strong>: the probability of detecting an effect of a given size, if it is really there &nbsp;</li>
 <li>Power rises with a larger effect to detect, a bigger sample, or less variable data</li>
 <li>Power falls when a stricter significance level is demanded (Week 9 formalises this 5% threshold)</li>
 </ul>
@@ -6687,7 +6695,7 @@ New sample
 <li>Guess a number first. Three minutes</li>
 </ul>
 </section>
-<section id="try-it-the-answer-5" class="slide level2">
+<section id="try-it-the-answer-4" class="slide level2">
 <h2>Try it: the answer</h2>
 
 <img data-src="week08-estimation_files/figure-revealjs/n-vs-effect-curve-1.png" width="768" class="r-stretch"><ul>
