@@ -1,6 +1,6 @@
 # MED5652 Statistical Labs
 
-A [Quarto](https://quarto.org) ebook for the R lab MED5652 Introduction to Epidemiology and Statistics. It contains two preparatory chapters and five weekly chapters. The published book is at <https://fredho-42.github.io/MED5652-stats-ebook/>.
+A [Quarto](https://quarto.org) ebook for the R lab MED5652 Introduction to Epidemiology and Statistics. It contains two preparatory chapters and five weekly chapters. The repo also holds the course's seminar slide decks, built in `seminars/` as a separate Quarto project (`revealjs`). The published site is at <https://fredho-42.github.io/MED5652-IES-stats/>, book and slides together.
 
 ## Getting set up after cloning or forking
 
@@ -21,6 +21,7 @@ This project uses [renv](https://rstudio.github.io/renv/) to pin package version
    quarto render                                # the whole book (HTML + PDF)
    quarto render chapters/07-descriptive.qmd    # a single chapter, while iterating
    quarto preview                               # live preview while writing
+   quarto render seminars                       # the seminar slide decks, a separate project
    ```
 
    Rendering the PDF requires a TeX distribution (`quarto install tinytex` if you don't already have one).
@@ -45,13 +46,16 @@ R/             # shared figure and helper code, sourced by chapters
 data/          # the two datasets used across the course
 images/        # cover image and chapter screenshots
 renv.lock      # exact pinned package versions (see Getting set up, above)
+seminars/      # the seminar slide decks: a separate, nested Quarto project (own _quarto.yml,
+               # own custom.scss), not part of the book build
 ```
 
 ## Building and publishing
 
 ```
-quarto render          # render the whole book locally
-quarto publish gh-pages # publish the rendered HTML to GitHub Pages
+quarto render                                          # render the whole book locally
+quarto render seminars --output-dir ../_book/seminars   # render the decks into the same output tree
+quarto publish gh-pages                                 # publish everything in _book/ to GitHub Pages
 ```
 
-Publishing pushes to the `gh-pages` branch, which GitHub Pages serves directly. This has to be done manually. 
+Publishing pushes to the `gh-pages` branch, which GitHub Pages serves directly. This has to be done manually, and the two render steps above have to run first if the decks have changed, since `quarto publish` on its own only re-renders the book. 
