@@ -1,0 +1,26 @@
+project:
+  title: "MED5652 seminar slides"
+  # Without this, Quarto's default project render includes every .md file
+  # in this folder, not just the .qmd decks. Confirmed the hard way: a render
+  # without this list produced CLAUDE.html, progress.html and
+  # seminar-plan.html (then named seminar-revision-plan.html) alongside the
+  # real deck, from files that are gitignored specifically because they're
+  # internal. Restrict to decks.
+  render:
+    - "week*.qmd"
+
+format:
+  revealjs:
+    theme: [simple, custom.scss]
+    width: 1280
+    height: 720
+    slide-number: true
+    chalkboard: true
+    preview-links: auto
+    logo: assets/shw-crest.png
+    # embed-resources (single-file HTML) is incompatible with the chalkboard
+    # plugin (confirmed: quarto errors "RevealChalkboard is not compatible
+    # with self-contained output"). Chalkboard was a stated reason for
+    # choosing revealjs (live annotation over a projected plot), so this
+    # stays multi-file (an .html plus a _files/ folder) rather than dropping
+    # it for portability.

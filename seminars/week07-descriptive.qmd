@@ -1,0 +1,940 @@
+---
+title: "Describing and visualising data"
+subtitle: "Week 7"
+author: "Fred Ho"
+title-slide-attributes:
+  data-background-image: assets/skyline.jpg
+  data-background-size: cover
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(gtsummary)
+library(here)
+library(gt)
+library(medicaldata)
+
+# seminars/ is its own nested Quarto project (its own _quarto.yml), and the
+# `here` package (as of 1.0.2) treats a directory's own _quarto.yml as a
+# project-root marker in its own right. Left to auto-detect, here::here()
+# run from inside this file stops at seminars/ instead of continuing up to
+# the repo root two levels up, where data/ actually lives. i_am() anchors
+# explicitly instead of searching for the nearest marker, and is the
+# documented fix for exactly this nested-project ambiguity.
+here::i_am('seminars/week07-descriptive.qmd')
+
+nhanes <- read_csv(here::here('data', 'mph_nhanes_20241107.csv'), show_col_types = FALSE)
+dictionary <- read_csv(here::here('data', 'mph_nhanes_20241107_dictionary.csv'), show_col_types = FALSE)
+
+# Recoding, verbatim from chapters/07-descriptive.qmd's own `recode` chunk:
+# same levels, same labels, same order, so the deck and the chapter agree.
+nhanes <- nhanes |>
+  mutate(
+    gender = factor(gender,
+      levels = c(1, 2),
+      labels = c('Male', 'Female')),
+    eth = factor(eth,
+      levels = c(1, 2, 3, 4, 5),
+      labels = c('Mexican American', 'Other Hispanic', 'White', 'Black', 'Others')),
+    edu = factor(edu,
+      levels = c(1, 2, 3),
+      labels = c('Less than high school', 'High school graduate', 'Above high school')),
+    smoking = factor(smoking,
+      levels = c('Never', 'Previous', 'Current')),
+    phq.c = factor(phq.c,
+      levels = c('0 Normal', '1 Mild symptoms', '2 Possible depression'),
+      labels = c('Normal', 'Mild symptoms', 'Possible depression'),
+      ordered = TRUE),
+    blm.cvd = factor(blm.cvd,
+      levels = c(0, 1),
+      labels = c('No', 'Yes'))
+  )
+
+sed_mean <- mean(nhanes$sed, na.rm = TRUE)
+sed_sd <- sd(nhanes$sed, na.rm = TRUE)
+sed_median <- median(nhanes$sed, na.rm = TRUE)
+sed_q1 <- quantile(nhanes$sed, 0.25, na.rm = TRUE)
+sed_q3 <- quantile(nhanes$sed, 0.75, na.rm = TRUE)
+sed_iqr <- IQR(nhanes$sed, na.rm = TRUE)
+sed_min <- min(nhanes$sed, na.rm = TRUE)
+sed_max <- max(nhanes$sed, na.rm = TRUE)
+sed_n <- sum(!is.na(nhanes$sed))
+
+chol_mean <- mean(nhanes$chol, na.rm = TRUE)
+chol_median <- median(nhanes$chol, na.rm = TRUE)
+
+vpa_median <- median(nhanes$vpa_t, na.rm = TRUE)
+vpa_zero_pct <- 100 * sum(nhanes$vpa_t == 0, na.rm = TRUE) / sum(!is.na(nhanes$vpa_t))
+
+# Ten-row strep_tb extract, chosen not sampled: the dataset is sorted by
+# outcome, so the obvious "first five per arm" gives ten improved patients
+# and a 2x2 with an empty column. This stratified pick (4 Streptomycin
+# improved, 1 not; 2 Control improved, 3 not) fills all four cells and
+# points the same direction as the real trial (38/55 vs 17/52). Hard-coded
+# IDs, not a seed, so the slide can't drift between renders.
+strep_ids <- c('0008', '0017', '0020', '0039', '0041', '0055', '0072', '0083', '0101', '0102')
+strep_sample <- strep_tb |>
+  filter(patient_id %in% strep_ids) |>
+  arrange(patient_id)
+
+# Application section: the real NRT-prescriptions chart and labels from
+# slides_2025/Descriptive_statistics_JMF.pptx, slide 36 ('Prescriptions of
+# NRT by Year', y-axis 'Prescriptions of NRT per 100,000 population', x-axis
+# 'Year', 2005 to 2009). That slide has no citation anywhere (slide face,
+# notes, or progress.md) and its chart is an embedded EMF image with no
+# underlying data table in the file, so the five values here are read
+# visually off the rendered chart, not the original numbers, and there is
+# still no source to attribute beyond 'adapted from department teaching
+# material'. Fred confirmed (2026-09-02) using the real labels and
+# reconstructed values is fine for this ILO. Same data plotted twice, once
+# with an axis from zero and once zoomed to the data range, so the
+# axis-scaling design choice is legible.
+nrt_df <- tibble(
+  year = 2005:2009,
+  rate = c(150, 152, 154, 157, 161)
+)
+```
+
+## What you have learnt so far {.smaller}
+
+- From Epi:
+  - Study type: descriptive vs. analytic
+  - Study design: observational and experimental
+  - Measures of occurrence and association
+  - Non-causal explanations of associations
+    - Confounding bias
+    - Mediator bias
+    - Collider bias
+
+- From Stats:
+  - Prep sessions: tidy data, file paths, CSV structure
+
+## By the end of this session, you will be able to
+
+- Classify a variable as nominal, ordinal, discrete, or continuous, and explain how variable type constrains the analysis available
+- Select and construct an appropriate table or plot for one or more variables of a given type
+- Calculate and interpret measures of central tendency and spread, and justify a choice between mean/SD and median/IQR by distributional shape
+- Describe the normal distribution and apply the 68-95-99.7 rule
+- Critique a published figure and identify design choices that mislead
+
+## Tidy data, briefly revisited
+
+- One row per observation, one column per variable
+- `nhanes_mph`: 41,765 rows, 27 columns
+- No reshaping needed before we start
+
+## Block 1: summarising and visualising {background-image="assets/skyline.jpg" background-size="cover" .divider}
+
+Getting a feel for one variable at a time
+
+## Why summary?
+
+- Four people's data fits on a slide
+- `r format(nrow(nhanes), big.mark = ",")` people's does not
+- A statistic compresses a column to a few numbers
+- These measures are known as descriptive, or summary, statistics
+- Also called 'exploratory data analysis'
+- The goal: get a feel for one variable at a time, and spot quirks before any transformation or analysis
+
+## The mean
+
+- One of the most widely used measures of central tendency
+- Add up every value, divide by how many there are
+
+$$\bar{x} = \frac{1}{n}\sum_{i=1}^{n} x_i$$
+
+- A fair 'typical value' when the distribution is roughly symmetric
+
+## The standard deviation
+
+- Often reported with the mean, a widely used measure of spread
+- How spread out the values are around the mean, in the variable's own units
+
+$$s = \sqrt{\frac{1}{n-1}\sum_{i=1}^{n} (x_i - \bar{x})^2}$$
+
+- How much individuals typically differ from the mean
+
+## Distribution
+
+- A variable's **distribution** is how its values are spread out
+- Which values are common, which are rare, and how far apart they reach
+- Mean, SD, median and IQR are all attempts to describe it in a few numbers
+- The shape itself decides which of those numbers is honest
+- We see shape by counting values into bins and plotting the counts, named properly later
+
+## Three shapes, three variables
+
+:::: {.columns}
+
+::: {.column width="33%"}
+```{r}
+#| label: shape-chol
+#| echo: false
+#| fig-width: 4
+#| fig-height: 3
+ggplot(nhanes, aes(x = chol)) +
+  geom_histogram(binwidth = 0.25, fill = '#00213B') +
+  coord_cartesian(xlim = c(2, 9)) +
+  labs(x = 'Cholesterol (mmol/L)', y = NULL) +
+  theme_minimal(base_size = 11)
+```
+
+- Roughly symmetric
+- `chol`, mmol/L
+- Mean 4.97, median 4.89
+:::
+
+::: {.column width="33%"}
+```{r}
+#| label: shape-sed
+#| echo: false
+#| fig-width: 4
+#| fig-height: 3
+ggplot(nhanes, aes(x = sed)) +
+  geom_histogram(binwidth = 1, fill = '#00213B') +
+  coord_cartesian(xlim = c(0, 24)) +
+  labs(x = 'Sedentary time (hours/day)', y = NULL) +
+  theme_minimal(base_size = 11)
+```
+
+- Skewed to the right
+- `sed`, hours/day
+- Mean 6.56, median 5.00
+:::
+
+::: {.column width="34%"}
+```{r}
+#| label: shape-vpa
+#| echo: false
+#| fig-width: 4
+#| fig-height: 3
+ggplot(nhanes, aes(x = vpa_t)) +
+  geom_histogram(binwidth = 0.5, fill = '#00213B') +
+  labs(x = 'Vigorous activity (hours/day)', y = NULL) +
+  theme_minimal(base_size = 11)
+```
+
+- Heavily skewed
+- `vpa_t`, hours/day
+- Median 0.00: 64% report none
+:::
+
+::::
+
+## The normal distribution
+
+:::: {.columns}
+
+::: {.column width="38%"}
+- A **normal distribution** is symmetric, bell-shaped
+- Mean and median sit at the same place
+- The **68-95-99.7 rule**: about 68% within 1 SD, 95% within 2, 99.7% within 3
+:::
+
+::: {.column width="62%"}
+```{r}
+#| label: normal-curve
+#| echo: false
+#| fig-width: 8
+#| fig-height: 3.2
+x <- seq(-4, 4, length.out = 400)
+curve_df <- tibble(x = x, y = dnorm(x))
+vlines <- tibble(x = c(-3, -2, -1, 1, 2, 3))
+
+ggplot(curve_df, aes(x, y)) +
+  geom_area(fill = '#00213B', alpha = 0.15) +
+  geom_line(color = '#00213B', linewidth = 1) +
+  geom_vline(data = vlines, aes(xintercept = x), color = '#4386AF', linetype = 'dashed') +
+  scale_x_continuous(breaks = -3:3,
+    labels = c('-3SD', '-2SD', '-1SD', 'Mean', '1SD', '2SD', '3SD')) +
+  labs(x = NULL, y = NULL) +
+  theme_minimal(base_size = 14) +
+  theme(axis.text.y = element_blank(), panel.grid = element_blank())
+```
+:::
+
+::::
+
+## Median and IQR
+
+- Mean and SD are commonly used, but they can mislead
+- When the data is skewed, we should consider:
+  - **Median**: the middle value once sorted, half the data below it, half above
+  - **IQR**: the width of the middle 50% of the data
+
+$$\text{IQR} = Q_3 - Q_1$$
+
+- Often reported as the range itself, Q1 to Q3, not one number
+
+## Which do we report: mean/SD, or median/IQR?
+
+- The choice depends on **shape**, not preference
+
+| Shape | Report |
+|---|---|
+| Roughly symmetric | Mean and SD |
+| Skewed, or with extreme values | Median and IQR |
+
+- On skewed data, a mean and SD are technically correct and practically misleading
+
+## Detecting skewness
+
+:::: {.columns}
+
+::: {.column width="42%"}
+- Altman and Bland (1996), BMJ *Statistics Notes*: 'Detecting skewness from summary information'
+- Tells skew from summary numbers alone
+- Reused across the course
+:::
+
+::: {.column width="58%"}
+```{r}
+#| label: skew-illustration
+#| echo: false
+#| fig-width: 8
+#| fig-height: 3.2
+set.seed(20260902)
+right_skew <- tibble(value = rgamma(2000, shape = 2, rate = 1), side = 'Right-skewed')
+left_skew <- tibble(value = 8 - rgamma(2000, shape = 2, rate = 1), side = 'Left-skewed')
+skew_df <- bind_rows(right_skew, left_skew)
+skew_df$side <- factor(skew_df$side, levels = c('Right-skewed', 'Left-skewed'))
+
+stats_df <- skew_df |>
+  group_by(side) |>
+  summarise(mean = mean(value), median = median(value), .groups = 'drop')
+
+ggplot(skew_df, aes(x = value)) +
+  geom_density(fill = '#00213B', alpha = 0.15, color = '#00213B') +
+  geom_vline(data = stats_df, aes(xintercept = mean), color = '#00213B', linewidth = 1) +
+  geom_vline(data = stats_df, aes(xintercept = median), color = '#4386AF',
+             linewidth = 1, linetype = 'dashed') +
+  facet_wrap(~side, scales = 'free_x') +
+  labs(x = NULL, y = NULL) +
+  theme_minimal(base_size = 13) +
+  theme(axis.text.y = element_blank(), panel.grid = element_blank())
+```
+
+- Solid: mean. Dashed: median.
+:::
+
+::::
+
+## The five-number summary
+
+- Mean, SD, median and IQR give a crude description
+- Five numbers give a fuller picture: minimum, Q1, median, Q3, maximum
+- **Q1**, the 25th percentile: a quarter of the data falls at or below it
+- **Q3**, the 75th percentile: three quarters of the data falls at or below it
+- Together, the five numbers split the data into four equal-sized chunks
+
+## The five-number summary: sedentary time
+
+```{r}
+#| label: five-num-sed
+#| echo: false
+tibble(
+  Minimum = sed_min,
+  `Q1 (25th percentile)` = sed_q1,
+  Median = sed_median,
+  `Q3 (75th percentile)` = sed_q3,
+  Maximum = sed_max
+) |>
+  gt() |>
+  fmt_number(decimals = 1)
+```
+
+- Sedentary time (`sed`), hours/day, `r format(sed_n, big.mark = ",")` participants with a value recorded
+
+## Try it: which summary?
+
+- Ten patients' waiting times, in minutes: 3, 22, 4, 3, 5, 2, 30, 4, 5, 3
+- Would you report the mean and SD, or the median and IQR? Why?
+- Work out the five-number summary: minimum, Q1, median, Q3, maximum
+- Then give the IQR
+- Made-up numbers, for the arithmetic only
+- Five minutes, in pairs
+
+## Try it: the answer
+
+:::: {.columns}
+
+::: {.column width="45%"}
+- Sorted: 2, 3, 3, 3, 4, 4, 5, 5, 22, 30
+- Minimum 2, Q1 3, median 4, Q3 5, maximum 30 minutes
+- IQR = 5 - 3 = 2 minutes
+- The mean, 8.1 minutes, is longer than eight of the ten waits: the two long waits pulled it
+:::
+
+::: {.column width="55%"}
+```{r}
+#| label: wait-boxplot
+#| echo: false
+#| fig-width: 7
+#| fig-height: 3.2
+wait_times <- tibble(minutes = c(3, 22, 4, 3, 5, 2, 30, 4, 5, 3))
+ggplot(wait_times, aes(x = minutes)) +
+  geom_boxplot(fill = '#00213B', alpha = 0.15, color = '#00213B') +
+  labs(x = 'Waiting time (minutes)', y = NULL) +
+  theme_minimal(base_size = 13) +
+  theme(axis.text.y = element_blank())
+```
+:::
+
+::::
+
+## Box plot: the five numbers, drawn {.smaller}
+
+:::: {.columns}
+
+::: {.column width="55%"}
+- Box: Q1 to Q3, so its width is the IQR
+- Line inside the box: the median
+- Whiskers reach 1.5 x IQR beyond the box; further points are drawn individually
+- Whiskers are **not** the minimum and maximum; `sed` above 24 sits off this axis
+:::
+
+::: {.column width="45%"}
+```{r}
+#| label: sed-boxplot
+#| echo: false
+#| fig-width: 4
+#| fig-height: 3.3
+ggplot(nhanes, aes(x = '', y = sed)) +
+  geom_boxplot(fill = '#00213B', alpha = 0.15, color = '#00213B') +
+  coord_cartesian(ylim = c(0, 24)) +
+  labs(x = NULL, y = 'Sedentary time (hours/day)') +
+  theme_minimal(base_size = 14) +
+  theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+```
+:::
+
+::::
+
+## Comparing groups with box plots {.smaller}
+
+:::: {.columns}
+
+::: {.column width="52%"}
+- Does total cholesterol differ between men and women?
+- One box per group, read side by side
+- Centres are close and the boxes overlap: a small difference, not two separate distributions
+- A description, not a test: tests come in Week 9
+:::
+
+::: {.column width="48%"}
+```{r}
+#| label: chol-gender-boxplot
+#| echo: false
+#| fig-width: 4
+#| fig-height: 4.5
+ggplot(nhanes |> filter(!is.na(gender)), aes(x = gender, y = chol)) +
+  geom_boxplot() +
+  labs(x = 'Gender', y = 'Total cholesterol (mmol/L)') +
+  theme_minimal(base_size = 14)
+```
+:::
+
+::::
+
+## Sedentary time: which do we report?
+
+```{r}
+#| label: sed-summary-table
+#| echo: false
+tibble(
+  Mean = sed_mean,
+  SD = sed_sd,
+  Median = sed_median,
+  IQR = sed_iqr
+) |>
+  gt() |>
+  fmt_number(decimals = 1)
+```
+
+- Sedentary time (`sed`), hours/day
+- Mean and median disagree by over an hour: the first clue
+
+## Which plot, for which variable?
+
+- We have used plots already: to see shape, and to compare groups
+- Which plot works depends on the kind of variable
+- Some variables are measured on a scale; some record which group someone is in
+- Next: a plot for each kind
+- The proper names for those kinds come after the break
+
+## Values on a scale: the histogram
+
+- A **histogram** bins values on a scale, plots the count in each bin
+- Shows the shape mean/SD or median/IQR can only summarise
+
+```{r}
+#| label: hist-sed
+#| echo: false
+#| fig-width: 8
+#| fig-height: 4
+ggplot(nhanes, aes(x = sed)) +
+  geom_histogram(binwidth = 1, fill = '#00213B') +
+  coord_cartesian(xlim = c(0, 24)) +
+  labs(x = 'Sedentary time (hours/day)', y = 'Count') +
+  theme_minimal(base_size = 16)
+```
+
+- 145 of 34,434 (0.4%) report over 24 hours/day and sit off this axis
+
+## Bin width changes the picture
+
+:::: {.columns}
+
+::: {.column width="34%"}
+- The same values, drawn three ways
+- Too narrow: every wobble looks real
+- Too wide: detail is lost
+- Vertical scales are not shared
+:::
+
+::: {.column width="66%"}
+```{r}
+#| label: bin-width-demo
+#| echo: false
+#| fig-width: 9
+#| fig-height: 3.2
+bin_widths <- c(0.1, 1, 5)
+bin_counts <- lapply(bin_widths, function(w) {
+  breaks <- seq(0, 25, by = w)
+  counts <- hist(nhanes$sed[nhanes$sed <= 24 & !is.na(nhanes$sed)],
+                  breaks = breaks, plot = FALSE)
+  tibble(mid = counts$mids, count = counts$counts, w = w,
+         label = paste('Bin width', w))
+})
+bin_df <- bind_rows(bin_counts)
+bin_df$label <- factor(bin_df$label, levels = paste('Bin width', bin_widths))
+
+ggplot(bin_df, aes(x = mid, y = count, width = w)) +
+  geom_col(fill = '#00213B') +
+  coord_cartesian(xlim = c(0, 24)) +
+  facet_wrap(~label, nrow = 1, scales = 'free_y') +
+  labs(x = 'Sedentary time (hours/day)', y = 'Count') +
+  theme_minimal(base_size = 13)
+```
+
+- If in doubt, look at more than one bins before choosing
+:::
+
+::::
+
+## Not every variable has a shape
+
+:::: {.columns}
+
+::: {.column width="42%"}
+- A histogram needs values on a scale to sort into bins
+- `smoking` has no scale, just groups: Never, Previous, Current
+- We count how many fall in each group instead
+- That count is a **frequency table**
+:::
+
+::: {.column width="58%"}
+```{r}
+#| label: smoking-freq-table
+#| echo: false
+nhanes |>
+  filter(!is.na(smoking)) |>
+  count(smoking) |>
+  mutate(Percent = round(100 * n / sum(n), 1)) |>
+  rename(Category = smoking, N = n) |>
+  gt()
+```
+:::
+
+::::
+
+## Values that are labels: the bar chart
+
+- A **bar chart**: one bar per group, count or percentage
+
+```{r}
+#| label: bar-smoking
+#| echo: false
+#| fig-width: 8
+#| fig-height: 4
+ggplot(nhanes |> filter(!is.na(smoking)), aes(x = smoking, fill = smoking)) +
+  geom_bar() +
+  scale_fill_manual(values = c('#00213B', '#4386AF', '#ABB5C5'), guide = 'none') +
+  labs(x = 'Smoking status', y = 'Count') +
+  theme_minimal(base_size = 16)
+```
+
+- Bars separated, axis has no numeric meaning between categories
+- Unlike a histogram: bars touch, drawn along one scale
+- The gap indicates the variable is not a scale
+
+## The pie chart, and why we avoid it
+
+:::: {.columns}
+
+::: {.column width="42%"}
+- One slice per group, the whole circle is 100%
+- We judge angle and area less accurately than length
+- Similar slices can't be ranked by eye; two pies can't be compared
+- The last bar chart holds the same counts, readable
+:::
+
+::: {.column width="58%"}
+```{r}
+#| label: pie-smoking
+#| echo: false
+#| fig-width: 7
+#| fig-height: 4
+ggplot(nhanes |> filter(!is.na(smoking)), aes(x = '', fill = smoking)) +
+  geom_bar(width = 1) +
+  coord_polar(theta = 'y') +
+  scale_fill_manual(values = c('#00213B', '#4386AF', '#ABB5C5'), name = 'Smoking status') +
+  labs(x = NULL, y = NULL) +
+  theme_minimal(base_size = 14) +
+  theme(axis.text = element_blank(), panel.grid = element_blank())
+```
+:::
+
+::::
+
+## Comparing composition: the stacked bar
+
+:::: {.columns}
+
+::: {.column width="42%"}
+- Does smoking status differ between men and women?
+- One bar per group, scaled to 100%
+- Every bar starts at the same baseline: the bottom segment compares directly
+- Higher segments are harder to compare
+:::
+
+::: {.column width="58%"}
+```{r}
+#| label: stacked-bar-smoking-gender
+#| echo: false
+#| fig-width: 7
+#| fig-height: 4
+ggplot(nhanes |> filter(!is.na(smoking), !is.na(gender)),
+       aes(x = gender, fill = smoking)) +
+  geom_bar(position = 'fill') +
+  scale_y_continuous(labels = scales::percent) +
+  scale_fill_manual(values = c('#00213B', '#4386AF', '#ABB5C5'), name = 'Smoking status') +
+  labs(x = 'Gender', y = 'Percent') +
+  theme_minimal(base_size = 14)
+```
+:::
+
+::::
+
+## Block 2: data and variable types {background-image="assets/skyline.jpg" background-size="cover" .divider}
+
+Naming the property that decided every choice in Block 1
+
+## Which columns can we take a mean of?
+
+- We treated `sed` as a number and `smoking` as labels, without much thought
+- Both were obvious
+- `nhanes_mph` has 27 columns
+- `gender` and `blm.cvd` are stored as numbers, but they are groups
+- Which of the rest can you take a mean of, and how do you know?
+
+## Two kinds of variable
+
+- **Categorical**: puts each participant into one of a fixed set of groups
+- **Numeric**: a number
+- We used a categorical variable already: `smoking`
+- We used a numeric variable already: `sed`, `chol`
+- Both kinds split further
+
+## Categorical: nominal, ordinal, binary
+
+- **Nominal**: the categories have no natural order
+  - `eth`, ethnicity: Mexican American, Other Hispanic, White, Black, Others
+- **Ordinal**: the categories run in a genuine order
+  - `phq.c`, depression classification: Normal, Mild symptoms, Possible depression
+- **Binary**: a two-category special case, present or absent
+  - `blm.cvd`, baseline cardiovascular disease: No, Yes
+
+## Numeric: count and continuous
+
+- **Count** (sometimes called discrete): whole numbers only
+  - `phq`, the raw depression symptom score behind `phq.c`: 0 through 6
+- **Continuous**: any value in a range is possible
+  - `chol`, mmol/L; `age`, years; `sed`, hours/day
+
+## What R stores isn't always what the variable is {.smaller}
+
+:::: {.columns}
+
+::: {.column width="42%"}
+- `blm.cvd` is binary; R read its 0s and 1s as plain numbers
+- `gender` and `edu`: numbers standing in for a label
+- How data is stored doesn't change the variable's statistical type
+- Check the dictionary, not the raw values
+:::
+
+::: {.column width="58%"}
+```{r}
+#| label: dictionary-coded
+#| echo: false
+dictionary |>
+  filter(`Variable names` %in% c('gender', 'eth', 'edu', 'smoking', 'phq.c', 'blm.cvd')) |>
+  gt()
+```
+:::
+
+::::
+
+## Where the boundary blurs
+
+- `age` is recorded in whole years, but treated as continuous
+- A count with many possible values is often handled as continuous too
+- Ordinal categories are sometimes scored as numbers for convenience, or as nominal categories for reasons we will see later
+- This is sometimes a judgement call depending on the analysis need
+
+## Try it: what kind of variable is each column?
+
+```{r}
+#| label: strep-sample-table
+#| echo: false
+strep_sample |>
+  select(patient_id, arm, gender, baseline_condition, rad_num, improved) |>
+  gt()
+```
+
+- The 1948 MRC streptomycin trial: ten of 107 patients shown
+- Name each column's type, and which you could average
+
+## Try it: the answer
+
+- `patient_id`: nominal, while this is a number this is a label for each individual 
+- `arm`: nominal (binary); Streptomycin or Control
+- `gender`: nominal (binary); the values are the letters F and M
+- `baseline_condition`: ordinal; Good, Fair, Poor run in a real order
+- `rad_num`: a 1 to 6 score standing for an ordered category; or a count
+- `improved`: binary, stored as TRUE/FALSE; storage is not type
+
+## Which summary, which plot, for which type
+
+| Type | Summary | Plot |
+|---|---|---|
+| Nominal / ordinal / binary | Frequency, percentage | Bar chart |
+| Count | Frequency, or mean/SD/median/IQR if the range is wide | Bar chart, or histogram |
+| Continuous, roughly symmetric | Mean and SD | Histogram, box plot |
+| Continuous, skewed | Median and IQR | Histogram, box plot |
+
+## Two variables at once: the cross-tabulation
+
+```{r}
+#| label: cross-tab
+#| echo: false
+nhanes |>
+  filter(!is.na(smoking), !is.na(gender)) |>
+  count(smoking, gender) |>
+  tidyr::pivot_wider(names_from = gender, values_from = n) |>
+  rename(Smoking = smoking) |>
+  gt()
+```
+
+- Rows: `smoking`. Columns: `gender`
+- One cell per combination of the two variables
+
+## Row or column percentages?
+
+:::: {.columns}
+
+::: {.column width="50%"}
+Within each smoking group, the split by gender:
+
+```{r}
+#| label: cross-tab-row-pct
+#| echo: false
+nhanes |>
+  filter(!is.na(smoking), !is.na(gender)) |>
+  count(smoking, gender) |>
+  group_by(smoking) |>
+  mutate(pct = round(100 * n / sum(n), 1)) |>
+  ungroup() |>
+  select(-n) |>
+  tidyr::pivot_wider(names_from = gender, values_from = pct) |>
+  rename(Smoking = smoking) |>
+  gt()
+```
+:::
+
+::: {.column width="50%"}
+Within each gender, the split by smoking:
+
+```{r}
+#| label: cross-tab-col-pct
+#| echo: false
+nhanes |>
+  filter(!is.na(smoking), !is.na(gender)) |>
+  count(smoking, gender) |>
+  group_by(gender) |>
+  mutate(pct = round(100 * n / sum(n), 1)) |>
+  ungroup() |>
+  select(-n) |>
+  tidyr::pivot_wider(names_from = gender, values_from = pct) |>
+  rename(Smoking = smoking) |>
+  gt()
+```
+:::
+
+::::
+
+- Percentage of what depends on the question being asked
+
+## The 2x2 table, from the epi half
+
+```{r}
+#| label: gender-cvd-2x2
+#| echo: false
+nhanes |>
+  filter(!is.na(gender), !is.na(blm.cvd)) |>
+  count(gender, blm.cvd) |>
+  tidyr::pivot_wider(names_from = blm.cvd, values_from = n) |>
+  rename(Gender = gender) |>
+  gt()
+```
+
+- Gender by baseline cardiovascular disease
+- The same layout from epi weeks 1 to 5, reactivated here
+- No risk ratio or odds ratio yet: `blm.cvd` is measured at the same visit as the exposure, and Week 9 covers the formulae
+
+## Try it: build the 2x2
+
+:::: {.columns}
+
+::: {.column width="60%"}
+- Same ten patients as before, two columns only: `arm`, `improved`
+- Build the 2x2 table for these ten patients
+- Which variable goes in the rows, and which in the columns? Why?
+- Ten patients only: this is not the trial's result
+:::
+
+::: {.column width="40%"}
+```{r}
+#| label: strep-arm-improved
+#| echo: false
+strep_sample |>
+  select(arm, improved) |>
+  gt()
+```
+:::
+
+::::
+
+## Try it: the answer
+
+```{r}
+#| label: strep-2x2-answer
+#| echo: false
+strep_sample |>
+  count(arm, improved) |>
+  tidyr::pivot_wider(names_from = improved, values_from = n, values_fill = 0) |>
+  rename(Arm = arm) |>
+  gt()
+```
+
+- Treatment in the rows, outcome in the columns, as in the epi half
+- Streptomycin: 4 improved, 1 not
+- Control: 2 improved, 3 not
+- The exposure defines the groups being compared, so it gets the rows
+- Ten patients cannot support a measure of association: the real trial has 107, and Week 9 does it
+
+## What is a 'Table 1'?
+
+- The conventional first table in a paper, describing the participants
+- Often stratified by the exposure or group of interest
+- Each row shows the appropriate summary for that variable's type
+- Mean/SD or median/IQR for numeric, count/percentage for categorical: the same choice from a few slides ago
+
+## A Table 1
+
+```{r}
+#| label: table1
+#| echo: false
+nhanes |>
+  select(age, gender, smoking, chol, phq.c) |>
+  tbl_summary(by = phq.c)
+```
+
+- `r format(nrow(nhanes) - 4499, big.mark = ',')` of `r format(nrow(nhanes), big.mark = ',')` classified
+
+## Application {background-image="assets/skyline.jpg" background-size="cover" .divider}
+
+Somebody else's figure, and the design choice behind it
+
+## What does each chart make you believe? {.smaller}
+
+- In pairs: name the type of variable on each axis
+- Say whether a line chart suits them
+- Spot the one design choice that changes the impression
+
+:::: {.columns}
+
+::: {.column width="50%"}
+```{r}
+#| label: app-line-full
+#| echo: false
+#| fig-width: 4.5
+#| fig-height: 2.4
+ggplot(nrt_df, aes(x = year, y = rate)) +
+  geom_line(color = '#00213B') +
+  geom_point(color = '#00213B', size = 2) +
+  scale_x_continuous(breaks = 2005:2009) +
+  coord_cartesian(ylim = c(0, max(nrt_df$rate) * 1.15)) +
+  labs(
+    title = 'Prescriptions of NRT by year',
+    x = 'Year',
+    y = 'Prescriptions of NRT per\n100,000 population'
+  ) +
+  theme_minimal(base_size = 10)
+```
+
+- Axis starts at zero
+:::
+
+::: {.column width="50%"}
+```{r}
+#| label: app-line-zoom
+#| echo: false
+#| fig-width: 4.5
+#| fig-height: 2.4
+ggplot(nrt_df, aes(x = year, y = rate)) +
+  geom_line(color = '#00213B') +
+  geom_point(color = '#00213B', size = 2) +
+  scale_x_continuous(breaks = 2005:2009) +
+  coord_cartesian(ylim = c(min(nrt_df$rate) - 2, max(nrt_df$rate) + 2)) +
+  labs(
+    title = 'Prescriptions of NRT by year',
+    x = 'Year',
+    y = 'Prescriptions of NRT per\n100,000 population'
+  ) +
+  theme_minimal(base_size = 10)
+```
+
+- Axis zoomed to the data
+:::
+
+::::
+
+## Same data, one misleading axis
+
+- `year`: a count variable, evenly spaced
+- Prescriptions of NRT per 100,000 population: a continuous variable
+- A line chart suits both: an ordered numeric variable tracked over time
+- The right chart's y-axis does not start at zero, so a modest rise looks dramatic
+- Always check where a y-axis starts before trusting the shape of a trend
+
+## Key points, and what the lab does
+
+- Variable type decides the summary and the plot: nominal, ordinal, binary, count, continuous
+- Shape decides mean/SD against median/IQR: check it before choosing
+- A histogram, box plot, bar chart, or stacked bar each suit a different question
+- The lab builds all of this in R, on `nhanes_mph`, start to finish

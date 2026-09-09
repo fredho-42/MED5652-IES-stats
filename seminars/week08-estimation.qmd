@@ -1,0 +1,1247 @@
+---
+title: "Estimation, precision, and sample size"
+subtitle: "Week 8"
+author: "Fred Ho"
+title-slide-attributes:
+  data-background-image: assets/skyline.jpg
+  data-background-size: cover
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(gt)
+library(here)
+library(medicaldata)
+
+here::i_am('seminars/week08-estimation.qmd')
+
+nhanes <- read_csv(here::here('data', 'mph_nhanes_20241107.csv'), show_col_types = FALSE)
+
+# Recoding, verbatim from chapters/08-estimation.qmd's own `recode` chunk
+# (itself verbatim from Chapter 3): same levels, same labels, same order.
+nhanes <- nhanes |>
+  mutate(
+    gender = factor(gender,
+      levels = c(1, 2),
+      labels = c('Male', 'Female')),
+    eth = factor(eth,
+      levels = c(1, 2, 3, 4, 5),
+      labels = c('Mexican American', 'Other Hispanic', 'White', 'Black', 'Others')),
+    edu = factor(edu,
+      levels = c(1, 2, 3),
+      labels = c('Less than high school', 'High school graduate', 'Above high school')),
+    smoking = factor(smoking,
+      levels = c('Never', 'Previous', 'Current')),
+    phq.c = factor(phq.c,
+      levels = c('0 Normal', '1 Mild symptoms', '2 Possible depression'),
+      labels = c('Normal', 'Mild symptoms', 'Possible depression'),
+      ordered = TRUE),
+    blm.cvd = factor(blm.cvd,
+      levels = c(0, 1),
+      labels = c('No', 'Yes'))
+  )
+
+# Every quantity below is computed the same way chapters/08-estimation.qmd
+# computes it: same variable names, same steps.
+
+sed_stats <- nhanes |>
+  filter(!is.na(sed)) |>
+  summarise(mean_sed = mean(sed), sd_sed = sd(sed), n_sed = n()) |>
+  mutate(
+    se_sed = sd_sed / sqrt(n_sed),
+    ci_lower = mean_sed - 1.96 * se_sed,
+    ci_upper = mean_sed + 1.96 * se_sed
+  )
+
+# Q1/Q3 for the recap's IQR
+sed_q1 <- quantile(nhanes$sed, 0.25, na.rm = TRUE)
+sed_q3 <- quantile(nhanes$sed, 0.75, na.rm = TRUE)
+sed_median <- median(nhanes$sed, na.rm = TRUE)
+
+age_stats <- nhanes |>
+  filter(!is.na(age)) |>
+  summarise(mean_age = mean(age), sd_age = sd(age), n_age = n()) |>
+  mutate(
+    se_age = sd_age / sqrt(n_age),
+    ci_lower = mean_age - 1.96 * se_age,
+    ci_upper = mean_age + 1.96 * se_age
+  )
+
+tb_stats <- strep_tb |>
+  summarise(
+    n_improved = sum(improved),
+    n_total = n(),
+    p_improved = n_improved / n_total,
+    se_improved = sqrt(p_improved * (1 - p_improved) / n_total)
+  ) |>
+  mutate(
+    ci_lower = p_improved - 1.96 * se_improved,
+    ci_upper = p_improved + 1.96 * se_improved
+  )
+
+tt_chol_gender <- t.test(chol ~ gender, data = nhanes |> filter(!is.na(gender)))
+# levels(nhanes$gender) is Male, Female, so t.test reports Male minus Female
+# (negative). Flipped here to Female minus Male, matching the chapter's own
+# "0.17 mmol/L higher in women" framing.
+chol_diff <- unname(tt_chol_gender$estimate[2] - tt_chol_gender$estimate[1])
+chol_ci <- -rev(tt_chol_gender$conf.int)
+
+strep_arm_summary <- strep_tb |>
+  group_by(arm) |>
+  summarise(n_arm = n(), n_improved = sum(improved), prop_improved = n_improved / n_arm)
+pt_arm <- prop.test(x = strep_arm_summary$n_improved, n = strep_arm_summary$n_arm)
+arm_diff <- strep_arm_summary$prop_improved[1] - strep_arm_summary$prop_improved[2]
+
+tt_full <- t.test(nhanes$chol)
+set.seed(1)
+chol_50 <- nhanes |> filter(!is.na(chol)) |> slice_sample(prop = 0.5)
+tt_50 <- t.test(chol_50$chol)
+set.seed(1)
+chol_10 <- nhanes |> filter(!is.na(chol)) |> slice_sample(prop = 0.1)
+tt_10 <- t.test(chol_10$chol)
+widths <- tibble(
+  Sample = c('Full', '50% subset', '10% subset'),
+  n = c(sum(!is.na(nhanes$chol)), nrow(chol_50), nrow(chol_10)),
+  lower = c(tt_full$conf.int[1], tt_50$conf.int[1], tt_10$conf.int[1]),
+  upper = c(tt_full$conf.int[2], tt_50$conf.int[2], tt_10$conf.int[2])
+) |>
+  mutate(width = upper - lower)
+
+power_big <- power.prop.test(p1 = 0.33, p2 = 0.69, sig.level = 0.05, power = 0.8)
+power_small <- power.prop.test(p1 = 0.33, p2 = 0.45, sig.level = 0.05, power = 0.8)
+
+# Real second difference-in-proportions example, for the new Block 2 Try it
+# (a CI for a difference in proportions, not the streptomycin trial again).
+# Current-smoking prevalence by gender, computed the same way the rest of
+# this deck computes such things: from nhanes_mph, never invented.
+smoke_by_gender <- nhanes |>
+  filter(!is.na(gender), !is.na(smoking)) |>
+  group_by(gender) |>
+  summarise(n_grp = n(), n_current = sum(smoking == 'Current'), .groups = 'drop') |>
+  mutate(p_current = n_current / n_grp)
+smoke_diff <- smoke_by_gender$p_current[1] - smoke_by_gender$p_current[2]
+se_smoke_diff <- sqrt(
+  smoke_by_gender$p_current[1] * (1 - smoke_by_gender$p_current[1]) / smoke_by_gender$n_grp[1] +
+  smoke_by_gender$p_current[2] * (1 - smoke_by_gender$p_current[2]) / smoke_by_gender$n_grp[2]
+)
+smoke_ci_lower <- smoke_diff - 1.96 * se_smoke_diff
+smoke_ci_upper <- smoke_diff + 1.96 * se_smoke_diff
+smoke_zero_note <- if (smoke_ci_lower <= 0 && smoke_ci_upper >= 0) {
+  'The CI includes zero, compatible with no difference'
+} else {
+  'The CI excludes zero'
+}
+
+# Hand-computable approximation for slide 51 ('How many per arm?'), shown
+# alongside R's exact pooled-variance result so the two are never presented
+# as the same number: (z_alpha/2 + z_beta)^2, the 7.8 constant on the new
+# 'What power depends on' slide, times summed variances over the squared gap.
+z_power <- qnorm(0.975) + qnorm(0.8)
+power_approx_big <- z_power^2 * (0.33 * (1 - 0.33) + 0.69 * (1 - 0.69)) / (0.69 - 0.33)^2
+
+# Width-versus-n curve (Block 3 asset). Built from the real sed SD, not a
+# fabricated relationship: the 95% half-width for a mean is 1.96 * SD/sqrt(n).
+n_seq <- c(seq(25, 500, by = 5), seq(510, 10000, by = 25))
+width_curve <- tibble(n = n_seq, width = 2 * 1.96 * sed_stats$sd_sed / sqrt(n_seq))
+width_points <- tibble(
+  n = c(100, 10000),
+  width = 2 * 1.96 * sed_stats$sd_sed / sqrt(c(100, 10000)),
+  label = c('n = 100', 'n = 10,000')
+)
+
+# n-per-arm-versus-effect curve (Block 3 asset). p1 fixed at streptomycin's
+# control-arm proportion (0.33, real data), p2 swept across a range so the
+# two worked points (0.36 gap and 0.12 gap) sit on a real curve.
+gap_seq <- seq(0.05, 0.55, by = 0.01)
+n_vs_effect <- tibble(
+  gap = gap_seq,
+  n_per_arm = sapply(gap_seq, function(g) {
+    power.prop.test(p1 = 0.33, p2 = 0.33 + g, sig.level = 0.05, power = 0.8)$n
+  })
+)
+n_vs_effect_points <- tibble(
+  gap = c(0.36, 0.12),
+  n_per_arm = c(power_big$n, power_small$n),
+  label = c('0.36 gap: 29 per arm', '0.12 gap: 258 per arm')
+)
+```
+
+## What you have learnt so far {.smaller}
+
+- **Stats, Week 7.** `sed` was described with a mean of 6.56 and an SD of 10.9 hours/day from 34,434 people, then the median (`r sed_median` hours/day) and the IQR (`r sed_q1` to `r sed_q3` hours/day).
+- **Epi.**
+  - **Weeks 1 and 5.** External validity and selection bias. This week adds another source of problem: sampling variation, precision instead of bias and validity
+  - **Week 2.** Risk, odds, RR and OR calculated as point estimates. This week calculates also the confidence as well as that for a difference in proportions
+  - **Week 3.** Underpower was discussed and this week defines it statistically and does the sample size arithmetic
+
+## By the end of this session, you will be able to {.smaller}
+
+- Understand the difference between population and sample, and why statistical inference focuses on the population
+- Explain why a sample estimate varies from sample to sample, and state the practical consequence of the central limit theorem for the shape of that variation
+- Distinguish the standard deviation from the standard error, and calculate the standard error of a mean and of a proportion
+- Construct a 95% confidence interval for a mean, a proportion, a difference in means, and a difference in proportions
+- Interpret a confidence interval correctly, and identify the common misinterpretation
+- Explain how sample size, variability, and effect size jointly determine an estimate's precision, and calculate an approximate sample size for a two-group comparison, explaining why post-hoc power is uninformative
+
+## Block 1: estimation and the confidence interval {background-image="assets/skyline.jpg" background-size="cover" .divider}
+
+Building an interval, then saying what it means
+
+## A different 34,434 people
+
+- Last week's mean sedentary time, 6.56 hours/day, came from one sample
+- A different 34,434 people would have given a different number. How different, and does it matter?
+- An estimate is only useful when we know how accurate and how precise it is
+- In common public health applications:
+  - accuracy is mainly an epidemiological question
+  - Precision is what we try to quantify here in statistics 
+
+## Population and sample
+
+- The **population** is what we want to measure (e.g. UK general population, type 2 diabetes patients)
+- The **sample** is what we can measure, usually a subset of the target population
+\ 
+- We must compute statistics from the sample 
+- But what we want to say is about the population
+
+## The parameter and the estimate {.smaller}
+
+:::: {.columns}
+
+::: {.column width="42%"}
+- The **estimand**: the fixed, unknown population value the question is about
+- The **estimator**: the method that produces a number from a sample. It is a random variable, because who ends up in the sample is random
+- The **estimate**: one particular result the estimator produced, it is 'realised' (i.e. occurred) so it is fixed
+\ 
+- What is fixed and what is random is abstract but a key foundation in understanding how we define precision
+:::
+
+::: {.column width="58%"}
+```{r}
+#| label: target-scatter
+#| echo: false
+#| fig-width: 7
+#| fig-height: 3.2
+# Schematic figure, not real data (allowed under the never-fabricate rule,
+# which only bars a fabricated hybrid dressed up to look real): the point is
+# the abstract fixed-versus-random distinction, not a claim about sed itself.
+set.seed(1)
+target_x <- 6.564
+n_samples <- 5
+n_per_sample <- 4
+obs_sd <- 2.2
+obs_df <- bind_rows(lapply(seq_len(n_samples), function(s) {
+  obs <- rnorm(n_per_sample, mean = target_x, sd = obs_sd)
+  tibble(sample = s, position = n_samples - s + 1, obs = obs, sample_mean = mean(obs))
+}))
+means_df <- obs_df |> distinct(sample, position, sample_mean)
+
+ggplot() +
+  geom_vline(xintercept = target_x, color = 'black', linewidth = 1.4) +
+  geom_point(data = obs_df, aes(x = obs, y = position), color = '#4386AF', size = 3, alpha = 0.7) +
+  geom_segment(
+    data = means_df,
+    aes(x = sample_mean, xend = sample_mean, y = position - 0.28, yend = position + 0.28),
+    color = '#4386AF', linewidth = 1.6
+  ) +
+  annotate('text', x = target_x, y = n_samples + 0.9, label = 'fixed, unknown', color = 'black', size = 4) +
+  scale_x_continuous(expand = expansion(mult = 0.15)) +
+  scale_y_continuous(
+    breaks = 1:n_samples, labels = paste('Sample', n_samples:1),
+    limits = c(0, n_samples + 1.3)
+  ) +
+  labs(x = 'Observations and sample mean', y = NULL) +
+  theme_minimal(base_size = 13) +
+  theme(axis.ticks.y = element_blank(), panel.grid.minor = element_blank(), panel.grid.major = element_blank())
+```
+
+- Black line: the fixed, unknown population mean
+- Each row is one sample: circles are its observations, the bar its mean, the estimate
+- Estimates scatter around the population mean; none lands on it exactly
+:::
+
+::::
+
+## Random sampling, and what can go wrong
+
+- Random sampling ensures we can generalise findings from the sample to the population
+- Problems can arise from:
+  - Who was reachable (incomplete sampling frame)
+  - Who agreed (healthy volunteer bias)
+  - Who was excluded (sampling frame / missing data bias)
+
+## Bias and variance {.smaller}
+
+:::: {.columns}
+
+::: {.column width="42%"}
+- **Bias.** How accurate on average the estimator is, also called validity
+  - Week 5's selection bias is an example
+- **Variance.** How precise the estimator is, also called precision
+  - The general statistical term for how much it scatters from sample to sample
+  - A confidence interval addresses this, and does nothing about bias
+- A confidence interval states its precision but not the accuracy
+  - A tight CI can still be biased
+:::
+
+::: {.column width="58%"}
+```{r}
+#| label: bias-variance-target
+#| echo: false
+#| fig-width: 6.6
+#| fig-height: 4.4
+set.seed(4)
+n_shots <- 20
+ring_radii <- c(0.3, 0.6, 0.9, 1.2)
+bv_specs <- tibble(
+  accuracy = factor(c('High accuracy', 'High accuracy', 'Low accuracy', 'Low accuracy'),
+    levels = c('High accuracy', 'Low accuracy')),
+  precision = factor(c('High precision', 'Low precision', 'High precision', 'Low precision'),
+    levels = c('High precision', 'Low precision')),
+  centre = c(0, 0, 0.55, 0.55),
+  spread = c(0.09, 0.32, 0.09, 0.32)
+)
+
+rings_df <- bind_rows(lapply(seq_len(nrow(bv_specs)), function(i) {
+  bind_rows(lapply(seq_along(ring_radii), function(ri) {
+    theta <- seq(0, 2 * pi, length.out = 80)
+    tibble(
+      accuracy = bv_specs$accuracy[i], precision = bv_specs$precision[i],
+      ring_id = ri, x = ring_radii[ri] * cos(theta), y = ring_radii[ri] * sin(theta)
+    )
+  }))
+}))
+
+shots_df <- bind_rows(lapply(seq_len(nrow(bv_specs)), function(i) {
+  tibble(
+    accuracy = bv_specs$accuracy[i], precision = bv_specs$precision[i],
+    x = bv_specs$centre[i] + rnorm(n_shots, 0, bv_specs$spread[i]),
+    y = bv_specs$centre[i] + rnorm(n_shots, 0, bv_specs$spread[i])
+  )
+}))
+
+ggplot() +
+  geom_path(data = rings_df, aes(x, y, group = ring_id), color = '#ABB5C5') +
+  geom_point(data = bv_specs, aes(0, 0), shape = 3, size = 2.2, color = '#00213B') +
+  geom_point(data = shots_df, aes(x, y), color = '#4386AF', size = 2, alpha = 0.85) +
+  coord_fixed(xlim = c(-1.5, 1.5), ylim = c(-1.5, 1.5)) +
+  facet_grid(rows = vars(precision), cols = vars(accuracy)) +
+  labs(x = NULL, y = NULL) +
+  theme_minimal(base_size = 13) +
+  theme(
+    axis.text = element_blank(), axis.ticks = element_blank(),
+    panel.grid = element_blank(), strip.text = element_text(face = 'bold', size = 12)
+  )
+```
+
+- Accuracy reads across, precision reads down. The black cross is the true value; each blue dot is one estimate
+:::
+
+::::
+
+## The sampling distribution {.smaller}
+
+- We report a confidence interval to state precision
+  - The interval is built from the standard error
+  - The standard error is the estimated spread of the estimator
+  - That spread is a property of the estimator's own distribution
+
+- Imagine applying the same estimator to different random samples repeatedly
+  - The results of these samples will have a distribution
+  - **Sampling distribution**: each sample yields one estimate, a single fixed draw from it
+
+- Everything from here to the confidence interval rests on this distribution
+
+## Seeing it happen {.smaller}
+
+- Three coins, fair (p = 0.5), biased (p = 0.25) and very biased (p = 0.1), and five sample sizes: n = 1, 5, 10, 30, 100
+- Buttons repeat 1, 5, 20, 100 or 1000 samples, so the shape of the sample mean builds live
+- Head = 1; tail = 0
+- The mean of the samples is the proportion of heads
+
+```{r}
+#| label: coin-clt-widget
+#| echo: false
+#| output: asis
+cat('
+<div id="coin-widget" style="text-align:center;">
+<div style="margin-bottom:0.25em;">
+<button class="coin-coin-btn" data-p="0.5" onclick="coinSetP(0.5, this)" style="font-size:0.8em;padding:0.25em 0.6em;margin:0.1em;background:#4386AF;color:#fff;border:none;border-radius:4px;cursor:pointer;">Fair coin (p = 0.5)</button>
+<button class="coin-coin-btn" data-p="0.25" onclick="coinSetP(0.25, this)" style="font-size:0.8em;padding:0.25em 0.6em;margin:0.1em;background:#00213B;color:#fff;border:none;border-radius:4px;cursor:pointer;">Biased coin (p = 0.25)</button>
+<button class="coin-coin-btn" data-p="0.1" onclick="coinSetP(0.1, this)" style="font-size:0.8em;padding:0.25em 0.6em;margin:0.1em;background:#00213B;color:#fff;border:none;border-radius:4px;cursor:pointer;">Very biased coin (p = 0.1)</button>
+</div>
+<div style="margin-bottom:0.25em;">
+<button class="coin-n-btn" data-n="1" onclick="coinSetN(1, this)" style="font-size:0.8em;padding:0.25em 0.6em;margin:0.1em;background:#00213B;color:#fff;border:none;border-radius:4px;cursor:pointer;">n = 1</button>
+<button class="coin-n-btn" data-n="5" onclick="coinSetN(5, this)" style="font-size:0.8em;padding:0.25em 0.6em;margin:0.1em;background:#00213B;color:#fff;border:none;border-radius:4px;cursor:pointer;">n = 5</button>
+<button class="coin-n-btn" data-n="10" onclick="coinSetN(10, this)" style="font-size:0.8em;padding:0.25em 0.6em;margin:0.1em;background:#00213B;color:#fff;border:none;border-radius:4px;cursor:pointer;">n = 10</button>
+<button class="coin-n-btn" data-n="30" onclick="coinSetN(30, this)" style="font-size:0.8em;padding:0.25em 0.6em;margin:0.1em;background:#00213B;color:#fff;border:none;border-radius:4px;cursor:pointer;">n = 30</button>
+<button class="coin-n-btn" data-n="100" onclick="coinSetN(100, this)" style="font-size:0.8em;padding:0.25em 0.6em;margin:0.1em;background:#4386AF;color:#fff;border:none;border-radius:4px;cursor:pointer;">n = 100</button>
+</div>
+<svg id="coin-svg" width="900" height="190" style="max-width:100%;"></svg>
+<div>
+<button onclick="coinRoll(1)" style="font-size:0.8em;padding:0.25em 0.6em;margin:0.1em;background:#00213B;color:#fff;border:none;border-radius:4px;cursor:pointer;">Repeat 1</button>
+<button onclick="coinRoll(5)" style="font-size:0.8em;padding:0.25em 0.6em;margin:0.1em;background:#00213B;color:#fff;border:none;border-radius:4px;cursor:pointer;">Repeat 5</button>
+<button onclick="coinRoll(20)" style="font-size:0.8em;padding:0.25em 0.6em;margin:0.1em;background:#00213B;color:#fff;border:none;border-radius:4px;cursor:pointer;">Repeat 20</button>
+<button onclick="coinRoll(100)" style="font-size:0.8em;padding:0.25em 0.6em;margin:0.1em;background:#00213B;color:#fff;border:none;border-radius:4px;cursor:pointer;">Repeat 100</button>
+<button onclick="coinRoll(1000)" style="font-size:0.8em;padding:0.25em 0.6em;margin:0.1em;background:#00213B;color:#fff;border:none;border-radius:4px;cursor:pointer;">Repeat 1000</button>
+<button onclick="coinReset()" style="font-size:0.85em;padding:0.3em 0.7em;margin:0.15em;background:#ABB5C5;color:#00213B;border:none;border-radius:4px;cursor:pointer;">Reset</button>
+<div id="coin-caption" style="margin-top:0.3em;font-size:1em;"></div>
+</div>
+</div>
+<script>
+(function() {
+  var p = 0.5;
+  var n = 100;
+  var counts = new Array(n + 1).fill(0);
+  var total = 0;
+  var svg = document.getElementById("coin-svg");
+  var ns = "http://www.w3.org/2000/svg";
+
+  function resetCounts() {
+    counts = new Array(n + 1).fill(0);
+    total = 0;
+  }
+
+  function flipOnce() {
+    var successes = 0;
+    for (var i = 0; i < n; i++) {
+      if (Math.random() < p) successes++;
+    }
+    return successes;
+  }
+
+  function draw() {
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    var w = 900, h = 190;
+    var marginTop = 24, marginRight = 30, marginBottom = 34, marginLeft = 56;
+    var plotW = w - marginLeft - marginRight;
+    var plotH = h - marginTop - marginBottom;
+    var maxCount = Math.max.apply(null, counts.concat([1]));
+    var barW = plotW / counts.length;
+    counts.forEach(function(c, k) {
+      var barH = (c / maxCount) * plotH;
+      var x = marginLeft + k * barW;
+      var y = marginTop + (plotH - barH);
+      var rect = document.createElementNS(ns, "rect");
+      rect.setAttribute("x", x + barW * 0.08);
+      rect.setAttribute("y", y);
+      rect.setAttribute("width", barW * 0.84);
+      rect.setAttribute("height", Math.max(barH, 0));
+      rect.setAttribute("fill", "#00213B");
+      svg.appendChild(rect);
+    });
+    var axis = document.createElementNS(ns, "line");
+    axis.setAttribute("x1", marginLeft); axis.setAttribute("x2", marginLeft + plotW);
+    axis.setAttribute("y1", marginTop + plotH); axis.setAttribute("y2", marginTop + plotH);
+    axis.setAttribute("stroke", "#ABB5C5"); axis.setAttribute("stroke-width", "1");
+    svg.appendChild(axis);
+    [0, 0.25, 0.5, 0.75, 1].forEach(function(v) {
+      var xpos = marginLeft + v * plotW;
+      var label = document.createElementNS(ns, "text");
+      label.setAttribute("x", xpos);
+      label.setAttribute("y", marginTop + plotH + 20);
+      label.setAttribute("text-anchor", "middle");
+      label.setAttribute("font-size", "13");
+      label.setAttribute("fill", "#333333");
+      label.textContent = v;
+      svg.appendChild(label);
+    });
+    var yAxis = document.createElementNS(ns, "line");
+    yAxis.setAttribute("x1", marginLeft); yAxis.setAttribute("x2", marginLeft);
+    yAxis.setAttribute("y1", marginTop); yAxis.setAttribute("y2", marginTop + plotH);
+    yAxis.setAttribute("stroke", "#ABB5C5"); yAxis.setAttribute("stroke-width", "1");
+    svg.appendChild(yAxis);
+    [0, maxCount].forEach(function(v) {
+      var ypos = marginTop + plotH - (v / maxCount) * plotH;
+      var ylabel = document.createElementNS(ns, "text");
+      ylabel.setAttribute("x", marginLeft - 6);
+      ylabel.setAttribute("y", ypos + 4);
+      ylabel.setAttribute("text-anchor", "end");
+      ylabel.setAttribute("font-size", "12");
+      ylabel.setAttribute("fill", "#333333");
+      ylabel.textContent = v;
+      svg.appendChild(ylabel);
+    });
+    var yTitle = document.createElementNS(ns, "text");
+    yTitle.setAttribute("x", 14);
+    yTitle.setAttribute("y", marginTop + plotH / 2);
+    yTitle.setAttribute("text-anchor", "middle");
+    yTitle.setAttribute("font-size", "11");
+    yTitle.setAttribute("fill", "#333333");
+    yTitle.setAttribute("transform", "rotate(-90 14 " + (marginTop + plotH / 2) + ")");
+    yTitle.textContent = "Number of samples";
+    svg.appendChild(yTitle);
+    var title = document.createElementNS(ns, "text");
+    title.setAttribute("x", w / 2);
+    title.setAttribute("y", 16);
+    title.setAttribute("text-anchor", "middle");
+    title.setAttribute("font-size", "14");
+    title.setAttribute("fill", "#00213B");
+    title.textContent = "Distribution of the sample mean, n = " + n;
+    svg.appendChild(title);
+    document.getElementById("coin-caption").textContent =
+      total + " samples of size " + n + " drawn (p = " + p + ")";
+  }
+
+  function setActive(selector, btn) {
+    document.querySelectorAll(selector).forEach(function(b) { b.style.background = "#00213B"; });
+    btn.style.background = "#4386AF";
+  }
+
+  window.coinSetP = function(newP, btn) {
+    p = newP;
+    setActive(".coin-coin-btn", btn);
+    resetCounts();
+    draw();
+  };
+  window.coinSetN = function(newN, btn) {
+    n = newN;
+    setActive(".coin-n-btn", btn);
+    resetCounts();
+    draw();
+  };
+  window.coinRoll = function(times) {
+    for (var i = 0; i < times; i++) counts[flipOnce()]++;
+    total += times;
+    draw();
+  };
+  window.coinReset = function() { resetCounts(); draw(); };
+
+  draw();
+})();
+</script>
+')
+```
+
+## What the demonstration shows {.smaller}
+
+- The fair coin's data distribution is symmetric
+  - At n = 1 it is two equal spikes, at 0 and at 1
+- The biased coin's data distribution is skewed
+  - At n = 1, three in four flips land at 0
+- Move up through n = 1, 5, 10, 30, 100, for either coin, and the sample mean's own distribution drifts toward a bell shape
+- **The data does not have to be normal.** A skewed data still ends up to have a bell-shaped sampling distribution, it just needs a larger n to get there than a symmetric parent does
+- The skewed case that matters for this course is `sed`, right-skewed, in Chapter 4, which refers back to what this seminar showed
+
+## The central limit theorem {.smaller}
+
+- The distribution of the sample mean approaches a normal dsitribution as n grows
+- It applies no matter the shape of the underlying data
+  - If the data is highly skewed, a larger sample is needed for the sample mean to follow a normal distribution approximately
+- Textbooks often suggest rules of thumb, e.g. n ≥ 30, for the CLT to hold. Reality is more complicated
+  - For data that follows a symmetric distribution (a fair coin), n = 10 or 20 is fairly close to normal already
+  - For highly skewed data (a very biased coin), n = 100 is not necessarily enough
+
+## Standard deviation and standard error {.smaller}
+
+- Recall that any normal distribution can be charateristics by its mean and SD:
+  - Mean of the sampling distribution: sample mean
+  - Mean of the sampling distribution: **standard error (SE)**
+- To quantify precision, we need to know the spread of the sampling distribution, i.e. SE
+
+$$SE = \frac{SD}{\sqrt{n}}$$
+
+- The SE inherits the SD, but shrinks with the square root of n
+
+## Sedentary time: the standard error of its mean
+
+```{r}
+#| label: sed-se-table
+#| echo: false
+tibble(
+  Quantity = 'Sedentary time, hours/day',
+  Mean = round(sed_stats$mean_sed, 2),
+  SD = round(sed_stats$sd_sed, 1),
+  N = format(sed_stats$n_sed, big.mark = ','),
+  SE = round(sed_stats$se_sed, 4)
+) |>
+  gt()
+```
+
+- The SE, `r round(sed_stats$se_sed, 3)` hours/day, is far smaller than the SD of the data, `r round(sed_stats$sd_sed, 1)` hours/day: the estimate is precise because the sample size is so large
+
+## Try it: the same study, a hundred times the size
+
+```{r}
+#| label: tryit1-table
+#| echo: false
+tibble(Study = c('Study A', 'Study B'), Mean = c(6.5, 6.5), SD = c(10.9, 10.9), n = c(100, 10000)) |>
+  gt()
+```
+
+- Two studies report the same mean and the same SD, in different populations
+- Work out the standard error for each. What has changed between the two studies, and what has not?
+- Three minutes
+
+## Try it: the answer
+
+- Study A: SE = 10.9 / sqrt(100) = 1.09 hours/day
+- Study B: SE = 10.9 / sqrt(10,000) = 0.109 hours/day
+- The mean and the SD are identical
+- Only the precision of the estimate differs, by a factor of ten, because n went up by a hundredfold and the SE divides by the square root
+- The data did not get more precise (SD remains the same)
+- The estimator got more precise (SE reduced)
+
+## A proportion is a mean too {.smaller}
+
+- We work with a lot of binary data in public health, e.g., whether someone died
+- Binary data are often summarised as a proportion
+- **A proportion is a sample mean**
+  - Code the outcome 1 for everyone who has it, 0 for everyone who does not
+  - The proportion with the outcome is exactly the mean of that column of 0s and 1s
+  - Example: 
+    - 3 of 5 patients improved
+    - The column is 1, 1, 1, 0, 0,
+    - its mean is 0.6, which is also the proportion: 60% (3/5)
+- The CLT applies to prpoportions for the same reason it applies to any other mean, and we already saw its sampling distribution build live: coin flips coded 0 and 1 are the same thing ([back to the demonstration](#/10))
+
+## The standard error of a proportion {.smaller}
+
+- Because a proportion is also a mean, the CLT applies to it too
+- First we need its SE
+
+$$SE = \sqrt{\frac{p(1-p)}{n}}$$
+
+- The same SD-over-root-n shape as the formula for a mean, with sqrt(p(1-p)) playing the part of the SD
+- For a binary variable, the spread is fixed by the proportion itself
+- The formal name of the distribution of a binary variable is **binomial distribution**
+- Like the normal distribution, bionomial distribution is also characterised by 2 numberw only: 
+  - number of samples (`n`)
+  - proportion of event (`p`)
+
+## An example of a proportion and its standard error
+
+```{r}
+#| label: prop-se-table
+#| echo: false
+tibble(
+  Quantity = 'Improved, streptomycin trial',
+  `Proportion improved` = round(tb_stats$p_improved, 3),
+  N = tb_stats$n_total,
+  SE = round(tb_stats$se_improved, 4)
+) |>
+  gt()
+```
+
+- The 1948 MRC streptomycin trial: `r tb_stats$n_improved` of `r tb_stats$n_total` patients improved
+
+## What a confidence interval is, and why we report one {.smaller}
+
+- An estimate on its own says nothing about how far off it might be
+- Everything above, the sampling distribution and the SE, exists to build a confidence interval (CI)
+- A CI attaches precision to the sampling process
+  - It is why a result is reported as a range
+  - It is built from the standard error
+  - Its width is the margin of error, the amount of imprecision from sample to sample
+- In its simplest form, a 95% CI is calculated as:
+  - estimate ± 1.96 * standard errors
+
+## Why 1.96, and when t replaces it {.smaller}
+
+:::: {.columns}
+
+::: {.column width="46%"}
+- 1.96 comes from the normal distribution the CLT delivers 
+- It is tied to the '95% confidence level', or the '5% significance level' which essentially say the same thing
+- '95%' / '5%' are just convention and arbitary but people rarely change this
+/ 
+- With a small sample we do not know the SD. We estimate it from the same small sample, so that estimate of spread is itself uncertain
+- The t distribution allows for that extra uncertainty
+  - Same bell shape, heavier tails
+  - The multiplier is bigger than 1.96, and grows as n shrinks
+  - At n = 10 it is about `r round(qt(0.975, df = 9), 2)`. At n = 30, about `r round(qt(0.975, df = 29), 2)`
+- As n grows, t converges on the normal, and the multiplier returns to 1.96
+:::
+
+::: {.column width="54%"}
+```{r}
+#| label: t-vs-normal
+#| echo: false
+#| fig-width: 6.6
+#| fig-height: 4
+x_seq <- seq(-4, 4, length.out = 400)
+curves_df <- bind_rows(
+  tibble(x = x_seq, density = dnorm(x_seq), Distribution = 'Normal'),
+  tibble(x = x_seq, density = dt(x_seq, df = 9), Distribution = 't, df = 9 (n = 10)')
+)
+tails_df <- curves_df |> filter(abs(x) >= 1.96)
+ggplot(curves_df, aes(x, density, color = Distribution, linetype = Distribution)) +
+  geom_line(linewidth = 1.1) +
+  geom_area(
+    data = tails_df |> filter(Distribution == 't, df = 9 (n = 10)'),
+    aes(x, density), fill = '#4386AF', alpha = 0.3, inherit.aes = FALSE
+  ) +
+  scale_color_manual(values = c('Normal' = '#00213B', 't, df = 9 (n = 10)' = '#4386AF')) +
+  labs(x = NULL, y = 'Density', title = 'Heavier tails mean a bigger multiplier') +
+  theme_minimal(base_size = 13) +
+  theme(legend.position = 'bottom', legend.title = element_blank(), plot.title = element_text(size = 13))
+```
+:::
+
+::::
+
+## A 95% CI for sedentary time
+
+```{r}
+#| label: sed-ci-ingredients-table
+#| echo: false
+tibble(
+  Quantity = 'Sedentary time, hours/day',
+  Mean = round(sed_stats$mean_sed, 2),
+  SD = round(sed_stats$sd_sed, 1),
+  N = format(sed_stats$n_sed, big.mark = ','),
+  SE = round(sed_stats$se_sed, 4)
+) |>
+  gt()
+```
+
+- `r round(sed_stats$mean_sed, 2)` ± 1.96 × `r round(sed_stats$se_sed, 4)`
+- `r round(sed_stats$mean_sed, 2)` ± `r round(1.96 * sed_stats$se_sed, 2)`
+- `r round(sed_stats$ci_lower, 2)` to `r round(sed_stats$ci_upper, 2)` hours/day
+
+## A 95% CI for a proportion
+
+```{r}
+#| label: prop-ci-ingredients-table
+#| echo: false
+tibble(
+  Quantity = 'Improved, streptomycin trial',
+  Proportion = round(tb_stats$p_improved, 3),
+  N = tb_stats$n_total,
+  SE = round(tb_stats$se_improved, 4)
+) |>
+  gt()
+```
+
+- `r round(tb_stats$p_improved, 3)` ± 1.96 × `r round(tb_stats$se_improved, 4)`
+- `r round(tb_stats$ci_lower, 3)` to `r round(tb_stats$ci_upper, 3)`
+
+## Try it: a CI from scratch
+
+```{r}
+#| label: tryit2-table
+#| echo: false
+tibble(
+  Quantity = 'Age, years',
+  Mean = round(age_stats$mean_age, 1),
+  SD = round(age_stats$sd_age, 1),
+  N = format(age_stats$n_age, big.mark = ',')
+) |>
+  gt()
+```
+
+- Given the mean, SD and n above, find the standard error, then the 95% CI
+- Three lines, five minutes
+
+## Try it: the answer
+
+- SE = `r round(age_stats$sd_age, 1)` / sqrt(`r format(age_stats$n_age, big.mark = ',')`) = `r round(age_stats$se_age, 3)` years
+- CI: `r round(age_stats$mean_age, 1)` ± 1.96 × `r round(age_stats$se_age, 3)`
+- `r round(age_stats$ci_lower, 1)` to `r round(age_stats$ci_upper, 1)` years
+
+## A range of compatibility {.smaller}
+
+- A CI is not a single verdict about one number
+- Every value inside a CI is a value the data are reasonably compatible with
+- Every value outside it is one the data sit poorly with
+- `r round(sed_stats$ci_lower, 2)` to `r round(sed_stats$ci_upper, 2)` hours/day says a population mean of 6.5 is compatible with what we saw, and so is 6.6. A mean of 7.2 is not
+- Compatibility is a matter of degree, not a line: values near the middle sit better than values near the ends
+- This is what makes a CI more informative than any test that only presents a p-value, which Week 9 covers
+
+## What a 95% confidence interval means {.smaller}
+
+- 95% CI definition: Of all the CIs this estimator could build, 95% of them would contain the true population value
+- The population value is fixed. It is the *CI* that moves from sample to sample
+- This is counterintuitive, and it is why the result gets misinterpreted so often
+- It comes from what is called **frequentist statistics**, which is easier to compute
+- An alternative, **credible intervals** from Bayesian statistics, is more intuitive to interpret but harder to compute
+
+## Seeing coverage {.smaller}
+
+- Each click draws 1000 fresh 95% CIs against the true mean (navy line); navy bars miss it
+- Excludes `r sum(nhanes$sed > 24, na.rm = TRUE)` physically impossible values (over 24 hours/day). True mean here is `r round(mean(nhanes$sed[!is.na(nhanes$sed) & nhanes$sed <= 24]), 2)` hours/day, not the `r round(sed_stats$mean_sed, 2)` used elsewhere
+
+```{r}
+#| label: coverage-interactive
+#| echo: false
+#| output: asis
+# sed has only 70 distinct values across 34,434 rows, so the whole
+# real distribution ships to the client as a ~70-row frequency table (not
+# the raw column) and every draw resamples it live, with replacement.
+# The 145 values above 24 hours/day are physically impossible (the same
+# implausible-value issue the sed histogram elsewhere already clips out of
+# view) and are excluded here from the population itself, not just the
+# view, because a live resampling demo draws directly from that population:
+# left in, they push actual coverage of the 95% formula down to about 67%
+# at n = 100, which would contradict the point the slide makes. This shifts
+# the true mean used on this one slide to 5.89 hours/day, diverging from
+# the 6.56 used everywhere else in the deck; the bullet above says so.
+sed_freq <- nhanes |>
+  filter(!is.na(sed), sed <= 24) |>
+  count(sed) |>
+  arrange(sed) |>
+  mutate(cum_n = cumsum(n))
+sed_vals_js <- paste0('[', paste(sed_freq$sed, collapse = ','), ']')
+sed_cum_js <- paste0('[', paste(sed_freq$cum_n, collapse = ','), ']')
+sed_total_n <- sum(sed_freq$n)
+coverage_true_mean <- sum(sed_freq$sed * sed_freq$n) / sed_total_n
+
+cat(sprintf('
+<div id="coverage-widget" style="text-align:center;">
+<svg id="coverage-svg" width="900" height="330" style="max-width:100%%;"></svg>
+<div>
+<button onclick="coverageNewSample()" style="font-size:0.8em;padding:0.25em 0.7em;margin-top:0.1em;background:#00213B;color:#fff;border:none;border-radius:4px;cursor:pointer;">New sample</button>
+<span id="coverage-caption" style="margin-left:1em;font-size:0.9em;"></span>
+</div>
+</div>
+<script>
+(function() {
+  var vals = %s;
+  var cum = %s;
+  var totalN = %s;
+  var trueMean = %s;
+  var nPerInterval = 100;
+  var nIntervals = 1000;
+  var svg = document.getElementById("coverage-svg");
+  var ns = "http://www.w3.org/2000/svg";
+
+  function drawOneValue() {
+    var r = Math.floor(Math.random() * totalN);
+    var lo = 0, hi = cum.length - 1;
+    while (lo < hi) {
+      var mid = (lo + hi) >> 1;
+      if (cum[mid] > r) { hi = mid; } else { lo = mid + 1; }
+    }
+    return vals[lo];
+  }
+
+  function oneInterval() {
+    var sum = 0, sumSq = 0;
+    var sample = [];
+    for (var i = 0; i < nPerInterval; i++) {
+      var v = drawOneValue();
+      sample.push(v);
+      sum += v;
+    }
+    var mean = sum / nPerInterval;
+    for (i = 0; i < nPerInterval; i++) sumSq += Math.pow(sample[i] - mean, 2);
+    var sd = Math.sqrt(sumSq / (nPerInterval - 1));
+    var se = sd / Math.sqrt(nPerInterval);
+    return [mean - 1.96 * se, mean + 1.96 * se];
+  }
+
+  function draw() {
+    var intervals = [];
+    for (var i = 0; i < nIntervals; i++) intervals.push(oneInterval());
+
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    var allVals = intervals.reduce(function(a, d) { return a.concat(d); }, []).concat([trueMean]);
+    var xmin = Math.min.apply(null, allVals) - 0.05;
+    var xmax = Math.max.apply(null, allVals) + 0.05;
+    var w = 900, h = 330;
+    var outerMargin = 40, gap = 30, top = 12, bottom = 8;
+    var colWidth = (w - 2 * outerMargin - gap) / 2;
+    var colStart = [outerMargin, outerMargin + colWidth + gap];
+    var plotH = h - top - bottom;
+    var perCol = nIntervals / 2;
+
+    function xScale(v, col) { return colStart[col] + (v - xmin) / (xmax - xmin) * colWidth; }
+
+    var hits = 0;
+    intervals.forEach(function(d, i) {
+      var col = i < perCol ? 0 : 1;
+      var rowInCol = i < perCol ? i : i - perCol;
+      var y = top + rowInCol * (plotH / perCol);
+      var hit = d[0] <= trueMean && trueMean <= d[1];
+      if (hit) hits++;
+      var line = document.createElementNS(ns, "line");
+      line.setAttribute("x1", xScale(d[0], col)); line.setAttribute("x2", xScale(d[1], col));
+      line.setAttribute("y1", y); line.setAttribute("y2", y);
+      line.setAttribute("stroke", hit ? "#ABB5C5" : "#00213B");
+      line.setAttribute("stroke-width", "1");
+      svg.appendChild(line);
+    });
+
+    [0, 1].forEach(function(col) {
+      var vline = document.createElementNS(ns, "line");
+      vline.setAttribute("x1", xScale(trueMean, col)); vline.setAttribute("x2", xScale(trueMean, col));
+      vline.setAttribute("y1", top - 8); vline.setAttribute("y2", top + plotH + 4);
+      vline.setAttribute("stroke", "#00213B"); vline.setAttribute("stroke-width", "2");
+      svg.appendChild(vline);
+    });
+
+    document.getElementById("coverage-caption").textContent =
+      hits + " of " + nIntervals + " CIs contain the true mean (" + Math.round(100 * hits / nIntervals) + "%%)";
+  }
+  window.coverageNewSample = draw;
+  draw();
+})();
+</script>
+', sed_vals_js, sed_cum_js, sed_total_n, coverage_true_mean))
+```
+
+## Try it: is this interpretation sound?
+
+- The sedentary-time CI: `r round(sed_stats$ci_lower, 2)` to `r round(sed_stats$ci_upper, 2)` hours/day
+- **A.** 'We are 95% confident the true mean lies in this range'
+- **B.** 'There is a 95% probability the true mean lies in this range'
+- **C.** 'If we repeated this study many times, 95% of the resulting CIs would contain the true mean'
+- Which are wrong, and what exactly is wrong with each?
+
+## Try it: the answer
+
+- **A. Wrong**, despite sounding careful: 'confident' is standing in for 'probability', the same error as B
+- **B. Wrong**: the true mean is not a random variable with a 95% chance of falling anywhere. It is fixed
+- **C. Right**: the coverage statement, about the procedure across repeated samples, not about this one CI
+- Keep C's wording. It is the one worth writing on an exam
+
+## A common misconception {.smaller}
+
+- The intuitive objection behind A and B: if 95% of all such CIs cover the true value, surely this one has a 95% chance of covering it too?
+- It does not. The population mean is fixed, and this one CI either contains it or does not. Once both are fixed, there is no probability left in the situation
+- The practical way to avoid the confusion: write the result and let it stand, with no probability sentence attached
+  - `r round(sed_stats$mean_sed, 2)` hours/day (95% CI: `r round(sed_stats$ci_lower, 2)` to `r round(sed_stats$ci_upper, 2)`)
+
+## This week's methodological anchor {.smaller}
+
+:::: {.columns}
+
+::: {.column width="42%"}
+- Greenland et al. (2016), *European Journal of Epidemiology*: 'Statistical tests, P values, confidence intervals, and power: a guide to misinterpretations'
+- Names the specific wrong readings, not just the general warning
+- [PubMed](https://pubmed.ncbi.nlm.nih.gov/27209009/)
+- Judging whether a sentence says what the numbers support is where half the assessment marks are
+:::
+
+::: {.column width="58%"}
+> 'Misinterpretation and abuse of statistical tests, confidence intervals, and statistical power have been decried for decades, yet remain rampant.'
+
+> 'We then provide an explanatory list of 25 misinterpretations of P values, confidence intervals, and power.'
+:::
+
+::::
+
+## Block 2: comparing two groups {background-image="assets/skyline.jpg" background-size="cover" .divider}
+
+CIs of a difference of two means
+
+## One mean is rarely the question
+
+- We can put a CI round one mean, the basis of a descriptive study
+- The analytic studies make comparisons: men against women, treated against untreated
+- In these cases, we are interested in the differences and ratios between these means
+
+## A CI for a difference in means {.smaller}
+
+- The estimate is the difference between two groups' means
+  - The standard error combines the two groups' own
+- This works because:
+  - Each group's mean follows an approximately normal sampling distribution, based on CLT
+  - The difference between two normal quantities is itself normal (proven mathematically)
+- Since the difference is approximately normal, it takes the same estimate ± 1.96 SE calculation as before
+  - How to hand calculate the CI of the differences and ratios is outside the scope of the MPH and based on more complex formula
+  - We will learn how to do it in R, and how to intepret them
+
+## Does cholesterol differ between women and men?
+
+```{r}
+#| label: chol-gender-table
+#| echo: false
+tibble(
+  Quantity = 'Cholesterol, women minus men, mmol/L',
+  Estimate = round(chol_diff, 3),
+  `95% CI` = paste0(round(chol_ci[1], 3), ' to ', round(chol_ci[2], 3)),
+  p = '< 0.001'
+) |>
+  gt()
+```
+
+- Check the direction before reading the CI: the software's own output names which group was subtracted from which
+
+## A CI for a difference in proportions {.smaller}
+
+- Same argument as the difference in means, with one qualification
+  - For a proportion the normal shape is an approximation, not an exact consequence, since the underlying variable takes only two values
+  - The approximation is good when both groups have a reasonable number of events **and** non-events
+- Exact methods exist for when it is small (more in the labs)
+
+## Streptomycin: 69% against 33% improved
+
+```{r}
+#| label: strep-arm-table
+#| echo: false
+tibble(
+  Quantity = 'Improved, streptomycin minus control',
+  Estimate = round(arm_diff, 3),
+  `95% CI` = paste0(round(pt_arm$conf.int[1], 3), ' to ', round(pt_arm$conf.int[2], 3)),
+  p = '< 0.001'
+) |>
+  gt()
+```
+
+- The same trial we met in Week 7
+
+## The CI and the null value
+
+- This CI excludes zero
+- Zero is not among the values these data are compatible with
+- People often read this as a 'real' difference, and Week 9 will introduce this more formally
+
+## When the approximation breaks down
+
+- The approximations above hold when the counts are not tiny, the same qualification from the difference-in-proportions slide
+- Exact methods exist for when they are. R has both, and the lab shows which function to reach for
+
+## Try it: a CI for a difference in proportions
+
+```{r}
+#| label: smoke-diff-table
+#| echo: false
+tibble(
+  Quantity = 'Current smoking, men minus women',
+  Difference = round(smoke_diff, 3),
+  SE = round(se_smoke_diff, 4)
+) |>
+  gt()
+```
+
+- Given the difference and its SE above, find the 95% CI, and say whether it is compatible with no difference at all
+- Two steps, phone-feasible
+
+## Try it: the answer
+
+- CI: `r round(smoke_diff, 3)` ± 1.96 × `r round(se_smoke_diff, 4)`
+- `r round(smoke_ci_lower, 3)` to `r round(smoke_ci_upper, 3)`
+- `r smoke_zero_note`, between men and women in current smoking
+
+## Block 3: how big a study needs to be {background-image="assets/skyline.jpg" background-size="cover" .divider}
+
+Turning a wanted precision into a required n
+
+## Before any comparison runs
+
+- Every comparison in Block 2 assumed the data were already collected
+- In practice, someone decides how many people to recruit before a single measurement is taken
+- How large does a study need to be, and what decides the answer?
+
+## What determines the margin of error?
+
+- In polling, people sample based on their desired margin of error
+- The same for descriptive epidemiological studies
+\ 
+- Three things decide a margin of error (i.e. CI's width)
+  1. How much confidence is being claimed ('95%')
+  2. How variable the data are (SD)
+  3. How many observations there are (n)
+\ 
+- 1 is usually fixed; 2 is based on the measurement; 3 is often what people try to determine
+
+## Width and the square root of n
+
+```{r}
+#| label: width-curve
+#| echo: false
+#| fig-width: 8
+#| fig-height: 3.8
+width_points_labelled <- width_points |>
+  mutate(label = paste0(label, ': ', round(width, 2), ' hours/day'))
+ggplot(width_curve, aes(n, width)) +
+  geom_segment(
+    data = width_points, aes(x = n, xend = n, y = 0, yend = width),
+    linetype = 'dashed', color = '#ABB5C5'
+  ) +
+  geom_segment(
+    data = width_points, aes(x = 0, xend = n, y = width, yend = width),
+    linetype = 'dashed', color = '#ABB5C5'
+  ) +
+  geom_line(color = '#00213B', linewidth = 1) +
+  geom_point(data = width_points, aes(n, width), color = '#4386AF', size = 3) +
+  geom_text(data = width_points_labelled, aes(n, width, label = label), vjust = -1, size = 4) +
+  scale_x_continuous(
+    labels = function(x) format(x, big.mark = ',', scientific = FALSE),
+    expand = expansion(mult = c(0.02, 0.12))
+  ) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.15))) +
+  labs(x = 'Sample size (n)', y = 'CI width (hours/day)') +
+  theme_minimal(base_size = 13)
+```
+
+- The width shrinks with one over the square root of n: steeply at first, then flattening
+- The two Try it points from earlier sit on this same curve: a hundredfold increase in n bought a tenfold gain in precision
+
+## What happens to the CI when the sample shrinks?
+
+```{r}
+#| label: width-table
+#| echo: false
+widths |>
+  mutate(`95% CI` = paste0(round(lower, 3), ' to ', round(upper, 3))) |>
+  select(Sample, n, `95% CI`, Width = width) |>
+  gt() |>
+  fmt_number(columns = Width, decimals = 3)
+```
+
+- Cut the sample in half, the CI gets about 40% wider. Cut it to a tenth, roughly three times wider
+
+## From precision to sample size
+
+- Four linked quantities
+  - The effect size worth detecting (i.e. how big the difference between two proportions?)
+  - The variability (i.e. how noisy the measurement is?)
+  - The sample size
+  - The power
+- Fix any three, and the fourth follows
+
+## Statistical power {.smaller}
+
+- **Power**: the probability of detecting an effect of a given size, if it is really there
+\ 
+- Power rises with a larger effect to detect, a bigger sample, or less variable data
+- Power falls when a stricter significance level is demanded (Week 9 formalises this 5% threshold)
+
+$$n \approx \frac{7.8 \times \text{variability}}{\text{gap}^2}$$
+
+- 7.8 is what 80% power at the 5% significance level costs
+- The gap is squared, so it moves n harder than anything else: halve it, and n roughly quadruples
+
+## How many per arm?
+
+```{r}
+#| label: power-big-table
+#| echo: false
+tibble(
+  `Proportion, control arm` = 0.33,
+  `Proportion, treatment arm` = 0.69,
+  `n per arm` = round(power_big$n)
+) |>
+  gt()
+```
+
+- For a gap the size of streptomycin's, about `r round(power_big$n)` patients per arm
+- The formula above gives about `r round(power_approx_big)` per arm. R's own exact calculation gives the `r round(power_big$n)` used throughout, the number the lab reproduces
+
+## Try it: a smaller effect, how many more?
+
+```{r}
+#| label: tryit3-table
+#| echo: false
+tibble(`Control arm` = 0.33, `Treatment arm` = 0.45, `Gap` = 0.12) |>
+  gt()
+```
+
+- The streptomycin gap was 0.36, and 29 per arm detected it
+- Suppose the gap were a third the size, 0.12. Does the required n roughly triple, or something else?
+- Guess a number first. Three minutes
+
+## Try it: the answer
+
+```{r}
+#| label: n-vs-effect-curve
+#| echo: false
+#| fig-width: 8
+#| fig-height: 3.6
+ggplot(n_vs_effect, aes(gap, n_per_arm)) +
+  geom_segment(
+    data = n_vs_effect_points, aes(x = gap, xend = gap, y = 0, yend = n_per_arm),
+    linetype = 'dashed', color = '#ABB5C5'
+  ) +
+  geom_segment(
+    data = n_vs_effect_points, aes(x = 0, xend = gap, y = n_per_arm, yend = n_per_arm),
+    linetype = 'dashed', color = '#ABB5C5'
+  ) +
+  geom_line(color = '#00213B', linewidth = 1) +
+  geom_point(data = n_vs_effect_points, aes(gap, n_per_arm), color = '#4386AF', size = 3) +
+  geom_text(
+    data = n_vs_effect_points, aes(gap, n_per_arm, label = label),
+    vjust = -1, hjust = c(-0.1, 0.15), size = 4
+  ) +
+  scale_x_continuous(expand = expansion(mult = c(0.02, 0.15))) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.15))) +
+  labs(x = 'Detectable difference in proportions', y = 'n per arm') +
+  theme_minimal(base_size = 13)
+```
+
+- About `r round(power_small$n)` per arm: nearly nine times as many, not three times
+- Required n scales with roughly the inverse square of the effect size, the same shape as the width curve, seen from the other end
+
+## Why post-hoc power tells you nothing
+
+- Power asks how likely a study is to detect an effect, before it runs
+- Once the data are in, the estimate and its CI already say what the study could resolve
+- Power computed from the observed effect is just a re-expression of the p-value
+- A wide CI is the honest way to report a study that was too small
+- A common request from supervisors and reviewers, and one worth declining, for these reasons
+
+## What a protocol has to state {.smaller}
+
+- Four things
+  - The effect size assumed, and where it came from
+  - The variability assumed
+  - The power and significance level
+  - The resulting n per arm
+- A power calculation is only valid for the analysis it was actually done for
+  - A calculation for comparing two proportions does not licence a study analysed by regression with three covariates
+- Sample size and power are the same calculation, solved for different unknowns, and both sit downstream of the analysis plan
+
+## Application {background-image="assets/skyline.jpg" background-size="cover" .divider}
+
+Judging the interpretation in somebody else's writing
+
+## Three claims, three CIs {.smaller}
+
+- Each result below is real: the paper's own reported statistic, and its own conclusion, quoted exactly, with a link to the paper
+- In pairs: does each sentence say what the CI supports? Where it does not, what would you write instead? Ten minutes
+
+```{r}
+#| label: application-table
+#| echo: false
+tibble(
+  Study = c('Cao et al. (2020), NEJM', 'Radonovich et al. (2019), JAMA', 'Williamson et al. (2020), Nature'),
+  Result = c(
+    '28-day mortality 19.2% vs 25.0%, difference -5.8pp (95% CI -17.3 to 5.7)',
+    'Influenza 8.2% vs 7.2% of person-seasons, difference 1.0pp (95% CI -0.5 to 2.5), p = 0.18',
+    'HR 1.48 (1.29 to 1.69) Black; 1.45 (1.32 to 1.58) South Asian, vs white'
+  ),
+  `Paper's conclusion` = c(
+    "'...no benefit was observed with lopinavir-ritonavir treatment beyond standard care.'",
+    "'...resulted in no significant difference in the incidence of laboratory-confirmed influenza.'",
+    "'Black and South Asian people were at higher risk, even after adjustment for other factors.'"
+  ),
+  Link = c(
+    '[PubMed](https://pubmed.ncbi.nlm.nih.gov/32187464/)',
+    '[PubMed](https://pubmed.ncbi.nlm.nih.gov/31479137/)',
+    '[PubMed](https://pubmed.ncbi.nlm.nih.gov/32640463/)'
+  )
+) |>
+  gt() |>
+  fmt_markdown(columns = Link) |>
+  cols_width(Study ~ pct(19), Result ~ pct(30), `Paper's conclusion` ~ pct(41), Link ~ pct(10)) |>
+  tab_options(table.font.size = px(17))
+```
+
+- A hazard ratio (Williamson) is a ratio measure like the RR and OR from Week 2, with a null value of 1. Week 9 formalises it
+
+## Three claims, judged {.smaller}
+
+- **Cao et al.: too imprecise to support 'no benefit'**
+  - The CI runs from a 17-point reduction in mortality to a 6-point increase, compatible with both a large benefit and real harm
+  - The trial's own next sentence half-admits this
+- **Radonovich et al.: precise, but the sentence is potentially misleading**
+  - The narrow CI already shows any difference either way is small. 'No significant difference' throws that away
+  - Cao's imprecision and this one point in opposite directions: one CI is too wide to conclude 'no difference', the other narrow enough to conclude it
+  - Source: [Hemming and Taljaard, *Medical Journal of Australia* 2021](https://pubmed.ncbi.nlm.nih.gov/33440457/)
+- **Williamson et al.: sound**
+  - The CI is well away from 1, and the claim matches it, correctly hedged
+  - The honest question is what the estimate was adjusted for, not whether the arithmetic is right
+
+## Key points, and what the lab does {.smaller}
+
+- An estimate from a sample is not the population value. The CI says how far off it might be
+- The SD describes the data. The SE describes the estimator
+- A 95% CI is the range of values the data are compatible with, and it covers the population value 95% of the time in the long run: not the same as being 95% sure about this one
+- Precision is bought with n, but scaled slowly
+- The lab builds every one of these CIs in R, on `nhanes_mph` and `strep_tb`, and reconciles the hand calculations from today against the software's answers

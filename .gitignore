@@ -4,6 +4,11 @@
 *_files/
 *_cache/
 
+# Rendered deck output (seminars/ is a separate Quarto project; *_files/
+# above already covers its libs/ companion folders, this covers the .html
+# itself). Same treatment as /_book/ above: source is tracked, output isn't.
+seminars/*.html
+
 # Chapter 1's write.csv() demo writes this next to the chapter file on every render
 /chapters/visits.csv
 
@@ -34,3 +39,10 @@ renv/staging/
 *.md
 # ...except the repo's own public-facing README
 !README.md
+
+# Reference-only slide material: old Stata-era decks, the epi department's own
+# decks (branding source), and working .pptx/.potx trial decks. Not text, no
+# useful diff, never pushed. See seminars/CLAUDE.md.
+slides_2025/
+slides_2025_Epi/
+slides_2026/

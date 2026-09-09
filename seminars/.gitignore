@@ -1,0 +1,8 @@
+/.quarto/
+**/*.quarto_ipynb
+/.overflow-check/
+
+# Separate git repo (med5652-rules), cloned in. Never picked up by
+# ies_stats_ebook's own git commands; see CLAUDE.md's Working with this
+# file / Folder structure sections.
+/shared-rules/

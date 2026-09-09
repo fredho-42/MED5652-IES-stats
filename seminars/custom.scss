@@ -1,0 +1,114 @@
+/*-- scss:defaults --*/
+
+// Palette and font lifted from the University epidemiology master
+// (slides_2025_Epi/, gitignored, reference-only) via med5652-seminar-template.potx.
+$navy: #00213B;
+$body-bg: #FFFFFF;
+$body-color: #1A1A1A;
+$link-color: $navy;
+
+$presentation-font-family: "Arial", sans-serif;
+$presentation-heading-color: $navy;
+$presentation-heading-font-weight: 700;
+
+$code-block-font-size: 0.75em;
+
+/*-- scss:rules --*/
+
+// Title slide and block-divider slides: navy, bold text over the skyline photo.
+// Navy is the layout's own documented default from the .potx master (not white,
+// not grey; both were tried there and failed, since the photo's brightness at
+// the text position is a mid-tone haze). See seminars/CLAUDE.md.
+.reveal .title-slide,
+.reveal .slides section.divider {
+  h1, h2, h3, p {
+    color: $navy;
+    font-weight: 700;
+  }
+}
+
+// The title slide's h1/subtitle/author text still crosses the bell tower in
+// the skyline photo in places (busy stone texture defeats navy-on-photo
+// contrast regardless of weight), and the subtitle/author line blends into
+// the lighter sky behind it. A translucent panel behind each line guarantees
+// contrast no matter what part of the photo sits behind it, so it needs no
+// per-week tuning even though each week's title text differs in length.
+// Quarto's title-block markup has no shared wrapper around title/subtitle/
+// author (they're separate siblings), so this is three matching per-line
+// boxes rather than one panel; reads as one cohesive treatment in practice.
+#title-slide {
+  .title, .subtitle, .quarto-title-authors {
+    // Not display:inline-block: that collapses adjacent block-level
+    // siblings onto the same line (subtitle and author ended up side by
+    // side instead of stacked). width:fit-content keeps the default block
+    // stacking (one per line) while still shrinking the box to hug its own
+    // text, exactly like inline-block would for width, without the
+    // line-collapsing side effect.
+    width: fit-content;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 0.1em 0.35em;
+    border-radius: 4px;
+  }
+}
+
+// Line spacing (within a wrapped bullet) and bullet spacing (between
+// separate bullets) are deliberately different properties. Confirmed
+// necessary: with only li margin set and no explicit line-height, a wrapped
+// line and the next bullet read at nearly the same visual distance, so a
+// student can't tell where one thought ends and the next begins.
+.reveal .slides section {
+  line-height: 1.35;
+}
+
+// No plain non-bulleted body paragraph: every content list uses the theme's
+// own bullet and indent styling, untouched per level.
+.reveal .slides section ul {
+  li {
+    margin-bottom: 0.6em;
+  }
+  ul {
+    margin-top: 0.2em;
+  }
+}
+
+// A single retyped console value or short result (never full R syntax, never
+// a multi-column table standing in as monospace text: see the figure and
+// output supply chain rules in seminars/CLAUDE.md).
+.reveal .slides section code {
+  font-family: "Courier New", monospace;
+}
+
+// Quarto's revealjs footer plugin defaults the logo to bottom-right and,
+// once a logo is configured, auto-relocates the slide-number to top-right
+// to avoid it (`.reveal.has-logo .slide-number`). Swapped here: logo
+// top-right, slide-number back to its own non-logo default position,
+// bottom-right. Logo doubled from revealjs's own 2.2rem default.
+// !important is necessary, not just belt-and-braces: the footer plugin's
+// own stylesheet (revealjs/plugin/quarto-support/footer.css) is linked
+// *after* this compiled theme bundle in the rendered HTML <head>, so on
+// max-height (and the slide-number's top/right) it would otherwise win
+// the cascade outright despite identical selector specificity, and it
+// silently did the first time this was tried without !important: the logo
+// stayed at its old 2.2rem size and the slide-number's position didn't move.
+.reveal .slide-logo {
+  top: 12px !important;
+  right: 0 !important;
+  bottom: auto !important;
+  max-height: 6.6rem !important; // 50% bigger again than the already-doubled 4.4rem
+}
+
+.reveal.has-logo .slide-number {
+  top: auto !important;
+  bottom: 10px !important;
+  right: 10px !important;
+}
+
+// A figure inside a two-column layout otherwise sits at its native R-chunk
+// pixel width (an explicit HTML width= attribute Quarto sets from fig-width)
+// regardless of how much room the column actually has: CSS max-width:100%
+// only ever shrinks an image, never grows one to fill extra space. Confirmed
+// necessary on the Week 7 skew-illustration slide.
+.reveal .slides section .columns .column img {
+  width: 100%;
+  height: auto;
+}
