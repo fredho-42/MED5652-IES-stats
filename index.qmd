@@ -8,6 +8,22 @@ This is a companion ebook for the statistical labs of the course MED5652 Introdu
 
 The first two preparatory sessions help us ease into the analysis environment. R is primarily a programming language, so it has a steeper learning curve than software like SPSS: we communicate with the computer using text commands instead of a mouse. It pays that curve back, though. R is versatile enough to find a software implementation for almost any statistical method we might need, and it's a skill employers actively look for. This ebook is set up for complete beginners regardless, with no prior data analysis or programming experience expected. From Chapter 3 on, every chapter picks up from the theories taught in the seminars, but it doesn't replace the seminar's content. Think of the seminar as where an idea is introduced, and the lab as where we actually do it, in R, on real data.
 
+## Course map
+
+Each chapter of this ebook is one teaching week. The week number is in the chapter title, and the chapters run in week order. Week 6 is reading week and there is no teaching. The two preparatory chapters come before the statistics seminars begin, so they have no seminar of their own to link to.
+
+The table below is the whole course in one place: what each week covers, where that week's seminar slides live, and which chapter in this ebook is the matching lab.
+
+| Week | What it covers | Seminar slides | Chapter |
+|---|---|---|---|
+| 4 | R and R Studio | None | [Chapter 1](chapters/04-prep1.qmd) |
+| 5 | Data and data handling | None | [Chapter 2](chapters/05-prep2.qmd) |
+| 7 | Describing and visualising data | [Slides](https://fredho-42.github.io/MED5652-IES-stats/seminars/week07-descriptive.html) | [Chapter 3](chapters/07-descriptive.qmd) |
+| 8 | Estimation, precision, and sample size | [Slides](https://fredho-42.github.io/MED5652-IES-stats/seminars/week08-estimation.html) | [Chapter 4](chapters/08-estimation.qmd) |
+| 9 | Hypothesis tests and measures of association | To follow | [Chapter 5](chapters/09-comparison.qmd) |
+| 10 | Correlation and simple linear regression | To follow | [Chapter 6](chapters/10-regression.qmd) |
+| 11 | Multiple linear and logistic regression | To follow | [Chapter 7](chapters/11-adjustment.qmd) |
+
 ## Course intended learning outcomes
 
 MED5652 as a whole has four intended learning outcomes. By the end of the course, you will be able to:
@@ -21,19 +37,7 @@ This ebook is built primarily to get us through ILO 3. Along the way, it also to
 
 ## Structure of the ebook
 
-Each chapter of this ebook is one teaching week. The week number is in the chapter title, and the chapters run in week order. Week 6 is reading week and there is no teaching.
-
-Two parts: two preparatory chapters worked through before seminars on statistics, then five weekly chapters, one per statistics week, each following that week's seminar:
-
-| Chapter | Week | What it covers |
-|---|---|---|
-| 1 | 4 | R and R Studio |
-| 2 | 5 | Data and data handling |
-| 3 | 7 | Describing and visualising data |
-| 4 | 8 | Estimation, precision, and sample size |
-| 5 | 9 | Hypothesis tests and measures of association |
-| 6 | 10 | Correlation and simple linear regression |
-| 7 | 11 | Multiple linear and logistic regression |
+The ebook is in two parts: two preparatory chapters worked through before seminars on statistics begin, then five weekly chapters, one per statistics week, each following that week's seminar.
 
 All weeks are interconnected, so please attend all classes. Missing one class would mean you lose the foundation of the next, with a knock-on effect on your overall learning. If you really can't attend a class, please make sure you read and work through the relevant chapter in this ebook before the next class.
 
