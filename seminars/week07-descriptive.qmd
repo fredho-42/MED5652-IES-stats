@@ -131,14 +131,18 @@ nrt_df <- tibble(
 
 Getting a feel for one variable at a time
 
-## Why summary?
+## Why summary? {.smaller}
 
 - Four people's data fits on a slide
 - `r format(nrow(nhanes), big.mark = ",")` people's does not
 - A statistic compresses a column to a few numbers
 - These measures are known as descriptive, or summary, statistics
 - Also called 'exploratory data analysis'
-- The goal: get a feel for one variable at a time, and spot quirks before any transformation or analysis
+
+\ 
+
+- The goal: get a feel for one variable at a time
+- Spot quirks before any transformation or analysis
 
 ## The mean
 
@@ -225,12 +229,13 @@ ggplot(nhanes, aes(x = vpa_t)) +
 
 ::::
 
-## The normal distribution
+## The normal distribution {.smaller}
 
 :::: {.columns}
 
 ::: {.column width="38%"}
 - A **normal distribution** is symmetric, bell-shaped
+- Any normal distribution is fully described by two numbers, its mean and its SD
 - Mean and median sit at the same place
 - The **68-95-99.7 rule**: about 68% within 1 SD, 95% within 2, 99.7% within 3
 :::
@@ -327,6 +332,9 @@ ggplot(skew_df, aes(x = value)) +
 
 - Mean, SD, median and IQR give a crude description
 - Five numbers give a fuller picture: minimum, Q1, median, Q3, maximum
+
+\ 
+
 - **Q1**, the 25th percentile: a quarter of the data falls at or below it
 - **Q3**, the 75th percentile: three quarters of the data falls at or below it
 - Together, the five numbers split the data into four equal-sized chunks
@@ -693,7 +701,11 @@ dictionary |>
 
 - `age` is recorded in whole years, but treated as continuous
 - A count with many possible values is often handled as continuous too
-- Ordinal categories are sometimes scored as numbers for convenience, or as nominal categories for reasons we will see later
+- Ordinal categories are sometimes scored as numbers for convenience
+- Or treated as nominal categories, for reasons we will see later
+
+\ 
+
 - This is sometimes a judgement call depending on the analysis need
 
 ## Try it: what kind of variable is each column?
@@ -804,7 +816,8 @@ nhanes |>
 
 - Gender by baseline cardiovascular disease
 - The same layout from epi weeks 1 to 5, reactivated here
-- No risk ratio or odds ratio yet: `blm.cvd` is measured at the same visit as the exposure, and Week 9 covers the formulae
+- No risk ratio or odds ratio yet: `blm.cvd` is measured at the same visit as the exposure
+- Week 9 covers the formulae
 
 ## Try it: build the 2x2
 
@@ -829,7 +842,7 @@ strep_sample |>
 
 ::::
 
-## Try it: the answer
+## Try it: the answer {.smaller}
 
 ```{r}
 #| label: strep-2x2-answer
@@ -845,14 +858,22 @@ strep_sample |>
 - Streptomycin: 4 improved, 1 not
 - Control: 2 improved, 3 not
 - The exposure defines the groups being compared, so it gets the rows
-- Ten patients cannot support a measure of association: the real trial has 107, and Week 9 does it
+
+\ 
+
+- Ten patients cannot support a measure of association
+- The real trial has 107, and Week 9 does it
 
 ## What is a 'Table 1'?
 
 - The conventional first table in a paper, describing the participants
 - Often stratified by the exposure or group of interest
 - Each row shows the appropriate summary for that variable's type
-- Mean/SD or median/IQR for numeric, count/percentage for categorical: the same choice from a few slides ago
+
+\ 
+
+- Mean/SD or median/IQR for numeric, count/percentage for categorical
+- The same choice from a few slides ago
 
 ## A Table 1
 
