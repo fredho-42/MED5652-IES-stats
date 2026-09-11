@@ -29,7 +29,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="week07-descriptive_files/libs/revealjs/dist/theme/quarto-de71c547d836d28c07b4ee245dbe4ea7.css">
+  <link rel="stylesheet" href="week07-descriptive_files/libs/revealjs/dist/theme/quarto-06693500982578d0365e8df12cd39430.css">
   <link href="week07-descriptive_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="week07-descriptive_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="week07-descriptive_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -182,7 +182,6 @@ Fred Ho
 </section>
 <section id="block-1-summarising-and-visualising" class="slide level2 divider" data-background-image="assets/skyline.jpg" data-background-size="cover">
 <h2>Block 1: summarising and visualising</h2>
-<p>Getting a feel for one variable at a time</p>
 </section>
 <section id="why-summary" class="slide level2 smaller">
 <h2>Why summary?</h2>
@@ -191,10 +190,7 @@ Fred Ho
 <li>41,765 people’s does not</li>
 <li>A statistic compresses a column to a few numbers</li>
 <li>These measures are known as descriptive, or summary, statistics</li>
-<li>Also called ‘exploratory data analysis’</li>
-</ul>
-<p>&nbsp;</p>
-<ul>
+<li>Also called ‘exploratory data analysis’<span class="gap"></span></li>
 <li>The goal: get a feel for one variable at a time</li>
 <li>Spot quirks before any transformation or analysis</li>
 </ul>
@@ -287,8 +283,12 @@ Fred Ho
 <div class="column" style="width:38%;">
 <ul>
 <li>A <strong>normal distribution</strong> is symmetric, bell-shaped</li>
-<li>Any normal distribution is fully described by two numbers, its mean and its SD</li>
-<li>Mean and median sit at the same place</li>
+<li>Any normal distribution is fully described by two numbers
+<ul>
+<li><strong>mean</strong>: central peak of the bell</li>
+<li><strong>SD</strong>: spread of the bell</li>
+</ul></li>
+<li>Mean and median are the same, because it is fully symmetric</li>
 <li>The <strong>68-95-99.7 rule</strong>: about 68% within 1 SD, 95% within 2, 99.7% within 3</li>
 </ul>
 </div><div class="column" style="width:62%;">
@@ -315,7 +315,7 @@ Fred Ho
 </ul>
 <p><span class="math display">\[\text{IQR} = Q_3 - Q_1\]</span></p>
 <ul>
-<li>Often reported as the range itself, Q1 to Q3, not one number</li>
+<li>Often reported as the range, Q1 to Q3, not just one number</li>
 </ul>
 </section>
 <section id="which-do-we-report-meansd-or-medianiqr" class="slide level2">
@@ -373,10 +373,7 @@ Fred Ho
 <h2>The five-number summary</h2>
 <ul>
 <li>Mean, SD, median and IQR give a crude description</li>
-<li>Five numbers give a fuller picture: minimum, Q1, median, Q3, maximum</li>
-</ul>
-<p>&nbsp;</p>
-<ul>
+<li>Five numbers give a fuller picture: minimum, Q1, median, Q3, maximum<span class="gap"></span></li>
 <li><strong>Q1</strong>, the 25th percentile: a quarter of the data falls at or below it</li>
 <li><strong>Q3</strong>, the 75th percentile: three quarters of the data falls at or below it</li>
 <li>Together, the five numbers split the data into four equal-sized chunks</li>
@@ -882,7 +879,7 @@ Fred Ho
 <ul>
 <li>Sorted: 2, 3, 3, 3, 4, 4, 5, 5, 22, 30</li>
 <li>Minimum 2, Q1 3, median 4, Q3 5, maximum 30 minutes</li>
-<li>IQR = 5 - 3 = 2 minutes</li>
+<li>IQR: 3 to 5 minutes</li>
 <li>The mean, 8.1 minutes, is longer than eight of the ten waits: the two long waits pulled it</li>
 </ul>
 </div><div class="column" style="width:55%;">
@@ -1401,7 +1398,7 @@ Fred Ho
 <th id="Mean" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Mean</th>
 <th id="SD" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">SD</th>
 <th id="Median" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Median</th>
-<th id="IQR" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">IQR</th>
+<th id="IQR" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">IQR</th>
 </tr>
 </thead>
 <tbody class="gt_table_body">
@@ -1409,7 +1406,7 @@ Fred Ho
 <td class="gt_row gt_right" headers="Mean">6.6</td>
 <td class="gt_row gt_right" headers="SD">10.9</td>
 <td class="gt_row gt_right" headers="Median">5.0</td>
-<td class="gt_row gt_right" headers="IQR">5.0</td>
+<td class="gt_row gt_left" headers="IQR">3 to 8</td>
 </tr>
 </tbody>
 </table>
@@ -2021,7 +2018,6 @@ Fred Ho
 </section>
 <section id="block-2-data-and-variable-types" class="slide level2 divider" data-background-image="assets/skyline.jpg" data-background-size="cover">
 <h2>Block 2: data and variable types</h2>
-<p>Naming the property that decided every choice in Block 1</p>
 </section>
 <section id="which-columns-can-we-take-a-mean-of" class="slide level2">
 <h2>Which columns can we take a mean of?</h2>
@@ -2582,10 +2578,7 @@ Fred Ho
 <li><code>age</code> is recorded in whole years, but treated as continuous</li>
 <li>A count with many possible values is often handled as continuous too</li>
 <li>Ordinal categories are sometimes scored as numbers for convenience</li>
-<li>Or treated as nominal categories, for reasons we will see later</li>
-</ul>
-<p>&nbsp;</p>
-<ul>
+<li>Or treated as nominal categories, for reasons we will see later<span class="gap"></span></li>
 <li>This is sometimes a judgement call depending on the analysis need</li>
 </ul>
 </section>
@@ -3149,7 +3142,7 @@ Fred Ho
 <section id="try-it-the-answer-1" class="slide level2">
 <h2>Try it: the answer</h2>
 <ul>
-<li><code>patient_id</code>: nominal, while this is a number this is a label for each individual</li>
+<li><code>patient_id</code>: nominal; it is a number, but it labels an individual</li>
 <li><code>arm</code>: nominal (binary); Streptomycin or Control</li>
 <li><code>gender</code>: nominal (binary); the values are the letters F and M</li>
 <li><code>baseline_condition</code>: ordinal; Good, Fair, Poor run in a real order</li>
@@ -6149,10 +6142,7 @@ Fred Ho
 <li>Treatment in the rows, outcome in the columns, as in the epi half</li>
 <li>Streptomycin: 4 improved, 1 not</li>
 <li>Control: 2 improved, 3 not</li>
-<li>The exposure defines the groups being compared, so it gets the rows</li>
-</ul>
-<p>&nbsp;</p>
-<ul>
+<li>The exposure defines the groups being compared, so it gets the rows<span class="gap"></span></li>
 <li>Ten patients cannot support a measure of association</li>
 <li>The real trial has 107, and Week 9 does it</li>
 </ul>
@@ -6162,10 +6152,7 @@ Fred Ho
 <ul>
 <li>The conventional first table in a paper, describing the participants</li>
 <li>Often stratified by the exposure or group of interest</li>
-<li>Each row shows the appropriate summary for that variable’s type</li>
-</ul>
-<p>&nbsp;</p>
-<ul>
+<li>Each row shows the appropriate summary for that variable’s type<span class="gap"></span></li>
 <li>Mean/SD or median/IQR for numeric, count/percentage for categorical</li>
 <li>The same choice from a few slides ago</li>
 </ul>
@@ -6732,7 +6719,6 @@ N = 3,460<span class="gt_footnote_marks" style="white-space:nowrap;font-style:it
 </section>
 <section id="application" class="slide level2 divider" data-background-image="assets/skyline.jpg" data-background-size="cover">
 <h2>Application</h2>
-<p>Somebody else’s figure, and the design choice behind it</p>
 </section>
 <section id="what-does-each-chart-make-you-believe" class="slide level2 smaller">
 <h2>What does each chart make you believe?</h2>

@@ -464,7 +464,7 @@ eduAbove high school    -0.024811500  3.381773e-02</code></pre>
 1 sed   -0.00113  0.000568     -1.99  0.0465 -0.00224 -0.0000174</code></pre>
 </div>
 </div>
-<p>Crude, the slope on <code>sed</code> is about -0.00074 mmol/L per hour/day (95% CI -0.00186 to 0.00038, p = 0.195). Adjusted for age, gender, and education, it moves to about -0.00113 mmol/L per hour/day (95% CI -0.00224 to -0.00002, p = 0.047).</p>
+<p>Crude, the slope on <code>sed</code> is about -0.00074 mmol/L per hour/day (95% CI -0.00186 to 0.00038 mmol/L per hour/day, p = 0.195). Adjusted for age, gender, and education, it moves to about -0.00113 mmol/L per hour/day (95% CI -0.00224 to -0.00002 mmol/L per hour/day, p = 0.047).</p>
 <p>Look at the estimate first, not the p-value. The adjusted slope is about 1.5 times the size of the crude one: holding age, gender, and education constant pulls the association between sedentary time and cholesterol substantially further from zero. That movement is what confounding looks like. Age and gender were masking part of a real association, and the model that ignores them understates it. The p-value crossing 0.05 is a consequence of the estimate moving away from zero, not a separate finding.</p>
 <p>A caution about reading the other rows of this table: <code>age</code>’s coefficient here is adjusted for <code>sed</code> too, the same as <code>sed</code>’s own coefficient is. If sedentary time sits on the path from age to cholesterol, part of age’s true association runs through it, and <code>age</code>’s row only captures the part that doesn’t. Treating every coefficient in a regression table as though it carried the same interpretation as the one we set out to estimate is called the <em>Table 2 fallacy</em>. <code>sed</code> is the exposure this model was built to assess, and its adjustment set was chosen with that in mind; <code>age</code>, <code>gender</code>, and <code>edu</code> weren’t, so their coefficients shouldn’t be read as if they were each other’s crude-versus-adjusted comparisons in miniature. This is the same logic the sensitivity analysis later in this chapter applies to <code>blm.cvd</code>, just stated as a general caution rather than worked through on one variable.</p>
 </section>
@@ -586,7 +586,7 @@ sed         1.0291891 1.0526653</code></pre>
 </div>
 </div>
 <p><code>confint()</code> printed <code>Waiting for profiling to be done...</code> before the answer. That’s a message, not a warning, and it marks a real difference between <code>glm()</code> and <code>lm()</code>.</p>
-<p>For a linear model, <code>confint()</code> builds each interval the way Chapter 4 built one by hand: an estimate, plus or minus a multiplier times a standard error. For a logistic model that shortcut is only an approximation, so <code>confint()</code> does something better instead. It works along each coefficient, refitting the model repeatedly to find the range of values the data are consistent with. That search is the ‘profiling’, and the message is <code>glm()</code> saying it’s running. On this dataset it takes a second or two. On a much larger model it can take noticeably longer, which is the only reason the message exists at all.</p>
+<p>For a linear model, <code>confint()</code> builds each CI the way Chapter 4 built one by hand: an estimate, plus or minus a multiplier times a standard error. For a logistic model that shortcut is only an approximation, so <code>confint()</code> does something better instead. It works along each coefficient, refitting the model repeatedly to find the range of values the data are consistent with. That search is the ‘profiling’, and the message is <code>glm()</code> saying it’s running. On this dataset it takes a second or two. On a much larger model it can take noticeably longer, which is the only reason the message exists at all.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">coef</span>(m_dead_adj))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -620,7 +620,7 @@ eduAbove high school    0.651773505 0.828632927</code></pre>
 1 sed       1.02   0.00370      5.40 0.0000000659     1.01      1.03</code></pre>
 </div>
 </div>
-<p>Crude, each additional hour/day of sedentary time is associated with an odds ratio of about 1.040 for ten-year mortality (95% CI: 1.029 to 1.053, p &lt; 0.001). Adjusted for age, gender, and education, the odds ratio attenuates to about 1.020 (95% CI: 1.013 to 1.028, p &lt; 0.001). Both intervals sit entirely above 1, the null value for an odds ratio, so both are statistically significant. But the adjusted estimate is noticeably smaller than the crude one. Part of the crude association was really age. Older participants are both more sedentary and more likely to die within ten years, for reasons that have nothing to do with sedentary behaviour itself.</p>
+<p>Crude, each additional hour/day of sedentary time is associated with an odds ratio of about 1.040 for ten-year mortality (95% CI: 1.029 to 1.053, p &lt; 0.001). Adjusted for age, gender, and education, the odds ratio attenuates to about 1.020 (95% CI: 1.013 to 1.028, p &lt; 0.001). Both CIs sit entirely above 1, the null value for an odds ratio, so both are statistically significant. But the adjusted estimate is noticeably smaller than the crude one. Part of the crude association was really age. Older participants are both more sedentary and more likely to die within ten years, for reasons that have nothing to do with sedentary behaviour itself.</p>
 <p>Both odds ratios sit close to 1, so confounding matters less here than it will in Exercise 2, where the same mechanism, age, moves the estimate by a factor of about six instead of a couple of percent. Do that exercise before deciding how seriously to take adjustment.</p>
 </section>
 <section id="regression-tables-with-gtsummary" class="level2" data-number="7.9">
@@ -635,23 +635,23 @@ Table&nbsp;7.1
 </figcaption>
 <div aria-describedby="tbl-regression-linear-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div id="mokghnemzs" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#mokghnemzs table {
+<div id="wgpkreztko" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#wgpkreztko table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#mokghnemzs thead, #mokghnemzs tbody, #mokghnemzs tfoot, #mokghnemzs tr, #mokghnemzs td, #mokghnemzs th {
+#wgpkreztko thead, #wgpkreztko tbody, #wgpkreztko tfoot, #wgpkreztko tr, #wgpkreztko td, #wgpkreztko th {
   border-style: none;
 }
 
-#mokghnemzs p {
+#wgpkreztko p {
   margin: 0;
   padding: 0;
 }
 
-#mokghnemzs .gt_table {
+#wgpkreztko .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -677,12 +677,12 @@ Table&nbsp;7.1
   border-left-color: #D3D3D3;
 }
 
-#mokghnemzs .gt_caption {
+#wgpkreztko .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#mokghnemzs .gt_title {
+#wgpkreztko .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -694,7 +694,7 @@ Table&nbsp;7.1
   border-bottom-width: 0;
 }
 
-#mokghnemzs .gt_subtitle {
+#wgpkreztko .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -706,7 +706,7 @@ Table&nbsp;7.1
   border-top-width: 0;
 }
 
-#mokghnemzs .gt_heading {
+#wgpkreztko .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -718,13 +718,13 @@ Table&nbsp;7.1
   border-right-color: #D3D3D3;
 }
 
-#mokghnemzs .gt_bottom_border {
+#wgpkreztko .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#mokghnemzs .gt_col_headings {
+#wgpkreztko .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -739,7 +739,7 @@ Table&nbsp;7.1
   border-right-color: #D3D3D3;
 }
 
-#mokghnemzs .gt_col_heading {
+#wgpkreztko .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -759,7 +759,7 @@ Table&nbsp;7.1
   overflow-x: hidden;
 }
 
-#mokghnemzs .gt_column_spanner_outer {
+#wgpkreztko .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -771,15 +771,15 @@ Table&nbsp;7.1
   padding-right: 4px;
 }
 
-#mokghnemzs .gt_column_spanner_outer:first-child {
+#wgpkreztko .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#mokghnemzs .gt_column_spanner_outer:last-child {
+#wgpkreztko .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#mokghnemzs .gt_column_spanner {
+#wgpkreztko .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -791,11 +791,11 @@ Table&nbsp;7.1
   width: 100%;
 }
 
-#mokghnemzs .gt_spanner_row {
+#wgpkreztko .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#mokghnemzs .gt_group_heading {
+#wgpkreztko .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -821,7 +821,7 @@ Table&nbsp;7.1
   text-align: left;
 }
 
-#mokghnemzs .gt_empty_group_heading {
+#wgpkreztko .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -836,15 +836,15 @@ Table&nbsp;7.1
   vertical-align: middle;
 }
 
-#mokghnemzs .gt_from_md > :first-child {
+#wgpkreztko .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#mokghnemzs .gt_from_md > :last-child {
+#wgpkreztko .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#mokghnemzs .gt_row {
+#wgpkreztko .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -863,7 +863,7 @@ Table&nbsp;7.1
   overflow-x: hidden;
 }
 
-#mokghnemzs .gt_stub {
+#wgpkreztko .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -876,7 +876,7 @@ Table&nbsp;7.1
   padding-right: 5px;
 }
 
-#mokghnemzs .gt_stub_row_group {
+#wgpkreztko .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -890,15 +890,15 @@ Table&nbsp;7.1
   vertical-align: top;
 }
 
-#mokghnemzs .gt_row_group_first td {
+#wgpkreztko .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#mokghnemzs .gt_row_group_first th {
+#wgpkreztko .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#mokghnemzs .gt_summary_row {
+#wgpkreztko .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -908,16 +908,16 @@ Table&nbsp;7.1
   padding-right: 5px;
 }
 
-#mokghnemzs .gt_first_summary_row {
+#wgpkreztko .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#mokghnemzs .gt_first_summary_row.thick {
+#wgpkreztko .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#mokghnemzs .gt_last_summary_row {
+#wgpkreztko .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -927,7 +927,7 @@ Table&nbsp;7.1
   border-bottom-color: #D3D3D3;
 }
 
-#mokghnemzs .gt_grand_summary_row {
+#wgpkreztko .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -937,7 +937,7 @@ Table&nbsp;7.1
   padding-right: 5px;
 }
 
-#mokghnemzs .gt_first_grand_summary_row {
+#wgpkreztko .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -947,7 +947,7 @@ Table&nbsp;7.1
   border-top-color: #D3D3D3;
 }
 
-#mokghnemzs .gt_last_grand_summary_row_top {
+#wgpkreztko .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -957,11 +957,11 @@ Table&nbsp;7.1
   border-bottom-color: #D3D3D3;
 }
 
-#mokghnemzs .gt_striped {
+#wgpkreztko .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#mokghnemzs .gt_table_body {
+#wgpkreztko .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -970,7 +970,7 @@ Table&nbsp;7.1
   border-bottom-color: #D3D3D3;
 }
 
-#mokghnemzs .gt_footnotes {
+#wgpkreztko .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -984,7 +984,7 @@ Table&nbsp;7.1
   border-right-color: #D3D3D3;
 }
 
-#mokghnemzs .gt_footnote {
+#wgpkreztko .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -993,7 +993,7 @@ Table&nbsp;7.1
   padding-right: 5px;
 }
 
-#mokghnemzs .gt_sourcenotes {
+#wgpkreztko .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1007,7 +1007,7 @@ Table&nbsp;7.1
   border-right-color: #D3D3D3;
 }
 
-#mokghnemzs .gt_sourcenote {
+#wgpkreztko .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1015,72 +1015,72 @@ Table&nbsp;7.1
   padding-right: 5px;
 }
 
-#mokghnemzs .gt_left {
+#wgpkreztko .gt_left {
   text-align: left;
 }
 
-#mokghnemzs .gt_center {
+#wgpkreztko .gt_center {
   text-align: center;
 }
 
-#mokghnemzs .gt_right {
+#wgpkreztko .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#mokghnemzs .gt_font_normal {
+#wgpkreztko .gt_font_normal {
   font-weight: normal;
 }
 
-#mokghnemzs .gt_font_bold {
+#wgpkreztko .gt_font_bold {
   font-weight: bold;
 }
 
-#mokghnemzs .gt_font_italic {
+#wgpkreztko .gt_font_italic {
   font-style: italic;
 }
 
-#mokghnemzs .gt_super {
+#wgpkreztko .gt_super {
   font-size: 65%;
 }
 
-#mokghnemzs .gt_footnote_marks {
+#wgpkreztko .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#mokghnemzs .gt_asterisk {
+#wgpkreztko .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#mokghnemzs .gt_indent_1 {
+#wgpkreztko .gt_indent_1 {
   text-indent: 5px;
 }
 
-#mokghnemzs .gt_indent_2 {
+#wgpkreztko .gt_indent_2 {
   text-indent: 10px;
 }
 
-#mokghnemzs .gt_indent_3 {
+#wgpkreztko .gt_indent_3 {
   text-indent: 15px;
 }
 
-#mokghnemzs .gt_indent_4 {
+#wgpkreztko .gt_indent_4 {
   text-indent: 20px;
 }
 
-#mokghnemzs .gt_indent_5 {
+#wgpkreztko .gt_indent_5 {
   text-indent: 25px;
 }
 
-#mokghnemzs .katex-display {
+#wgpkreztko .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#mokghnemzs div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#wgpkreztko div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1187,23 +1187,23 @@ Table&nbsp;7.2
 </figcaption>
 <div aria-describedby="tbl-regression-logistic-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div id="jwcbqvotyo" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#jwcbqvotyo table {
+<div id="dcsaxwyttq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#dcsaxwyttq table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#jwcbqvotyo thead, #jwcbqvotyo tbody, #jwcbqvotyo tfoot, #jwcbqvotyo tr, #jwcbqvotyo td, #jwcbqvotyo th {
+#dcsaxwyttq thead, #dcsaxwyttq tbody, #dcsaxwyttq tfoot, #dcsaxwyttq tr, #dcsaxwyttq td, #dcsaxwyttq th {
   border-style: none;
 }
 
-#jwcbqvotyo p {
+#dcsaxwyttq p {
   margin: 0;
   padding: 0;
 }
 
-#jwcbqvotyo .gt_table {
+#dcsaxwyttq .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1229,12 +1229,12 @@ Table&nbsp;7.2
   border-left-color: #D3D3D3;
 }
 
-#jwcbqvotyo .gt_caption {
+#dcsaxwyttq .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#jwcbqvotyo .gt_title {
+#dcsaxwyttq .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1246,7 +1246,7 @@ Table&nbsp;7.2
   border-bottom-width: 0;
 }
 
-#jwcbqvotyo .gt_subtitle {
+#dcsaxwyttq .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1258,7 +1258,7 @@ Table&nbsp;7.2
   border-top-width: 0;
 }
 
-#jwcbqvotyo .gt_heading {
+#dcsaxwyttq .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1270,13 +1270,13 @@ Table&nbsp;7.2
   border-right-color: #D3D3D3;
 }
 
-#jwcbqvotyo .gt_bottom_border {
+#dcsaxwyttq .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#jwcbqvotyo .gt_col_headings {
+#dcsaxwyttq .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1291,7 +1291,7 @@ Table&nbsp;7.2
   border-right-color: #D3D3D3;
 }
 
-#jwcbqvotyo .gt_col_heading {
+#dcsaxwyttq .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1311,7 +1311,7 @@ Table&nbsp;7.2
   overflow-x: hidden;
 }
 
-#jwcbqvotyo .gt_column_spanner_outer {
+#dcsaxwyttq .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1323,15 +1323,15 @@ Table&nbsp;7.2
   padding-right: 4px;
 }
 
-#jwcbqvotyo .gt_column_spanner_outer:first-child {
+#dcsaxwyttq .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#jwcbqvotyo .gt_column_spanner_outer:last-child {
+#dcsaxwyttq .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#jwcbqvotyo .gt_column_spanner {
+#dcsaxwyttq .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1343,11 +1343,11 @@ Table&nbsp;7.2
   width: 100%;
 }
 
-#jwcbqvotyo .gt_spanner_row {
+#dcsaxwyttq .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#jwcbqvotyo .gt_group_heading {
+#dcsaxwyttq .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1373,7 +1373,7 @@ Table&nbsp;7.2
   text-align: left;
 }
 
-#jwcbqvotyo .gt_empty_group_heading {
+#dcsaxwyttq .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1388,15 +1388,15 @@ Table&nbsp;7.2
   vertical-align: middle;
 }
 
-#jwcbqvotyo .gt_from_md > :first-child {
+#dcsaxwyttq .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#jwcbqvotyo .gt_from_md > :last-child {
+#dcsaxwyttq .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#jwcbqvotyo .gt_row {
+#dcsaxwyttq .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1415,7 +1415,7 @@ Table&nbsp;7.2
   overflow-x: hidden;
 }
 
-#jwcbqvotyo .gt_stub {
+#dcsaxwyttq .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1428,7 +1428,7 @@ Table&nbsp;7.2
   padding-right: 5px;
 }
 
-#jwcbqvotyo .gt_stub_row_group {
+#dcsaxwyttq .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1442,15 +1442,15 @@ Table&nbsp;7.2
   vertical-align: top;
 }
 
-#jwcbqvotyo .gt_row_group_first td {
+#dcsaxwyttq .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#jwcbqvotyo .gt_row_group_first th {
+#dcsaxwyttq .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#jwcbqvotyo .gt_summary_row {
+#dcsaxwyttq .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1460,16 +1460,16 @@ Table&nbsp;7.2
   padding-right: 5px;
 }
 
-#jwcbqvotyo .gt_first_summary_row {
+#dcsaxwyttq .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#jwcbqvotyo .gt_first_summary_row.thick {
+#dcsaxwyttq .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#jwcbqvotyo .gt_last_summary_row {
+#dcsaxwyttq .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1479,7 +1479,7 @@ Table&nbsp;7.2
   border-bottom-color: #D3D3D3;
 }
 
-#jwcbqvotyo .gt_grand_summary_row {
+#dcsaxwyttq .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1489,7 +1489,7 @@ Table&nbsp;7.2
   padding-right: 5px;
 }
 
-#jwcbqvotyo .gt_first_grand_summary_row {
+#dcsaxwyttq .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1499,7 +1499,7 @@ Table&nbsp;7.2
   border-top-color: #D3D3D3;
 }
 
-#jwcbqvotyo .gt_last_grand_summary_row_top {
+#dcsaxwyttq .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1509,11 +1509,11 @@ Table&nbsp;7.2
   border-bottom-color: #D3D3D3;
 }
 
-#jwcbqvotyo .gt_striped {
+#dcsaxwyttq .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#jwcbqvotyo .gt_table_body {
+#dcsaxwyttq .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1522,7 +1522,7 @@ Table&nbsp;7.2
   border-bottom-color: #D3D3D3;
 }
 
-#jwcbqvotyo .gt_footnotes {
+#dcsaxwyttq .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1536,7 +1536,7 @@ Table&nbsp;7.2
   border-right-color: #D3D3D3;
 }
 
-#jwcbqvotyo .gt_footnote {
+#dcsaxwyttq .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1545,7 +1545,7 @@ Table&nbsp;7.2
   padding-right: 5px;
 }
 
-#jwcbqvotyo .gt_sourcenotes {
+#dcsaxwyttq .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1559,7 +1559,7 @@ Table&nbsp;7.2
   border-right-color: #D3D3D3;
 }
 
-#jwcbqvotyo .gt_sourcenote {
+#dcsaxwyttq .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1567,72 +1567,72 @@ Table&nbsp;7.2
   padding-right: 5px;
 }
 
-#jwcbqvotyo .gt_left {
+#dcsaxwyttq .gt_left {
   text-align: left;
 }
 
-#jwcbqvotyo .gt_center {
+#dcsaxwyttq .gt_center {
   text-align: center;
 }
 
-#jwcbqvotyo .gt_right {
+#dcsaxwyttq .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#jwcbqvotyo .gt_font_normal {
+#dcsaxwyttq .gt_font_normal {
   font-weight: normal;
 }
 
-#jwcbqvotyo .gt_font_bold {
+#dcsaxwyttq .gt_font_bold {
   font-weight: bold;
 }
 
-#jwcbqvotyo .gt_font_italic {
+#dcsaxwyttq .gt_font_italic {
   font-style: italic;
 }
 
-#jwcbqvotyo .gt_super {
+#dcsaxwyttq .gt_super {
   font-size: 65%;
 }
 
-#jwcbqvotyo .gt_footnote_marks {
+#dcsaxwyttq .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#jwcbqvotyo .gt_asterisk {
+#dcsaxwyttq .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#jwcbqvotyo .gt_indent_1 {
+#dcsaxwyttq .gt_indent_1 {
   text-indent: 5px;
 }
 
-#jwcbqvotyo .gt_indent_2 {
+#dcsaxwyttq .gt_indent_2 {
   text-indent: 10px;
 }
 
-#jwcbqvotyo .gt_indent_3 {
+#dcsaxwyttq .gt_indent_3 {
   text-indent: 15px;
 }
 
-#jwcbqvotyo .gt_indent_4 {
+#dcsaxwyttq .gt_indent_4 {
   text-indent: 20px;
 }
 
-#jwcbqvotyo .gt_indent_5 {
+#dcsaxwyttq .gt_indent_5 {
   text-indent: 25px;
 }
 
-#jwcbqvotyo .katex-display {
+#dcsaxwyttq .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#jwcbqvotyo div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#dcsaxwyttq div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1743,23 +1743,23 @@ Table&nbsp;7.3
 </figcaption>
 <div aria-describedby="tbl-merge-crude-adjusted-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div id="gquojoczyn" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#gquojoczyn table {
+<div id="vwayhnflph" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#vwayhnflph table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#gquojoczyn thead, #gquojoczyn tbody, #gquojoczyn tfoot, #gquojoczyn tr, #gquojoczyn td, #gquojoczyn th {
+#vwayhnflph thead, #vwayhnflph tbody, #vwayhnflph tfoot, #vwayhnflph tr, #vwayhnflph td, #vwayhnflph th {
   border-style: none;
 }
 
-#gquojoczyn p {
+#vwayhnflph p {
   margin: 0;
   padding: 0;
 }
 
-#gquojoczyn .gt_table {
+#vwayhnflph .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1785,12 +1785,12 @@ Table&nbsp;7.3
   border-left-color: #D3D3D3;
 }
 
-#gquojoczyn .gt_caption {
+#vwayhnflph .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#gquojoczyn .gt_title {
+#vwayhnflph .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1802,7 +1802,7 @@ Table&nbsp;7.3
   border-bottom-width: 0;
 }
 
-#gquojoczyn .gt_subtitle {
+#vwayhnflph .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1814,7 +1814,7 @@ Table&nbsp;7.3
   border-top-width: 0;
 }
 
-#gquojoczyn .gt_heading {
+#vwayhnflph .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1826,13 +1826,13 @@ Table&nbsp;7.3
   border-right-color: #D3D3D3;
 }
 
-#gquojoczyn .gt_bottom_border {
+#vwayhnflph .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#gquojoczyn .gt_col_headings {
+#vwayhnflph .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1847,7 +1847,7 @@ Table&nbsp;7.3
   border-right-color: #D3D3D3;
 }
 
-#gquojoczyn .gt_col_heading {
+#vwayhnflph .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1867,7 +1867,7 @@ Table&nbsp;7.3
   overflow-x: hidden;
 }
 
-#gquojoczyn .gt_column_spanner_outer {
+#vwayhnflph .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1879,15 +1879,15 @@ Table&nbsp;7.3
   padding-right: 4px;
 }
 
-#gquojoczyn .gt_column_spanner_outer:first-child {
+#vwayhnflph .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#gquojoczyn .gt_column_spanner_outer:last-child {
+#vwayhnflph .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#gquojoczyn .gt_column_spanner {
+#vwayhnflph .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1899,11 +1899,11 @@ Table&nbsp;7.3
   width: 100%;
 }
 
-#gquojoczyn .gt_spanner_row {
+#vwayhnflph .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#gquojoczyn .gt_group_heading {
+#vwayhnflph .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1929,7 +1929,7 @@ Table&nbsp;7.3
   text-align: left;
 }
 
-#gquojoczyn .gt_empty_group_heading {
+#vwayhnflph .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1944,15 +1944,15 @@ Table&nbsp;7.3
   vertical-align: middle;
 }
 
-#gquojoczyn .gt_from_md > :first-child {
+#vwayhnflph .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#gquojoczyn .gt_from_md > :last-child {
+#vwayhnflph .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#gquojoczyn .gt_row {
+#vwayhnflph .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1971,7 +1971,7 @@ Table&nbsp;7.3
   overflow-x: hidden;
 }
 
-#gquojoczyn .gt_stub {
+#vwayhnflph .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1984,7 +1984,7 @@ Table&nbsp;7.3
   padding-right: 5px;
 }
 
-#gquojoczyn .gt_stub_row_group {
+#vwayhnflph .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1998,15 +1998,15 @@ Table&nbsp;7.3
   vertical-align: top;
 }
 
-#gquojoczyn .gt_row_group_first td {
+#vwayhnflph .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#gquojoczyn .gt_row_group_first th {
+#vwayhnflph .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#gquojoczyn .gt_summary_row {
+#vwayhnflph .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2016,16 +2016,16 @@ Table&nbsp;7.3
   padding-right: 5px;
 }
 
-#gquojoczyn .gt_first_summary_row {
+#vwayhnflph .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#gquojoczyn .gt_first_summary_row.thick {
+#vwayhnflph .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#gquojoczyn .gt_last_summary_row {
+#vwayhnflph .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2035,7 +2035,7 @@ Table&nbsp;7.3
   border-bottom-color: #D3D3D3;
 }
 
-#gquojoczyn .gt_grand_summary_row {
+#vwayhnflph .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2045,7 +2045,7 @@ Table&nbsp;7.3
   padding-right: 5px;
 }
 
-#gquojoczyn .gt_first_grand_summary_row {
+#vwayhnflph .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2055,7 +2055,7 @@ Table&nbsp;7.3
   border-top-color: #D3D3D3;
 }
 
-#gquojoczyn .gt_last_grand_summary_row_top {
+#vwayhnflph .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2065,11 +2065,11 @@ Table&nbsp;7.3
   border-bottom-color: #D3D3D3;
 }
 
-#gquojoczyn .gt_striped {
+#vwayhnflph .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#gquojoczyn .gt_table_body {
+#vwayhnflph .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2078,7 +2078,7 @@ Table&nbsp;7.3
   border-bottom-color: #D3D3D3;
 }
 
-#gquojoczyn .gt_footnotes {
+#vwayhnflph .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2092,7 +2092,7 @@ Table&nbsp;7.3
   border-right-color: #D3D3D3;
 }
 
-#gquojoczyn .gt_footnote {
+#vwayhnflph .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -2101,7 +2101,7 @@ Table&nbsp;7.3
   padding-right: 5px;
 }
 
-#gquojoczyn .gt_sourcenotes {
+#vwayhnflph .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2115,7 +2115,7 @@ Table&nbsp;7.3
   border-right-color: #D3D3D3;
 }
 
-#gquojoczyn .gt_sourcenote {
+#vwayhnflph .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2123,72 +2123,72 @@ Table&nbsp;7.3
   padding-right: 5px;
 }
 
-#gquojoczyn .gt_left {
+#vwayhnflph .gt_left {
   text-align: left;
 }
 
-#gquojoczyn .gt_center {
+#vwayhnflph .gt_center {
   text-align: center;
 }
 
-#gquojoczyn .gt_right {
+#vwayhnflph .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#gquojoczyn .gt_font_normal {
+#vwayhnflph .gt_font_normal {
   font-weight: normal;
 }
 
-#gquojoczyn .gt_font_bold {
+#vwayhnflph .gt_font_bold {
   font-weight: bold;
 }
 
-#gquojoczyn .gt_font_italic {
+#vwayhnflph .gt_font_italic {
   font-style: italic;
 }
 
-#gquojoczyn .gt_super {
+#vwayhnflph .gt_super {
   font-size: 65%;
 }
 
-#gquojoczyn .gt_footnote_marks {
+#vwayhnflph .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#gquojoczyn .gt_asterisk {
+#vwayhnflph .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#gquojoczyn .gt_indent_1 {
+#vwayhnflph .gt_indent_1 {
   text-indent: 5px;
 }
 
-#gquojoczyn .gt_indent_2 {
+#vwayhnflph .gt_indent_2 {
   text-indent: 10px;
 }
 
-#gquojoczyn .gt_indent_3 {
+#vwayhnflph .gt_indent_3 {
   text-indent: 15px;
 }
 
-#gquojoczyn .gt_indent_4 {
+#vwayhnflph .gt_indent_4 {
   text-indent: 20px;
 }
 
-#gquojoczyn .gt_indent_5 {
+#vwayhnflph .gt_indent_5 {
   text-indent: 25px;
 }
 
-#gquojoczyn .katex-display {
+#vwayhnflph .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#gquojoczyn div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#vwayhnflph div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -2265,23 +2265,23 @@ Adjusted
 <span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a><span class="fu">tbl_merge</span>(<span class="fu">list</span>(tbl_without, tbl_with),</span>
 <span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">tab_spanner =</span> <span class="fu">c</span>(<span class="st">'Without baseline CVD'</span>, <span class="st">'With baseline CVD'</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<div id="sgjobramex" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#sgjobramex table {
+<div id="yxrmqyublz" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#yxrmqyublz table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#sgjobramex thead, #sgjobramex tbody, #sgjobramex tfoot, #sgjobramex tr, #sgjobramex td, #sgjobramex th {
+#yxrmqyublz thead, #yxrmqyublz tbody, #yxrmqyublz tfoot, #yxrmqyublz tr, #yxrmqyublz td, #yxrmqyublz th {
   border-style: none;
 }
 
-#sgjobramex p {
+#yxrmqyublz p {
   margin: 0;
   padding: 0;
 }
 
-#sgjobramex .gt_table {
+#yxrmqyublz .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -2307,12 +2307,12 @@ Adjusted
   border-left-color: #D3D3D3;
 }
 
-#sgjobramex .gt_caption {
+#yxrmqyublz .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#sgjobramex .gt_title {
+#yxrmqyublz .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2324,7 +2324,7 @@ Adjusted
   border-bottom-width: 0;
 }
 
-#sgjobramex .gt_subtitle {
+#yxrmqyublz .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2336,7 +2336,7 @@ Adjusted
   border-top-width: 0;
 }
 
-#sgjobramex .gt_heading {
+#yxrmqyublz .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2348,13 +2348,13 @@ Adjusted
   border-right-color: #D3D3D3;
 }
 
-#sgjobramex .gt_bottom_border {
+#yxrmqyublz .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#sgjobramex .gt_col_headings {
+#yxrmqyublz .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2369,7 +2369,7 @@ Adjusted
   border-right-color: #D3D3D3;
 }
 
-#sgjobramex .gt_col_heading {
+#yxrmqyublz .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2389,7 +2389,7 @@ Adjusted
   overflow-x: hidden;
 }
 
-#sgjobramex .gt_column_spanner_outer {
+#yxrmqyublz .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2401,15 +2401,15 @@ Adjusted
   padding-right: 4px;
 }
 
-#sgjobramex .gt_column_spanner_outer:first-child {
+#yxrmqyublz .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#sgjobramex .gt_column_spanner_outer:last-child {
+#yxrmqyublz .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#sgjobramex .gt_column_spanner {
+#yxrmqyublz .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2421,11 +2421,11 @@ Adjusted
   width: 100%;
 }
 
-#sgjobramex .gt_spanner_row {
+#yxrmqyublz .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#sgjobramex .gt_group_heading {
+#yxrmqyublz .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2451,7 +2451,7 @@ Adjusted
   text-align: left;
 }
 
-#sgjobramex .gt_empty_group_heading {
+#yxrmqyublz .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2466,15 +2466,15 @@ Adjusted
   vertical-align: middle;
 }
 
-#sgjobramex .gt_from_md > :first-child {
+#yxrmqyublz .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#sgjobramex .gt_from_md > :last-child {
+#yxrmqyublz .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#sgjobramex .gt_row {
+#yxrmqyublz .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2493,7 +2493,7 @@ Adjusted
   overflow-x: hidden;
 }
 
-#sgjobramex .gt_stub {
+#yxrmqyublz .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2506,7 +2506,7 @@ Adjusted
   padding-right: 5px;
 }
 
-#sgjobramex .gt_stub_row_group {
+#yxrmqyublz .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2520,15 +2520,15 @@ Adjusted
   vertical-align: top;
 }
 
-#sgjobramex .gt_row_group_first td {
+#yxrmqyublz .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#sgjobramex .gt_row_group_first th {
+#yxrmqyublz .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#sgjobramex .gt_summary_row {
+#yxrmqyublz .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2538,16 +2538,16 @@ Adjusted
   padding-right: 5px;
 }
 
-#sgjobramex .gt_first_summary_row {
+#yxrmqyublz .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#sgjobramex .gt_first_summary_row.thick {
+#yxrmqyublz .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#sgjobramex .gt_last_summary_row {
+#yxrmqyublz .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2557,7 +2557,7 @@ Adjusted
   border-bottom-color: #D3D3D3;
 }
 
-#sgjobramex .gt_grand_summary_row {
+#yxrmqyublz .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2567,7 +2567,7 @@ Adjusted
   padding-right: 5px;
 }
 
-#sgjobramex .gt_first_grand_summary_row {
+#yxrmqyublz .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2577,7 +2577,7 @@ Adjusted
   border-top-color: #D3D3D3;
 }
 
-#sgjobramex .gt_last_grand_summary_row_top {
+#yxrmqyublz .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2587,11 +2587,11 @@ Adjusted
   border-bottom-color: #D3D3D3;
 }
 
-#sgjobramex .gt_striped {
+#yxrmqyublz .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#sgjobramex .gt_table_body {
+#yxrmqyublz .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2600,7 +2600,7 @@ Adjusted
   border-bottom-color: #D3D3D3;
 }
 
-#sgjobramex .gt_footnotes {
+#yxrmqyublz .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2614,7 +2614,7 @@ Adjusted
   border-right-color: #D3D3D3;
 }
 
-#sgjobramex .gt_footnote {
+#yxrmqyublz .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -2623,7 +2623,7 @@ Adjusted
   padding-right: 5px;
 }
 
-#sgjobramex .gt_sourcenotes {
+#yxrmqyublz .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2637,7 +2637,7 @@ Adjusted
   border-right-color: #D3D3D3;
 }
 
-#sgjobramex .gt_sourcenote {
+#yxrmqyublz .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2645,72 +2645,72 @@ Adjusted
   padding-right: 5px;
 }
 
-#sgjobramex .gt_left {
+#yxrmqyublz .gt_left {
   text-align: left;
 }
 
-#sgjobramex .gt_center {
+#yxrmqyublz .gt_center {
   text-align: center;
 }
 
-#sgjobramex .gt_right {
+#yxrmqyublz .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#sgjobramex .gt_font_normal {
+#yxrmqyublz .gt_font_normal {
   font-weight: normal;
 }
 
-#sgjobramex .gt_font_bold {
+#yxrmqyublz .gt_font_bold {
   font-weight: bold;
 }
 
-#sgjobramex .gt_font_italic {
+#yxrmqyublz .gt_font_italic {
   font-style: italic;
 }
 
-#sgjobramex .gt_super {
+#yxrmqyublz .gt_super {
   font-size: 65%;
 }
 
-#sgjobramex .gt_footnote_marks {
+#yxrmqyublz .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#sgjobramex .gt_asterisk {
+#yxrmqyublz .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#sgjobramex .gt_indent_1 {
+#yxrmqyublz .gt_indent_1 {
   text-indent: 5px;
 }
 
-#sgjobramex .gt_indent_2 {
+#yxrmqyublz .gt_indent_2 {
   text-indent: 10px;
 }
 
-#sgjobramex .gt_indent_3 {
+#yxrmqyublz .gt_indent_3 {
   text-indent: 15px;
 }
 
-#sgjobramex .gt_indent_4 {
+#yxrmqyublz .gt_indent_4 {
   text-indent: 20px;
 }
 
-#sgjobramex .gt_indent_5 {
+#yxrmqyublz .gt_indent_5 {
   text-indent: 25px;
 }
 
-#sgjobramex .katex-display {
+#yxrmqyublz .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#sgjobramex div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#yxrmqyublz div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -2769,14 +2769,14 @@ With baseline CVD
 </section>
 <section id="exercises" class="level2" data-number="7.11">
 <h2 data-number="7.11" class="anchored" data-anchor-id="exercises"><span class="header-section-number">7.11</span> Exercises</h2>
-<p><strong>Exercise 1</strong> (ILOs 1, 2). State the null and alternative hypotheses for the adjusted slope. Fit <code>chol ~ met_t + age + gender + edu</code>, where <code>met_t</code> is total physical activity in MET-hours/day, and compare it with the crude model <code>chol ~ met_t</code>. Report both slopes for <code>met_t</code> with their 95% confidence intervals and p-values, and write one sentence describing how the adjusted estimate differs from the crude one, including its direction.</p>
-<p><strong>Exercise 2</strong> (ILOs 3, 5). State the null and alternative hypotheses for the odds ratio, noting the scale its null value sits on. Fit <code>dead_10yr ~ vpa_r + age + gender + edu</code>, where <code>vpa_r</code> is vigorous physical activity outside work in hours/day, and compare it with the crude model <code>dead_10yr ~ vpa_r</code>. Exponentiate both models’ coefficients to obtain odds ratios with confidence intervals, and build a <code>tbl_regression()</code> table for the adjusted model. Write one sentence interpreting the adjusted odds ratio for <code>vpa_r</code> in context.</p>
-<p><strong>Exercise 3</strong> (ILO 4). Using the adjusted model from Exercise 2, fit a second version that also adjusts for <code>blm.cvd</code>. Combine both models into one table with <code>tbl_merge()</code>, and write one sentence comparing the two odds ratios for <code>vpa_r</code> and one sentence stating what each model assumes about <code>blm.cvd</code>.</p>
+<p><strong>Exercise 1</strong> (ILOs 1, 2). State the null and alternative hypotheses for the adjusted slope. Fit <code>chol ~ mpa_w + age + gender + edu</code>, where <code>mpa_w</code> is moderate physical activity at work in hours/day, and compare it with the crude model <code>chol ~ mpa_w</code>. Report both slopes for <code>mpa_w</code> with their 95% CIs and p-values, and write one sentence describing how the adjusted estimate differs from the crude one, including its direction.</p>
+<p><strong>Exercise 2</strong> (ILOs 3, 5). State the null and alternative hypotheses for the odds ratio, noting the scale its null value sits on. Fit <code>dead_10yr ~ vpa_t + age + gender + edu</code>, where <code>vpa_t</code> is vigorous physical activity overall in hours/day, and compare it with the crude model <code>dead_10yr ~ vpa_t</code>. Exponentiate both models’ coefficients to obtain odds ratios with CIs, and build a <code>tbl_regression()</code> table for the adjusted model. Write one sentence interpreting the adjusted odds ratio for <code>vpa_t</code> in context.</p>
+<p><strong>Exercise 3</strong> (ILO 4). Using the adjusted model from Exercise 2, fit a second version that also adjusts for <code>blm.cvd</code>. Combine both models into one table with <code>tbl_merge()</code>, and write one sentence comparing the two odds ratios for <code>vpa_t</code> and one sentence stating what each model assumes about <code>blm.cvd</code>.</p>
 </section>
 <section id="writing-exercise" class="level2" data-number="7.12">
 <h2 data-number="7.12" class="anchored" data-anchor-id="writing-exercise"><span class="header-section-number">7.12</span> Writing exercise</h2>
 <p>Write two short paragraphs, as they would appear in a results section.</p>
-<p>In the first, report the adjusted association between sedentary time and cholesterol from this chapter’s linear model, and the adjusted odds ratio for sedentary time and ten-year mortality from the logistic model, each with its 95% confidence interval and p-value. Add one sentence on what this analysis cannot establish: an observational adjustment reduces confounding by the variables actually included, but it cannot rule out confounding by variables that were never measured.</p>
+<p>In the first, report the adjusted association between sedentary time and cholesterol from this chapter’s linear model, and the adjusted odds ratio for sedentary time and ten-year mortality from the logistic model, each with its 95% CI and p-value. Add one sentence on what this analysis cannot establish: an observational adjustment reduces confounding by the variables actually included, but it cannot rule out confounding by variables that were never measured.</p>
 <p>In the second, separate paragraph, report both odds ratios for <code>sed</code> from the sensitivity analysis, with and without <code>blm.cvd</code>, and state plainly what each model assumes about baseline CVD’s role and why the data available here cannot decide between those assumptions.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
@@ -2791,83 +2791,83 @@ With baseline CVD
 <div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><strong>Exercise 1</strong></p>
-<p><strong>Null hypothesis.</strong> In the population, the adjusted slope of cholesterol on <code>met_t</code> is zero, once age, gender, and education are held constant.</p>
+<p><strong>Null hypothesis.</strong> In the population, the adjusted slope of cholesterol on <code>mpa_w</code> is zero, once age, gender, and education are held constant.</p>
 <p><strong>Alternative hypothesis.</strong> The adjusted slope is not zero.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>met_t_complete <span class="ot">&lt;-</span> nhanes <span class="sc">|&gt;</span></span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(met_t), <span class="sc">!</span><span class="fu">is.na</span>(chol), <span class="sc">!</span><span class="fu">is.na</span>(age), <span class="sc">!</span><span class="fu">is.na</span>(gender), <span class="sc">!</span><span class="fu">is.na</span>(edu))</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>mpa_w_complete <span class="ot">&lt;-</span> nhanes <span class="sc">|&gt;</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(mpa_w), <span class="sc">!</span><span class="fu">is.na</span>(chol), <span class="sc">!</span><span class="fu">is.na</span>(age), <span class="sc">!</span><span class="fu">is.na</span>(gender), <span class="sc">!</span><span class="fu">is.na</span>(edu))</span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>m_met_t_crude <span class="ot">&lt;-</span> <span class="fu">lm</span>(chol <span class="sc">~</span> met_t, <span class="at">data =</span> met_t_complete)</span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>m_met_t_adj <span class="ot">&lt;-</span> <span class="fu">lm</span>(chol <span class="sc">~</span> met_t <span class="sc">+</span> age <span class="sc">+</span> gender <span class="sc">+</span> edu, <span class="at">data =</span> met_t_complete)</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>m_mpa_w_crude <span class="ot">&lt;-</span> <span class="fu">lm</span>(chol <span class="sc">~</span> mpa_w, <span class="at">data =</span> mpa_w_complete)</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>m_mpa_w_adj <span class="ot">&lt;-</span> <span class="fu">lm</span>(chol <span class="sc">~</span> mpa_w <span class="sc">+</span> age <span class="sc">+</span> gender <span class="sc">+</span> edu, <span class="at">data =</span> mpa_w_complete)</span>
 <span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(m_met_t_crude, <span class="at">conf.int =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">filter</span>(term <span class="sc">==</span> <span class="st">'met_t'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(m_mpa_w_crude, <span class="at">conf.int =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">filter</span>(term <span class="sc">==</span> <span class="st">'mpa_w'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 7
   term   estimate std.error statistic p.value conf.low conf.high
   &lt;chr&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
-1 met_t -0.000772  0.000426     -1.81  0.0700 -0.00161 0.0000632</code></pre>
+1 mpa_w -0.000699   0.00428    -0.163   0.870 -0.00909   0.00769</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(m_met_t_adj, <span class="at">conf.int =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">filter</span>(term <span class="sc">==</span> <span class="st">'met_t'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(m_mpa_w_adj, <span class="at">conf.int =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">filter</span>(term <span class="sc">==</span> <span class="st">'mpa_w'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 7
-  term  estimate std.error statistic  p.value conf.low conf.high
-  &lt;chr&gt;    &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
-1 met_t  0.00166  0.000443      3.74 0.000182 0.000790   0.00253</code></pre>
+  term  estimate std.error statistic p.value conf.low conf.high
+  &lt;chr&gt;    &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+1 mpa_w   0.0132   0.00433      3.05 0.00226  0.00473    0.0217</code></pre>
 </div>
 </div>
-<p>Crude, the slope on <code>met_t</code> is about -0.00077 mmol/L per MET-hour/day (95% CI: -0.00161 to 0.00006, p = 0.07). The interval includes zero, so on its own this says very little: these data are consistent with no association between total activity and cholesterol, and they don’t rule one out either.</p>
-<p>Adjusted for age, gender, and education, the slope changes sign and becomes clearly non-zero, at about 0.00166 mmol/L per MET-hour/day (95% CI: 0.00079 to 0.00253, p &lt; 0.001). Once those three are held constant, more total activity is associated with slightly <em>higher</em> cholesterol in this sample. That’s a reminder that adjustment can change a result’s direction, not just its size, and that a crude estimate near zero can hide an association rather than rule one out. Both models are fitted on <code>met_t_complete</code>, the same participants, so the difference between them is the adjustment and nothing else.</p>
+<p>Crude, the slope on <code>mpa_w</code> is about -0.00070 mmol/L per hour/day (95% CI: -0.00909 to 0.00769 mmol/L per hour/day, p = 0.87). The CI sits almost symmetrically either side of zero, so on its own this says very little: these data are consistent with no association between moderate activity at work and cholesterol, and they don’t rule one out either.</p>
+<p>Adjusted for age, gender, and education, the slope changes sign and becomes clearly non-zero, at about 0.01321 mmol/L per hour/day (95% CI: 0.00473 to 0.02169 mmol/L per hour/day, p = 0.002). Once those three are held constant, more moderate activity at work is associated with slightly <em>higher</em> cholesterol in this sample. That’s a reminder that adjustment can change a result’s direction, not just its size, and that a crude estimate near zero can hide an association rather than rule one out. Both models are fitted on <code>mpa_w_complete</code>, the same participants, so the difference between them is the adjustment and nothing else.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(met_t_complete<span class="sc">$</span>edu)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(mpa_w_complete<span class="sc">$</span>edu)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Less than high school" "High school graduate"  "Above high school"    </code></pre>
 </div>
 </div>
 <p><code>'Less than high school'</code> is listed first, so that’s the reference this model used: both <code>edu</code> rows in the adjusted output above are differences from that group. We don’t read them further than that here, for the same reason the chapter gave: <code>edu</code> wasn’t the exposure this model was built to estimate.</p>
 <p><strong>Exercise 2</strong></p>
-<p><strong>Null hypothesis.</strong> In the population, the adjusted odds ratio for <code>vpa_r</code> is 1: no association between vigorous activity outside work and ten-year mortality, once age, gender, and education are held constant.</p>
+<p><strong>Null hypothesis.</strong> In the population, the adjusted odds ratio for <code>vpa_t</code> is 1: no association between vigorous activity overall and ten-year mortality, once age, gender, and education are held constant.</p>
 <p><strong>Alternative hypothesis.</strong> The adjusted odds ratio is not 1. The null sits at 1, not 0, since this is a ratio.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>vpa_r_dead_complete <span class="ot">&lt;-</span> nhanes <span class="sc">|&gt;</span></span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(vpa_r), <span class="sc">!</span><span class="fu">is.na</span>(dead_10yr), <span class="sc">!</span><span class="fu">is.na</span>(age), <span class="sc">!</span><span class="fu">is.na</span>(gender), <span class="sc">!</span><span class="fu">is.na</span>(edu))</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>vpa_t_dead_complete <span class="ot">&lt;-</span> nhanes <span class="sc">|&gt;</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(vpa_t), <span class="sc">!</span><span class="fu">is.na</span>(dead_10yr), <span class="sc">!</span><span class="fu">is.na</span>(age), <span class="sc">!</span><span class="fu">is.na</span>(gender), <span class="sc">!</span><span class="fu">is.na</span>(edu))</span>
 <span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>m_vpa_r_crude <span class="ot">&lt;-</span> <span class="fu">glm</span>(dead_10yr <span class="sc">~</span> vpa_r, <span class="at">data =</span> vpa_r_dead_complete, <span class="at">family =</span> binomial)</span>
-<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>m_vpa_r_adj <span class="ot">&lt;-</span> <span class="fu">glm</span>(dead_10yr <span class="sc">~</span> vpa_r <span class="sc">+</span> age <span class="sc">+</span> gender <span class="sc">+</span> edu,</span>
-<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> vpa_r_dead_complete, <span class="at">family =</span> binomial)</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>m_vpa_t_crude <span class="ot">&lt;-</span> <span class="fu">glm</span>(dead_10yr <span class="sc">~</span> vpa_t, <span class="at">data =</span> vpa_t_dead_complete, <span class="at">family =</span> binomial)</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>m_vpa_t_adj <span class="ot">&lt;-</span> <span class="fu">glm</span>(dead_10yr <span class="sc">~</span> vpa_t <span class="sc">+</span> age <span class="sc">+</span> gender <span class="sc">+</span> edu,</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> vpa_t_dead_complete, <span class="at">family =</span> binomial)</span>
 <span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(m_vpa_r_crude, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>, <span class="at">conf.int =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">filter</span>(term <span class="sc">==</span> <span class="st">'vpa_r'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(m_vpa_t_crude, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>, <span class="at">conf.int =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">filter</span>(term <span class="sc">==</span> <span class="st">'vpa_t'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 7
   term  estimate std.error statistic  p.value conf.low conf.high
   &lt;chr&gt;    &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
-1 vpa_r   0.0650     0.196     -14.0 2.49e-44   0.0437    0.0941</code></pre>
+1 vpa_t    0.623    0.0352     -13.4 4.29e-41    0.580     0.666</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(m_vpa_r_adj, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>, <span class="at">conf.int =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">filter</span>(term <span class="sc">==</span> <span class="st">'vpa_r'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(m_vpa_t_adj, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>, <span class="at">conf.int =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">filter</span>(term <span class="sc">==</span> <span class="st">'vpa_t'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 7
-  term  estimate std.error statistic      p.value conf.low conf.high
-  &lt;chr&gt;    &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;        &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
-1 vpa_r    0.376     0.172     -5.68 0.0000000137    0.264     0.520</code></pre>
+  term  estimate std.error statistic   p.value conf.low conf.high
+  &lt;chr&gt;    &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+1 vpa_t    0.871    0.0320     -4.30 0.0000167    0.817     0.926</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tbl_regression</span>(m_vpa_r_adj, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tbl_regression</span>(m_vpa_t_adj, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<div id="ctwzageszu" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#ctwzageszu table {
+<div id="ehxawvqgox" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#ehxawvqgox table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#ctwzageszu thead, #ctwzageszu tbody, #ctwzageszu tfoot, #ctwzageszu tr, #ctwzageszu td, #ctwzageszu th {
+#ehxawvqgox thead, #ehxawvqgox tbody, #ehxawvqgox tfoot, #ehxawvqgox tr, #ehxawvqgox td, #ehxawvqgox th {
   border-style: none;
 }
 
-#ctwzageszu p {
+#ehxawvqgox p {
   margin: 0;
   padding: 0;
 }
 
-#ctwzageszu .gt_table {
+#ehxawvqgox .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -2893,12 +2893,12 @@ With baseline CVD
   border-left-color: #D3D3D3;
 }
 
-#ctwzageszu .gt_caption {
+#ehxawvqgox .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#ctwzageszu .gt_title {
+#ehxawvqgox .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2910,7 +2910,7 @@ With baseline CVD
   border-bottom-width: 0;
 }
 
-#ctwzageszu .gt_subtitle {
+#ehxawvqgox .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2922,7 +2922,7 @@ With baseline CVD
   border-top-width: 0;
 }
 
-#ctwzageszu .gt_heading {
+#ehxawvqgox .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2934,13 +2934,13 @@ With baseline CVD
   border-right-color: #D3D3D3;
 }
 
-#ctwzageszu .gt_bottom_border {
+#ehxawvqgox .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#ctwzageszu .gt_col_headings {
+#ehxawvqgox .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2955,7 +2955,7 @@ With baseline CVD
   border-right-color: #D3D3D3;
 }
 
-#ctwzageszu .gt_col_heading {
+#ehxawvqgox .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2975,7 +2975,7 @@ With baseline CVD
   overflow-x: hidden;
 }
 
-#ctwzageszu .gt_column_spanner_outer {
+#ehxawvqgox .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2987,15 +2987,15 @@ With baseline CVD
   padding-right: 4px;
 }
 
-#ctwzageszu .gt_column_spanner_outer:first-child {
+#ehxawvqgox .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ctwzageszu .gt_column_spanner_outer:last-child {
+#ehxawvqgox .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ctwzageszu .gt_column_spanner {
+#ehxawvqgox .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -3007,11 +3007,11 @@ With baseline CVD
   width: 100%;
 }
 
-#ctwzageszu .gt_spanner_row {
+#ehxawvqgox .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#ctwzageszu .gt_group_heading {
+#ehxawvqgox .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3037,7 +3037,7 @@ With baseline CVD
   text-align: left;
 }
 
-#ctwzageszu .gt_empty_group_heading {
+#ehxawvqgox .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -3052,15 +3052,15 @@ With baseline CVD
   vertical-align: middle;
 }
 
-#ctwzageszu .gt_from_md > :first-child {
+#ehxawvqgox .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ctwzageszu .gt_from_md > :last-child {
+#ehxawvqgox .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ctwzageszu .gt_row {
+#ehxawvqgox .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3079,7 +3079,7 @@ With baseline CVD
   overflow-x: hidden;
 }
 
-#ctwzageszu .gt_stub {
+#ehxawvqgox .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3092,7 +3092,7 @@ With baseline CVD
   padding-right: 5px;
 }
 
-#ctwzageszu .gt_stub_row_group {
+#ehxawvqgox .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3106,15 +3106,15 @@ With baseline CVD
   vertical-align: top;
 }
 
-#ctwzageszu .gt_row_group_first td {
+#ehxawvqgox .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#ctwzageszu .gt_row_group_first th {
+#ehxawvqgox .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#ctwzageszu .gt_summary_row {
+#ehxawvqgox .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3124,16 +3124,16 @@ With baseline CVD
   padding-right: 5px;
 }
 
-#ctwzageszu .gt_first_summary_row {
+#ehxawvqgox .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#ctwzageszu .gt_first_summary_row.thick {
+#ehxawvqgox .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#ctwzageszu .gt_last_summary_row {
+#ehxawvqgox .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3143,7 +3143,7 @@ With baseline CVD
   border-bottom-color: #D3D3D3;
 }
 
-#ctwzageszu .gt_grand_summary_row {
+#ehxawvqgox .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3153,7 +3153,7 @@ With baseline CVD
   padding-right: 5px;
 }
 
-#ctwzageszu .gt_first_grand_summary_row {
+#ehxawvqgox .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3163,7 +3163,7 @@ With baseline CVD
   border-top-color: #D3D3D3;
 }
 
-#ctwzageszu .gt_last_grand_summary_row_top {
+#ehxawvqgox .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3173,11 +3173,11 @@ With baseline CVD
   border-bottom-color: #D3D3D3;
 }
 
-#ctwzageszu .gt_striped {
+#ehxawvqgox .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#ctwzageszu .gt_table_body {
+#ehxawvqgox .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -3186,7 +3186,7 @@ With baseline CVD
   border-bottom-color: #D3D3D3;
 }
 
-#ctwzageszu .gt_footnotes {
+#ehxawvqgox .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3200,7 +3200,7 @@ With baseline CVD
   border-right-color: #D3D3D3;
 }
 
-#ctwzageszu .gt_footnote {
+#ehxawvqgox .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -3209,7 +3209,7 @@ With baseline CVD
   padding-right: 5px;
 }
 
-#ctwzageszu .gt_sourcenotes {
+#ehxawvqgox .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3223,7 +3223,7 @@ With baseline CVD
   border-right-color: #D3D3D3;
 }
 
-#ctwzageszu .gt_sourcenote {
+#ehxawvqgox .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -3231,72 +3231,72 @@ With baseline CVD
   padding-right: 5px;
 }
 
-#ctwzageszu .gt_left {
+#ehxawvqgox .gt_left {
   text-align: left;
 }
 
-#ctwzageszu .gt_center {
+#ehxawvqgox .gt_center {
   text-align: center;
 }
 
-#ctwzageszu .gt_right {
+#ehxawvqgox .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ctwzageszu .gt_font_normal {
+#ehxawvqgox .gt_font_normal {
   font-weight: normal;
 }
 
-#ctwzageszu .gt_font_bold {
+#ehxawvqgox .gt_font_bold {
   font-weight: bold;
 }
 
-#ctwzageszu .gt_font_italic {
+#ehxawvqgox .gt_font_italic {
   font-style: italic;
 }
 
-#ctwzageszu .gt_super {
+#ehxawvqgox .gt_super {
   font-size: 65%;
 }
 
-#ctwzageszu .gt_footnote_marks {
+#ehxawvqgox .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#ctwzageszu .gt_asterisk {
+#ehxawvqgox .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#ctwzageszu .gt_indent_1 {
+#ehxawvqgox .gt_indent_1 {
   text-indent: 5px;
 }
 
-#ctwzageszu .gt_indent_2 {
+#ehxawvqgox .gt_indent_2 {
   text-indent: 10px;
 }
 
-#ctwzageszu .gt_indent_3 {
+#ehxawvqgox .gt_indent_3 {
   text-indent: 15px;
 }
 
-#ctwzageszu .gt_indent_4 {
+#ehxawvqgox .gt_indent_4 {
   text-indent: 20px;
 }
 
-#ctwzageszu .gt_indent_5 {
+#ehxawvqgox .gt_indent_5 {
   text-indent: 25px;
 }
 
-#ctwzageszu .katex-display {
+#ehxawvqgox .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#ctwzageszu div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#ehxawvqgox div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -3318,9 +3318,9 @@ With baseline CVD
 </thead>
 <tbody class="gt_table_body">
 <tr class="odd">
-<td class="gt_row gt_left" headers="label">vpa_r</td>
-<td class="gt_row gt_center" headers="estimate">0.38</td>
-<td class="gt_row gt_center" headers="conf.low">0.26, 0.52</td>
+<td class="gt_row gt_left" headers="label">vpa_t</td>
+<td class="gt_row gt_center" headers="estimate">0.87</td>
+<td class="gt_row gt_center" headers="conf.low">0.82, 0.93</td>
 <td class="gt_row gt_center" headers="p.value">&lt;0.001</td>
 </tr>
 <tr class="even">
@@ -3348,7 +3348,7 @@ With baseline CVD
 <tr class="odd">
 <td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;Female</td>
 <td class="gt_row gt_center" headers="estimate">0.58</td>
-<td class="gt_row gt_center" headers="conf.low">0.52, 0.65</td>
+<td class="gt_row gt_center" headers="conf.low">0.52, 0.64</td>
 <td class="gt_row gt_center" headers="p.value">&lt;0.001</td>
 </tr>
 <tr class="even">
@@ -3369,14 +3369,14 @@ With baseline CVD
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;High school graduate</td>
-<td class="gt_row gt_center" headers="estimate">0.94</td>
-<td class="gt_row gt_center" headers="conf.low">0.82, 1.07</td>
-<td class="gt_row gt_center" headers="p.value">0.4</td>
+<td class="gt_row gt_center" headers="estimate">0.93</td>
+<td class="gt_row gt_center" headers="conf.low">0.81, 1.07</td>
+<td class="gt_row gt_center" headers="p.value">0.3</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;Above high school</td>
-<td class="gt_row gt_center" headers="estimate">0.79</td>
-<td class="gt_row gt_center" headers="conf.low">0.70, 0.89</td>
+<td class="gt_row gt_center" headers="estimate">0.75</td>
+<td class="gt_row gt_center" headers="conf.low">0.67, 0.85</td>
 <td class="gt_row gt_center" headers="p.value">&lt;0.001</td>
 </tr>
 </tbody><tfoot>
@@ -3390,40 +3390,40 @@ With baseline CVD
 </div>
 </div>
 </div>
-<p>Adjusted for age, gender, and education, each additional hour/day of vigorous activity outside work is associated with an odds ratio of about 0.376 for ten-year mortality (95% CI: 0.264 to 0.520, p &lt; 0.001): participants reporting more vigorous activity had substantially lower odds of dying within ten years, holding age, gender, and education constant.</p>
-<p>Now compare that with the crude model, because the gap is the biggest one in this chapter. Crude, the odds ratio is 0.065, which would say that an extra hour a day of vigorous activity cuts the odds of dying by something like 94%. Adjusted, it is 0.376: still a substantial association, but a fraction of the size. Almost all of that difference is age. Older participants do far less vigorous activity, and are far more likely to die within ten years, for reasons that have nothing to do with the activity itself. So a crude comparison of the active against the inactive is largely a comparison of the young against the old. This is the same confounding story the chapter told with <code>sed</code>, in a much louder version: there the adjusted estimate moved from 1.040 to 1.020, here it moves by a factor of about 6. Reporting the crude figure on its own would badly overstate what vigorous activity does.</p>
+<p>Adjusted for age, gender, and education, each additional hour/day of vigorous activity overall is associated with an odds ratio of about 0.871 for ten-year mortality (95% CI: 0.817 to 0.926, p &lt; 0.001): participants reporting more vigorous activity had lower odds of dying within ten years, holding age, gender, and education constant.</p>
+<p>Now compare that with the crude model. Crude, the odds ratio is 0.623, which would say that an extra hour a day of vigorous activity cuts the odds of dying by something like 38%. Adjusted, it’s 0.871: still a real association, but noticeably weaker. Part of that gap is age. Older participants do less vigorous activity overall, and are more likely to die within ten years, for reasons that have nothing to do with the activity itself. So a crude comparison of the active against the inactive is partly a comparison of the young against the old. This is the same confounding story the chapter told with <code>sed</code>, moving the estimate the same way, toward the null: there the adjusted odds ratio moved from 1.040 to 1.020, closer to 1; here it moves from 0.623 to 0.871, also closer to 1, from further below it. Reporting the crude figure on its own would overstate what vigorous activity does.</p>
 <p><strong>Exercise 3</strong></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>vpa_r_cvd_complete <span class="ot">&lt;-</span> vpa_r_dead_complete <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(blm.cvd))</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>vpa_t_cvd_complete <span class="ot">&lt;-</span> vpa_t_dead_complete <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(blm.cvd))</span>
 <span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>m_vpa_r_without <span class="ot">&lt;-</span> <span class="fu">glm</span>(dead_10yr <span class="sc">~</span> vpa_r <span class="sc">+</span> age <span class="sc">+</span> gender <span class="sc">+</span> edu,</span>
-<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> vpa_r_cvd_complete, <span class="at">family =</span> binomial)</span>
-<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>m_vpa_r_with <span class="ot">&lt;-</span> <span class="fu">glm</span>(dead_10yr <span class="sc">~</span> vpa_r <span class="sc">+</span> age <span class="sc">+</span> gender <span class="sc">+</span> edu <span class="sc">+</span> blm.cvd,</span>
-<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> vpa_r_cvd_complete, <span class="at">family =</span> binomial)</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>m_vpa_t_without <span class="ot">&lt;-</span> <span class="fu">glm</span>(dead_10yr <span class="sc">~</span> vpa_t <span class="sc">+</span> age <span class="sc">+</span> gender <span class="sc">+</span> edu,</span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> vpa_t_cvd_complete, <span class="at">family =</span> binomial)</span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>m_vpa_t_with <span class="ot">&lt;-</span> <span class="fu">glm</span>(dead_10yr <span class="sc">~</span> vpa_t <span class="sc">+</span> age <span class="sc">+</span> gender <span class="sc">+</span> edu <span class="sc">+</span> blm.cvd,</span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> vpa_t_cvd_complete, <span class="at">family =</span> binomial)</span>
 <span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>tbl_vpa_without <span class="ot">&lt;-</span> <span class="fu">tbl_regression</span>(m_vpa_r_without, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>tbl_vpa_with <span class="ot">&lt;-</span> <span class="fu">tbl_regression</span>(m_vpa_r_with, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>tbl_vpa_without <span class="ot">&lt;-</span> <span class="fu">tbl_regression</span>(m_vpa_t_without, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>tbl_vpa_with <span class="ot">&lt;-</span> <span class="fu">tbl_regression</span>(m_vpa_t_with, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a><span class="fu">tbl_merge</span>(<span class="fu">list</span>(tbl_vpa_without, tbl_vpa_with),</span>
 <span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">tab_spanner =</span> <span class="fu">c</span>(<span class="st">'Without baseline CVD'</span>, <span class="st">'With baseline CVD'</span>), <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<div id="pbjomlpvvm" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#pbjomlpvvm table {
+<div id="kfwzzmsvtp" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#kfwzzmsvtp table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#pbjomlpvvm thead, #pbjomlpvvm tbody, #pbjomlpvvm tfoot, #pbjomlpvvm tr, #pbjomlpvvm td, #pbjomlpvvm th {
+#kfwzzmsvtp thead, #kfwzzmsvtp tbody, #kfwzzmsvtp tfoot, #kfwzzmsvtp tr, #kfwzzmsvtp td, #kfwzzmsvtp th {
   border-style: none;
 }
 
-#pbjomlpvvm p {
+#kfwzzmsvtp p {
   margin: 0;
   padding: 0;
 }
 
-#pbjomlpvvm .gt_table {
+#kfwzzmsvtp .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -3449,12 +3449,12 @@ With baseline CVD
   border-left-color: #D3D3D3;
 }
 
-#pbjomlpvvm .gt_caption {
+#kfwzzmsvtp .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#pbjomlpvvm .gt_title {
+#kfwzzmsvtp .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -3466,7 +3466,7 @@ With baseline CVD
   border-bottom-width: 0;
 }
 
-#pbjomlpvvm .gt_subtitle {
+#kfwzzmsvtp .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -3478,7 +3478,7 @@ With baseline CVD
   border-top-width: 0;
 }
 
-#pbjomlpvvm .gt_heading {
+#kfwzzmsvtp .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -3490,13 +3490,13 @@ With baseline CVD
   border-right-color: #D3D3D3;
 }
 
-#pbjomlpvvm .gt_bottom_border {
+#kfwzzmsvtp .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#pbjomlpvvm .gt_col_headings {
+#kfwzzmsvtp .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -3511,7 +3511,7 @@ With baseline CVD
   border-right-color: #D3D3D3;
 }
 
-#pbjomlpvvm .gt_col_heading {
+#kfwzzmsvtp .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3531,7 +3531,7 @@ With baseline CVD
   overflow-x: hidden;
 }
 
-#pbjomlpvvm .gt_column_spanner_outer {
+#kfwzzmsvtp .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3543,15 +3543,15 @@ With baseline CVD
   padding-right: 4px;
 }
 
-#pbjomlpvvm .gt_column_spanner_outer:first-child {
+#kfwzzmsvtp .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#pbjomlpvvm .gt_column_spanner_outer:last-child {
+#kfwzzmsvtp .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#pbjomlpvvm .gt_column_spanner {
+#kfwzzmsvtp .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -3563,11 +3563,11 @@ With baseline CVD
   width: 100%;
 }
 
-#pbjomlpvvm .gt_spanner_row {
+#kfwzzmsvtp .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#pbjomlpvvm .gt_group_heading {
+#kfwzzmsvtp .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3593,7 +3593,7 @@ With baseline CVD
   text-align: left;
 }
 
-#pbjomlpvvm .gt_empty_group_heading {
+#kfwzzmsvtp .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -3608,15 +3608,15 @@ With baseline CVD
   vertical-align: middle;
 }
 
-#pbjomlpvvm .gt_from_md > :first-child {
+#kfwzzmsvtp .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#pbjomlpvvm .gt_from_md > :last-child {
+#kfwzzmsvtp .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#pbjomlpvvm .gt_row {
+#kfwzzmsvtp .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3635,7 +3635,7 @@ With baseline CVD
   overflow-x: hidden;
 }
 
-#pbjomlpvvm .gt_stub {
+#kfwzzmsvtp .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3648,7 +3648,7 @@ With baseline CVD
   padding-right: 5px;
 }
 
-#pbjomlpvvm .gt_stub_row_group {
+#kfwzzmsvtp .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3662,15 +3662,15 @@ With baseline CVD
   vertical-align: top;
 }
 
-#pbjomlpvvm .gt_row_group_first td {
+#kfwzzmsvtp .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#pbjomlpvvm .gt_row_group_first th {
+#kfwzzmsvtp .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#pbjomlpvvm .gt_summary_row {
+#kfwzzmsvtp .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3680,16 +3680,16 @@ With baseline CVD
   padding-right: 5px;
 }
 
-#pbjomlpvvm .gt_first_summary_row {
+#kfwzzmsvtp .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#pbjomlpvvm .gt_first_summary_row.thick {
+#kfwzzmsvtp .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#pbjomlpvvm .gt_last_summary_row {
+#kfwzzmsvtp .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3699,7 +3699,7 @@ With baseline CVD
   border-bottom-color: #D3D3D3;
 }
 
-#pbjomlpvvm .gt_grand_summary_row {
+#kfwzzmsvtp .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3709,7 +3709,7 @@ With baseline CVD
   padding-right: 5px;
 }
 
-#pbjomlpvvm .gt_first_grand_summary_row {
+#kfwzzmsvtp .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3719,7 +3719,7 @@ With baseline CVD
   border-top-color: #D3D3D3;
 }
 
-#pbjomlpvvm .gt_last_grand_summary_row_top {
+#kfwzzmsvtp .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3729,11 +3729,11 @@ With baseline CVD
   border-bottom-color: #D3D3D3;
 }
 
-#pbjomlpvvm .gt_striped {
+#kfwzzmsvtp .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#pbjomlpvvm .gt_table_body {
+#kfwzzmsvtp .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -3742,7 +3742,7 @@ With baseline CVD
   border-bottom-color: #D3D3D3;
 }
 
-#pbjomlpvvm .gt_footnotes {
+#kfwzzmsvtp .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3756,7 +3756,7 @@ With baseline CVD
   border-right-color: #D3D3D3;
 }
 
-#pbjomlpvvm .gt_footnote {
+#kfwzzmsvtp .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -3765,7 +3765,7 @@ With baseline CVD
   padding-right: 5px;
 }
 
-#pbjomlpvvm .gt_sourcenotes {
+#kfwzzmsvtp .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3779,7 +3779,7 @@ With baseline CVD
   border-right-color: #D3D3D3;
 }
 
-#pbjomlpvvm .gt_sourcenote {
+#kfwzzmsvtp .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -3787,72 +3787,72 @@ With baseline CVD
   padding-right: 5px;
 }
 
-#pbjomlpvvm .gt_left {
+#kfwzzmsvtp .gt_left {
   text-align: left;
 }
 
-#pbjomlpvvm .gt_center {
+#kfwzzmsvtp .gt_center {
   text-align: center;
 }
 
-#pbjomlpvvm .gt_right {
+#kfwzzmsvtp .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#pbjomlpvvm .gt_font_normal {
+#kfwzzmsvtp .gt_font_normal {
   font-weight: normal;
 }
 
-#pbjomlpvvm .gt_font_bold {
+#kfwzzmsvtp .gt_font_bold {
   font-weight: bold;
 }
 
-#pbjomlpvvm .gt_font_italic {
+#kfwzzmsvtp .gt_font_italic {
   font-style: italic;
 }
 
-#pbjomlpvvm .gt_super {
+#kfwzzmsvtp .gt_super {
   font-size: 65%;
 }
 
-#pbjomlpvvm .gt_footnote_marks {
+#kfwzzmsvtp .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#pbjomlpvvm .gt_asterisk {
+#kfwzzmsvtp .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#pbjomlpvvm .gt_indent_1 {
+#kfwzzmsvtp .gt_indent_1 {
   text-indent: 5px;
 }
 
-#pbjomlpvvm .gt_indent_2 {
+#kfwzzmsvtp .gt_indent_2 {
   text-indent: 10px;
 }
 
-#pbjomlpvvm .gt_indent_3 {
+#kfwzzmsvtp .gt_indent_3 {
   text-indent: 15px;
 }
 
-#pbjomlpvvm .gt_indent_4 {
+#kfwzzmsvtp .gt_indent_4 {
   text-indent: 20px;
 }
 
-#pbjomlpvvm .gt_indent_5 {
+#kfwzzmsvtp .gt_indent_5 {
   text-indent: 25px;
 }
 
-#pbjomlpvvm .katex-display {
+#kfwzzmsvtp .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#pbjomlpvvm div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#kfwzzmsvtp div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -3888,12 +3888,12 @@ With baseline CVD
 </thead>
 <tbody class="gt_table_body">
 <tr class="odd">
-<td class="gt_row gt_left" headers="label">vpa_r</td>
-<td class="gt_row gt_center" headers="estimate_1">0.38</td>
-<td class="gt_row gt_center" headers="conf.low_1">0.26, 0.52</td>
+<td class="gt_row gt_left" headers="label">vpa_t</td>
+<td class="gt_row gt_center" headers="estimate_1">0.87</td>
+<td class="gt_row gt_center" headers="conf.low_1">0.82, 0.93</td>
 <td class="gt_row gt_center" headers="p.value_1">&lt;0.001</td>
-<td class="gt_row gt_center" headers="estimate_2">0.41</td>
-<td class="gt_row gt_center" headers="conf.low_2">0.29, 0.56</td>
+<td class="gt_row gt_center" headers="estimate_2">0.89</td>
+<td class="gt_row gt_center" headers="conf.low_2">0.83, 0.94</td>
 <td class="gt_row gt_center" headers="p.value_2">&lt;0.001</td>
 </tr>
 <tr class="even">
@@ -3934,7 +3934,7 @@ With baseline CVD
 <tr class="odd">
 <td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;Female</td>
 <td class="gt_row gt_center" headers="estimate_1">0.58</td>
-<td class="gt_row gt_center" headers="conf.low_1">0.52, 0.65</td>
+<td class="gt_row gt_center" headers="conf.low_1">0.52, 0.64</td>
 <td class="gt_row gt_center" headers="p.value_1">&lt;0.001</td>
 <td class="gt_row gt_center" headers="estimate_2">0.61</td>
 <td class="gt_row gt_center" headers="conf.low_2">0.55, 0.68</td>
@@ -3968,21 +3968,21 @@ With baseline CVD
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;High school graduate</td>
-<td class="gt_row gt_center" headers="estimate_1">0.94</td>
-<td class="gt_row gt_center" headers="conf.low_1">0.82, 1.07</td>
-<td class="gt_row gt_center" headers="p.value_1">0.4</td>
+<td class="gt_row gt_center" headers="estimate_1">0.93</td>
+<td class="gt_row gt_center" headers="conf.low_1">0.81, 1.07</td>
+<td class="gt_row gt_center" headers="p.value_1">0.3</td>
 <td class="gt_row gt_center" headers="estimate_2">0.94</td>
 <td class="gt_row gt_center" headers="conf.low_2">0.82, 1.08</td>
 <td class="gt_row gt_center" headers="p.value_2">0.4</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;Above high school</td>
-<td class="gt_row gt_center" headers="estimate_1">0.79</td>
-<td class="gt_row gt_center" headers="conf.low_1">0.70, 0.89</td>
+<td class="gt_row gt_center" headers="estimate_1">0.75</td>
+<td class="gt_row gt_center" headers="conf.low_1">0.67, 0.85</td>
 <td class="gt_row gt_center" headers="p.value_1">&lt;0.001</td>
-<td class="gt_row gt_center" headers="estimate_2">0.82</td>
-<td class="gt_row gt_center" headers="conf.low_2">0.73, 0.93</td>
-<td class="gt_row gt_center" headers="p.value_2">0.002</td>
+<td class="gt_row gt_center" headers="estimate_2">0.79</td>
+<td class="gt_row gt_center" headers="conf.low_2">0.70, 0.89</td>
+<td class="gt_row gt_center" headers="p.value_2">&lt;0.001</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="label">blm.cvd</td>
@@ -4020,8 +4020,8 @@ With baseline CVD
 </td>
 <td class="gt_row gt_center" headers="p.value_1"><br>
 </td>
-<td class="gt_row gt_center" headers="estimate_2">2.34</td>
-<td class="gt_row gt_center" headers="conf.low_2">2.05, 2.68</td>
+<td class="gt_row gt_center" headers="estimate_2">2.35</td>
+<td class="gt_row gt_center" headers="conf.low_2">2.06, 2.69</td>
 <td class="gt_row gt_center" headers="p.value_2">&lt;0.001</td>
 </tr>
 </tbody><tfoot>
@@ -4035,10 +4035,10 @@ With baseline CVD
 </div>
 </div>
 </div>
-<p>The odds ratio for <code>vpa_r</code> moves a little between the two models: 0.376 (95% CI 0.264 to 0.520, p &lt; 0.001) without <code>blm.cvd</code>, and 0.409 (95% CI 0.289 to 0.564, p &lt; 0.001) with it. That’s a smaller shift than the main adjustment step but still a real one. Without <code>blm.cvd</code>, the model assumes that any relationship between baseline CVD and mortality operates entirely through the predictors already in the model; with it, the model assumes <code>blm.cvd</code> is a separate cause of death, worth adjusting for directly. Both are defensible readings of a single measurement taken at one study visit, and nothing in this dataset can say which one is correct.</p>
+<p>The odds ratio for <code>vpa_t</code> moves a little between the two models: 0.871 (95% CI 0.817 to 0.926, p &lt; 0.001) without <code>blm.cvd</code>, and 0.887 (95% CI 0.831 to 0.942, p &lt; 0.001) with it. That’s a smaller shift than the main adjustment step but still a real one. Without <code>blm.cvd</code>, the model assumes that any relationship between baseline CVD and mortality operates entirely through the predictors already in the model; with it, the model assumes <code>blm.cvd</code> is a separate cause of death, worth adjusting for directly. Both are defensible readings of a single measurement taken at one study visit, and nothing in this dataset can say which one is correct.</p>
 <p><strong>Writing exercise (sample answer)</strong></p>
-<p>Sedentary time was associated with total cholesterol after adjustment for age, gender, and education (slope -0.00113 mmol/L per hour/day, 95% CI -0.00224 to -0.00002, p = 0.047), and with higher odds of ten-year all-cause mortality (adjusted odds ratio 1.020, 95% CI 1.013 to 1.028, p &lt; 0.001). Both estimates adjust only for the variables included in this model; they cannot rule out confounding by factors that were never measured, such as overall frailty or comorbidity not captured here.</p>
-<p>In a sensitivity analysis, the adjusted odds ratio for sedentary time and ten-year mortality was 1.020 (95% CI 1.013 to 1.028) without baseline cardiovascular disease in the model, and 1.019 (95% CI 1.012 to 1.026) with it included. The first model assumes baseline CVD’s influence on mortality runs entirely through the other adjustment variables; the second treats it as an independent contributor to mortality risk worth adjusting for directly. Because sedentary behaviour and baseline CVD were both measured at the same study visit, this dataset cannot establish which assumption is correct, and both estimates are reported for that reason.</p>
+<p>Sedentary time was associated with total cholesterol after adjustment for age, gender, and education (slope -0.00113 mmol/L per hour/day, 95% CI -0.00224 to -0.00002 mmol/L per hour/day, p = 0.047), and with higher odds of ten-year all-cause mortality (adjusted odds ratio 1.020, 95% CI 1.013 to 1.028, p &lt; 0.001). Both estimates adjust only for the variables included in this model; they cannot rule out confounding by factors that were never measured, such as overall frailty or comorbidity not captured here.</p>
+<p>In a sensitivity analysis, the adjusted odds ratio for sedentary time and ten-year mortality was 1.020 (95% CI 1.013 to 1.028, p &lt; 0.001) without baseline cardiovascular disease in the model, and 1.019 (95% CI 1.012 to 1.026, p &lt; 0.001) with it included. The first model assumes baseline CVD’s influence on mortality runs entirely through the other adjustment variables; the second treats it as an independent contributor to mortality risk worth adjusting for directly. Because sedentary behaviour and baseline CVD were both measured at the same study visit, this dataset cannot establish which assumption is correct, and both estimates are reported for that reason.</p>
 </div>
 </div>
 </div>

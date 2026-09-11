@@ -29,7 +29,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="week08-estimation_files/libs/revealjs/dist/theme/quarto-de71c547d836d28c07b4ee245dbe4ea7.css">
+  <link rel="stylesheet" href="week08-estimation_files/libs/revealjs/dist/theme/quarto-06693500982578d0365e8df12cd39430.css">
   <link href="week08-estimation_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="week08-estimation_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="week08-estimation_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -149,7 +149,7 @@ Fred Ho
 <ul>
 <li><strong>Weeks 1 and 5.</strong> External validity and selection bias. This week adds another source of problem: sampling variation, precision instead of bias and validity</li>
 <li><strong>Week 2.</strong> Risk, odds, RR and OR calculated as point estimates. This week calculates also the confidence as well as that for a difference in proportions</li>
-<li><strong>Week 3.</strong> Underpower was discussed and this week defines it statistically and does the sample size arithmetic</li>
+<li><strong>Week 3.</strong> Underpower was discussed. This week does the sample size arithmetic behind it, and Week 9 returns to define power itself</li>
 </ul></li>
 </ul>
 </section>
@@ -161,12 +161,11 @@ Fred Ho
 <li>Distinguish the standard deviation from the standard error, and calculate the standard error of a mean and of a proportion</li>
 <li>Construct a 95% confidence interval for a mean, a proportion, a difference in means, and a difference in proportions</li>
 <li>Interpret a confidence interval correctly, and identify the common misinterpretation</li>
-<li>Explain how sample size, variability, and effect size jointly determine an estimate’s precision, and calculate an approximate sample size for a two-group comparison, explaining why post-hoc power is uninformative</li>
+<li>Explain how sample size and variability jointly determine an estimate’s precision, and calculate the sample size a target margin of error requires</li>
 </ul>
 </section>
 <section id="block-1-estimation-and-the-confidence-interval" class="slide level2 divider" data-background-image="assets/skyline.jpg" data-background-size="cover">
 <h2>Block 1: estimation and the confidence interval</h2>
-<p>Building an interval, then saying what it means</p>
 </section>
 <section id="a-different-34434-people" class="slide level2 smaller">
 <h2>A different 34,434 people</h2>
@@ -186,10 +185,7 @@ Fred Ho
 <h2>Population and sample</h2>
 <ul>
 <li>The <strong>population</strong> is what we want to measure (e.g., UK general population, type 2 diabetes patients)</li>
-<li>The <strong>sample</strong> is what we can measure, usually a subset of the target population</li>
-</ul>
-<p>&nbsp;</p>
-<ul>
+<li>The <strong>sample</strong> is what we can measure, usually a subset of the target population<span class="gap"></span></li>
 <li>We must compute statistics from the sample</li>
 <li>But what we want to say is about the population</li>
 </ul>
@@ -206,11 +202,8 @@ Fred Ho
 </ul></li>
 <li>The <strong>estimate</strong>: one particular result the estimator produced
 <ul>
-<li>It is ‘realised’ (i.e.&nbsp;occurred), so it is fixed</li>
+<li>It is ‘realised’ (i.e., occurred), so it is fixed<span class="gap"></span></li>
 </ul></li>
-</ul>
-<p>&nbsp;</p>
-<ul>
 <li>Abstract, but it is the foundation for how we define precision</li>
 </ul>
 </div><div class="column" style="width:58%;">
@@ -493,10 +486,7 @@ Reset
 <li>At n = 1, three in four flips land at 0</li>
 </ul></li>
 <li>Move up through n = 1, 5, 10, 30, 100, for either coin</li>
-<li>The sample mean’s own distribution drifts toward a bell shape</li>
-</ul>
-<p>&nbsp;</p>
-<ul>
+<li>The sample mean’s own distribution drifts toward a bell shape<span class="gap"></span></li>
 <li><strong>The data does not have to be normal.</strong> Skewed data still end up with a bell-shaped sampling distribution, only with a larger n needed to get there than a symmetric parent needs</li>
 <li>The skewed case that matters for this course is <code>sed</code>, right-skewed, in Chapter 4, which refers back to what this seminar showed</li>
 </ul>
@@ -507,11 +497,8 @@ Reset
 <li>The distribution of the sample mean approaches a normal distribution as n grows</li>
 <li>It applies no matter the shape of the underlying data
 <ul>
-<li>If the data is highly skewed, a larger sample is needed for the sample mean to follow a normal distribution approximately</li>
+<li>If the data is highly skewed, a larger sample is needed for the sample mean to follow a normal distribution approximately<span class="gap"></span></li>
 </ul></li>
-</ul>
-<p>&nbsp;</p>
-<ul>
 <li>Textbooks often suggest rules of thumb, e.g., n ≥ 30, for the CLT to hold</li>
 <li>Reality is more complicated
 <ul>
@@ -529,9 +516,8 @@ Reset
 <li>Its centre is the sample mean</li>
 <li>Its spread is the <strong>standard error (SE)</strong></li>
 </ul></li>
-<li>The SD describes the data</li>
-<li>The SE describes the estimator</li>
-<li>To quantify precision, we need the SE</li>
+<li>The SD describes the data; the SE describes the estimator</li>
+<li>To quantify the precision, we need the SE</li>
 </ul>
 <p><span class="math display">\[SE = \frac{SD}{\sqrt{n}}\]</span></p>
 <ul>
@@ -542,9 +528,11 @@ Reset
 <h2>Try it: SD or SE?</h2>
 <ul>
 <li>Sedentary time: mean 6.56 hours/day, SD 10.9 hours/day, SE 0.06 hours/day (n = 34,434)</li>
-<li>Which number says how much individual people’s sedentary time differs from person to person?</li>
+<li>Which number says how much individual people’s sedentary time differs from person to person?
+<ul>
 <li><strong>A.</strong> The SD, 10.9 hours/day</li>
 <li><strong>B.</strong> The SE, 0.06 hours/day</li>
+</ul></li>
 <li>Discuss in pairs: what does the other number tell us instead?</li>
 </ul>
 </section>
@@ -1038,9 +1026,9 @@ Reset
 <li>Everything above, the sampling distribution and the SE, exists to build a confidence interval (CI)</li>
 <li>A CI attaches precision to the sampling process
 <ul>
-<li>It is why a result is reported as a range</li>
-<li>It is built from the standard error</li>
-<li>Its width is the margin of error, the amount of imprecision from sample to sample</li>
+<li>Always reported as a range</li>
+<li>Built from the standard error</li>
+<li>Its width is the margin of error</li>
 </ul></li>
 <li>In its simplest form, a 95% CI is calculated as:
 <ul>
@@ -1048,17 +1036,20 @@ Reset
 </ul></li>
 </ul>
 </section>
-<section id="why-1.96-and-when-t-replaces-it" class="slide level2 smaller">
-<h2>Why 1.96, and when t replaces it</h2>
+<section id="why-95-and-1.96-and-when-t-replaces-it" class="slide level2 smaller">
+<h2>Why 95% and 1.96, and when t replaces it</h2>
 <div class="columns">
 <div class="column" style="width:52%;">
 <ul>
-<li>1.96 comes from the normal distribution the CLT delivers</li>
-<li>It is tied to the ‘95% confidence level’ (‘5% significance level’)</li>
-<li>‘95%’ / ‘5%’ are just convention, rarely changed</li>
-<li>With a small sample we do not know the SD; we estimate it from the sample itself</li>
-<li>The t distribution allows for that extra uncertainty
+<li>CIs are mostly reported as ‘95% CI’
 <ul>
+<li>95% confidence level, or equivalently 5% (1-0.95) significance level</li>
+<li>The confidence/significance level is almost always fixed at this arbitrary level</li>
+<li>1.96 comes from the normal distribution the CLT delivers</li>
+</ul></li>
+<li>With a small sample, we are less certain about our SD estimate
+<ul>
+<li>The t distribution allows for that extra uncertainty</li>
 <li>Same bell shape, heavier tails</li>
 <li>Bigger than 1.96, growing as n shrinks</li>
 <li>At n = 10 it is about 2.26. At n = 30, about 2.05</li>
@@ -2053,11 +2044,12 @@ Reset
 <section id="a-range-of-compatibility" class="slide level2 smaller">
 <h2>A range of compatibility</h2>
 <ul>
-<li>A CI is not a single verdict about one number</li>
-<li>Every value inside a CI is a value the data are reasonably compatible with</li>
-<li>Every value outside it is one the data sit poorly with</li>
+<li>A CI is not a single verdict about one number
+<ul>
+<li>Any value inside a CI is compatible with the data</li>
+</ul></li>
 <li>6.45 to 6.68 hours/day says a population mean of 6.5 is compatible with what we saw, and so is 6.6. A mean of 7.2 is not</li>
-<li>Compatibility is a matter of degree, not a line: values near the middle sit better than values near the ends</li>
+<li>Compatibility is a matter of degree: values near the middle sit better than values near the ends</li>
 <li>This is what makes a CI more informative than any test that only presents a p-value, which Week 9 covers</li>
 </ul>
 </section>
@@ -2068,14 +2060,20 @@ Reset
 <li>The population value is fixed. It is the <em>CI</em> that moves from sample to sample</li>
 <li>This is counterintuitive, and it is why the result gets misinterpreted so often</li>
 <li>It comes from what is called <strong>frequentist statistics</strong>, which is easier to compute</li>
-<li>An alternative, <strong>credible intervals</strong> from Bayesian statistics, is more intuitive to interpret but harder to compute</li>
+<li>An alternative, <strong>credible intervals</strong> from Bayesian statistics, are more intuitive to interpret but harder to compute
+<ul>
+<li>We won’t be learning this in the MPH</li>
+</ul></li>
 </ul>
 </section>
 <section id="seeing-coverage" class="slide level2 smaller">
 <h2>Seeing coverage</h2>
 <ul>
-<li>Each click draws 1000 fresh 95% CIs against the true mean (navy line); navy bars miss it</li>
-<li>Excludes 145 physically impossible values (over 24 hours/day). True mean here is 5.89 hours/day, not the 6.56 used elsewhere</li>
+<li>Below is a simulator for 95% CIs on <code>sed</code>
+<ul>
+<li>Excludes 145 physically impossible values (over 24 hours/day), so the true mean here is 5.89 hours/day, not the 6.56 used elsewhere in this deck</li>
+<li>Each click draws 1,000 95% CIs against the true mean (navy line)</li>
+</ul></li>
 </ul>
 <div id="coverage-widget" style="text-align:center;">
 <svg id="coverage-svg" width="900" height="330" style="max-width:100%;">
@@ -2174,29 +2172,34 @@ New sample
 <section id="try-it-is-this-interpretation-sound" class="slide level2">
 <h2>Try it: is this interpretation sound?</h2>
 <ul>
-<li>The sedentary-time CI: 6.45 to 6.68 hours/day</li>
-<li><strong>A.</strong> ‘We are 95% confident the true mean lies in this range’</li>
-<li><strong>B.</strong> ‘There is a 95% probability the true mean lies in this range’</li>
+<li>The sedentary time CI: 6.45 to 6.68 hours/day
+<ul>
+<li><strong>A.</strong> ‘There is a 95% probability the true mean lies in this range’</li>
+<li><strong>B.</strong> ‘We are 95% confident the true mean lies in this range’</li>
 <li><strong>C.</strong> ‘If we repeated this study many times, 95% of the resulting CIs would contain the true mean’</li>
+</ul></li>
 <li>Which are wrong, and what exactly is wrong with each?</li>
 </ul>
 </section>
 <section id="try-it-the-answer-1" class="slide level2">
 <h2>Try it: the answer</h2>
 <ul>
-<li><strong>A. Wrong</strong>, despite sounding careful: ‘confident’ is standing in for ‘probability’, the same error as B</li>
-<li><strong>B. Wrong</strong>: the true mean is not a random variable with a 95% chance of falling anywhere. It is fixed</li>
-<li><strong>C. Right</strong>: the coverage statement, about the procedure across repeated samples, not about this one CI</li>
-<li>Keep C’s wording. It is the one worth writing on an exam</li>
+<li><strong>A. Wrong</strong>: both the 95% CI and the true mean are fixed</li>
+<li><strong>B. Wrong</strong>: despite sounding careful, ‘confident’ is standing in for ‘probability’, the same error as A</li>
+<li><strong>C. Right</strong>: the coverage statement about the procedure across repeated samples, not about this one CI; doesn’t assume the true mean or the CI to be random</li>
 </ul>
 </section>
 <section id="a-common-misconception" class="slide level2 smaller">
 <h2>A common misconception</h2>
 <ul>
-<li>The intuitive objection behind A and B: if 95% of all such CIs cover the true value, surely this one has a 95% chance of covering it too?</li>
-<li>It does not. The population mean is fixed, and this one CI either contains it or does not. Once both are fixed, there is no probability left in the situation</li>
-<li>The practical way to avoid the confusion: write the result and let it stand, with no probability sentence attached
+<li>The intuitive objection behind A and B: if 95% of all such CIs cover the true value, surely this one has a 95% chance of covering it too?
 <ul>
+<li>It does not. The population mean is fixed, and this one CI either contains it or does not</li>
+<li>Once both are fixed, there is no probability left in the situation<span class="gap"></span></li>
+</ul></li>
+<li>The correct interpretation (Answer C) is awkward to say
+<ul>
+<li>So the practical way to avoid the confusion is to write the result and let it stand, with no probability sentence attached</li>
 <li>6.56 hours/day (95% CI: 6.45 to 6.68)</li>
 </ul></li>
 </ul>
@@ -2223,17 +2226,15 @@ New sample
 <section id="a-proportion-is-a-mean-too" class="slide level2 smaller">
 <h2>A proportion is a mean too</h2>
 <ul>
-<li>We work with a lot of binary data in public health, e.g., whether someone died</li>
+<li>Everything above focused on continuous data; we also work with a lot of binary data in public health, e.g., whether someone died</li>
 <li>Binary data are often summarised as a proportion</li>
 <li><strong>A proportion is a sample mean</strong>
 <ul>
 <li>Code the outcome 1 for everyone who has it, 0 for everyone who does not</li>
 <li>The proportion with the outcome is exactly the mean of that column of 0s and 1s</li>
-<li>Example:
+<li>Example: 3 of 5 patients improved, so the column is 1, 1, 1, 0, 0
 <ul>
-<li>3 of 5 patients improved</li>
-<li>The column is 1, 1, 1, 0, 0,</li>
-<li>its mean is 0.6, which is also the proportion: 60% (3/5)</li>
+<li>Its mean is 0.6, which is also the proportion: 60% (3/5)</li>
 </ul></li>
 </ul></li>
 <li>The CLT applies to proportions for the same reason it applies to any other mean</li>
@@ -2253,8 +2254,8 @@ New sample
 <li>The formal name of the distribution of a binary variable is <strong>binomial distribution</strong></li>
 <li>Like the normal distribution, the binomial distribution is also characterised by two numbers only:
 <ul>
-<li>The number of trials</li>
-<li>The proportion with the event</li>
+<li>The number of observations (i.e., sample size, <em>n</em>)</li>
+<li>The proportion with the event (<em>p</em>)</li>
 </ul></li>
 </ul>
 </section>
@@ -3217,18 +3218,17 @@ New sample
 <ul>
 <li>0.514 ± 1.96 × 0.0483</li>
 <li>0.419 to 0.609</li>
-<li>Everything above about compatibility and interpretation applies here too: a proportion’s CI is read the same way</li>
+<li>Everything above about compatibility and interpretation applies here too</li>
 </ul>
 </section>
 <section id="block-2-comparing-two-groups" class="slide level2 divider" data-background-image="assets/skyline.jpg" data-background-size="cover">
 <h2>Block 2: comparing two groups</h2>
-<p>CIs of a difference of two means</p>
 </section>
 <section id="one-mean-is-rarely-the-question" class="slide level2">
 <h2>One mean is rarely the question</h2>
 <ul>
-<li>We can put a CI round one mean, the basis of a descriptive study</li>
-<li>The analytic studies make comparisons: men against women, treated against untreated</li>
+<li>We can put a CI around one mean, the basis of a descriptive study</li>
+<li>Analytic studies make comparisons: men against women, treated against untreated</li>
 <li>In these cases, we are interested in the differences and ratios between these means</li>
 </ul>
 </section>
@@ -3246,7 +3246,7 @@ New sample
 </ul></li>
 <li>Since the difference is approximately normal, it takes the same estimate ± 1.96 SE calculation as before
 <ul>
-<li>Hand-calculating the CI of a difference or a ratio is outside the scope of the MPH, and rests on a more complex formula</li>
+<li>Hand-calculating the CI of a difference or a ratio is outside the scope of the MPH, and rests on more complex formulae</li>
 <li>We will learn how to do it in R, and how to interpret the result</li>
 </ul></li>
 </ul>
@@ -3736,10 +3736,11 @@ New sample
 <ul>
 <li>Same argument as the difference in means, with one qualification
 <ul>
-<li>For a proportion the normal shape is an approximation, not an exact consequence, since the underlying variable takes only two values</li>
-<li>The approximation is good when both groups have a reasonable number of events <strong>and</strong> non-events</li>
+<li>For a proportion the normal shape is an approximation</li>
+<li>The approximation won’t be as good as when the underlying data is continuous</li>
+<li>Good enough when both groups have a reasonable number of events <strong>and</strong> non-events</li>
 </ul></li>
-<li>Exact methods exist for when it is small (more in the labs)</li>
+<li>Exact methods exist for when either count is small (more in the labs)</li>
 </ul>
 </section>
 <section id="streptomycin-69-against-33-improved" class="slide level2">
@@ -4202,7 +4203,6 @@ New sample
 <th id="Quantity" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Quantity</th>
 <th id="Estimate" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Estimate</th>
 <th id="a95%-CI" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">95% CI</th>
-<th id="p" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">p</th>
 </tr>
 </thead>
 <tbody class="gt_table_body">
@@ -4210,7 +4210,6 @@ New sample
 <td class="gt_row gt_left" headers="Quantity">Improved, streptomycin minus control</td>
 <td class="gt_row gt_right" headers="Estimate">0.364</td>
 <td class="gt_row gt_left" headers="95% CI">0.169 to 0.559</td>
-<td class="gt_row gt_left" headers="p">&lt; 0.001</td>
 </tr>
 </tbody>
 </table>
@@ -4228,13 +4227,6 @@ New sample
 <li>This CI excludes zero</li>
 <li>Zero is not among the values these data are compatible with</li>
 <li>People often read this as a ‘real’ difference, and Week 9 will introduce this more formally</li>
-</ul>
-</section>
-<section id="when-the-approximation-breaks-down" class="slide level2">
-<h2>When the approximation breaks down</h2>
-<ul>
-<li>The approximations above hold when the counts are not tiny, the same qualification from the difference-in-proportions slide</li>
-<li>Exact methods exist for when they are. R has both, and the lab shows which function to reach for</li>
 </ul>
 </section>
 <section id="try-it-a-ci-for-a-difference-in-proportions" class="slide level2">
@@ -4712,8 +4704,7 @@ New sample
 </div>
 </div>
 <ul>
-<li>Given the difference and its SE above, find the 95% CI, and say whether it is compatible with no difference at all</li>
-<li>Two steps, phone-feasible</li>
+<li>Given the difference and its SE above, find the 95% CI</li>
 </ul>
 </section>
 <section id="try-it-the-answer-2" class="slide level2">
@@ -4726,7 +4717,6 @@ New sample
 </section>
 <section id="block-3-how-big-a-study-needs-to-be" class="slide level2 divider" data-background-image="assets/skyline.jpg" data-background-size="cover">
 <h2>Block 3: how big a study needs to be</h2>
-<p>Turning a wanted precision into a required n</p>
 </section>
 <section id="before-any-comparison-runs" class="slide level2">
 <h2>Before any comparison runs</h2>
@@ -4740,19 +4730,13 @@ New sample
 <h2>What determines the margin of error?</h2>
 <ul>
 <li>In polling, people sample based on their desired margin of error</li>
-<li>The same for descriptive epidemiological studies</li>
-</ul>
-<p>&nbsp;</p>
-<ul>
-<li>Three things decide a margin of error (i.e.&nbsp;CI’s width)
+<li>The same for descriptive epidemiological studies<span class="gap"></span></li>
+<li>Three things decide a margin of error (i.e., CI’s width)
 <ol type="1">
-<li>How much confidence is being claimed (‘95%’)</li>
+<li>How much confidence is required (‘95%’)</li>
 <li>How variable the data are (SD)</li>
-<li>How many observations there are (n)</li>
+<li>How many observations there are (n)<span class="gap"></span></li>
 </ol></li>
-</ul>
-<p>&nbsp;</p>
-<ul>
 <li>1 is usually fixed; 2 is based on the measurement; 3 is often what people try to determine</li>
 </ul>
 </section>
@@ -4760,39 +4744,59 @@ New sample
 <h2>Width and the square root of n</h2>
 
 <img data-src="week08-estimation_files/figure-revealjs/width-curve-1.png" width="768" class="r-stretch"><ul>
-<li>The width shrinks with one over the square root of n: steeply at first, then flattening</li>
+<li>The CI width shrinks with one over the square root of n: steeply at first, then flattening</li>
 <li>Cut the sample in half, the CI gets about 40% wider. Cut it to a tenth, roughly three times wider</li>
 </ul>
 </section>
-<section id="from-precision-to-sample-size" class="slide level2">
+<section id="from-precision-to-sample-size" class="slide level2 smaller">
 <h2>From precision to sample size</h2>
 <ul>
-<li>Four linked quantities
+<li>Three linked quantities
 <ul>
-<li>The effect size worth detecting (i.e.&nbsp;how big the difference between two proportions?)</li>
-<li>The variability (i.e.&nbsp;how noisy the measurement is?)</li>
+<li>The wanted margin of error</li>
+<li>The expected data spread (i.e., how noisy the measurement is)</li>
 <li>The sample size</li>
-<li>The power</li>
 </ul></li>
-<li>Fix any three, and the fourth follows</li>
+<li>Fix the first two, and the formula gives the third</li>
+</ul>
+<p><span class="math display">\[n = \frac{1.96^2 \times p(1-p)}{m^2}\]</span></p>
+<ul>
+<li><em>m</em> is the wanted margin of error, half the CI’s width</li>
+<li><em>p</em> is the expected proportion, playing the same role the SD plays for a mean</li>
+<li><em>m</em> is squared, so it dominates: halve the margin, and n roughly quadruples</li>
 </ul>
 </section>
-<section id="statistical-power" class="slide level2 smaller">
-<h2>Statistical power</h2>
+<section id="try-it-how-does-n-respond" class="slide level2">
+<h2>Try it: how does n respond?</h2>
 <ul>
-<li><strong>Power</strong>: the probability of detecting an effect of a given size, if it is really there</li>
-<li>Power rises with a larger effect to detect, a bigger sample, or less variable data</li>
-<li>Power falls when a stricter significance level is demanded (Week 9 formalises this 5% threshold)</li>
-</ul>
-<p><span class="math display">\[n \approx \frac{7.8 \times [p_1(1-p_1) + p_2(1-p_2)]}{(p_1 - p_2)^2}\]</span></p>
+<li>A poll wants to estimate a proportion around p = 0.5, with a 95% CI</li>
+<li>At a margin of error of 3 percentage points (m = 0.03), the formula above gives n ≈ 1,067</li>
+<li>Tightening the margin to 1.5 percentage points (m = 0.015) multiplies n by about how much?
 <ul>
-<li>7.8 is what 80% power at the 5% significance level costs</li>
-<li>The top is the variability in the two arms being compared; the same slot holds the two SDs, squared, when comparing means instead of proportions</li>
-<li>The bottom is the difference we want to detect, squared, so it moves n harder than anything else: halve it, and n roughly quadruples</li>
+<li><strong>A.</strong> 2x</li>
+<li><strong>B.</strong> 4x</li>
+<li><strong>C.</strong> 10x</li>
+</ul></li>
+<li>Two minutes</li>
 </ul>
 </section>
-<section id="how-many-per-arm" class="slide level2">
-<h2>How many per arm?</h2>
+<section id="try-it-the-answer-3" class="slide level2">
+<h2>Try it: the answer</h2>
+<ul>
+<li><strong>B.</strong> About 4x</li>
+<li>Halving m halves the bottom of a squared term, so the whole fraction roughly quadruples: n ≈ 4,268</li>
+<li>The same square-root relationship as the width curve, read the other way round</li>
+</ul>
+</section>
+<section id="application" class="slide level2 divider" data-background-image="assets/skyline.jpg" data-background-size="cover">
+<h2>Application</h2>
+</section>
+<section id="three-claims-three-cis" class="slide level2 smaller">
+<h2>Three claims, three CIs</h2>
+<ul>
+<li>Each result below is real: the paper’s own reported statistic, and its own conclusion, quoted exactly, with a link to the paper</li>
+<li>In pairs: does each sentence say what the CI supports? Where it does not, what would you write instead? Ten minutes</li>
+</ul>
 <div class="cell">
 <div class="cell-output-display">
 <div id="jlckskuoqy" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
@@ -4818,7 +4822,7 @@ New sample
   margin-left: auto;
   margin-right: auto;
   color: #333333;
-  font-size: 16px;
+  font-size: 17px;
   font-weight: normal;
   font-style: normal;
   background-color: #FFFFFF;
@@ -5241,1035 +5245,6 @@ New sample
 }
 
 #jlckskuoqy div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
-  height: 0px !important;
-}
-</style>
-
-<table class="gt_table caption-top" data-quarto-bootstrap="false">
-<thead>
-<tr class="gt_col_headings header">
-<th id="Proportion,-control-arm" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Proportion, control arm</th>
-<th id="Proportion,-treatment-arm" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Proportion, treatment arm</th>
-<th id="n-per-arm" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">n per arm</th>
-</tr>
-</thead>
-<tbody class="gt_table_body">
-<tr class="odd">
-<td class="gt_row gt_right" headers="Proportion, control arm">0.33</td>
-<td class="gt_row gt_right" headers="Proportion, treatment arm">0.69</td>
-<td class="gt_row gt_right" headers="n per arm">29</td>
-</tr>
-</tbody>
-</table>
-
-</div>
-</div>
-</div>
-<ul>
-<li>For a difference the size of streptomycin’s, about 29 patients per arm</li>
-</ul>
-</section>
-<section id="try-it-which-change-moves-n-the-most" class="slide level2">
-<h2>Try it: which change moves n the most?</h2>
-<div class="cell">
-<div class="cell-output-display">
-<div id="iaerejbeie" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#iaerejbeie table {
-  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-#iaerejbeie thead, #iaerejbeie tbody, #iaerejbeie tfoot, #iaerejbeie tr, #iaerejbeie td, #iaerejbeie th {
-  border-style: none;
-}
-
-#iaerejbeie p {
-  margin: 0;
-  padding: 0;
-}
-
-#iaerejbeie .gt_table {
-  display: table;
-  border-collapse: collapse;
-  line-height: normal;
-  margin-left: auto;
-  margin-right: auto;
-  color: #333333;
-  font-size: 16px;
-  font-weight: normal;
-  font-style: normal;
-  background-color: #FFFFFF;
-  width: auto;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #A8A8A8;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #A8A8A8;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-}
-
-#iaerejbeie .gt_caption {
-  padding-top: 4px;
-  padding-bottom: 4px;
-}
-
-#iaerejbeie .gt_title {
-  color: #333333;
-  font-size: 125%;
-  font-weight: initial;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-color: #FFFFFF;
-  border-bottom-width: 0;
-}
-
-#iaerejbeie .gt_subtitle {
-  color: #333333;
-  font-size: 85%;
-  font-weight: initial;
-  padding-top: 3px;
-  padding-bottom: 5px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-top-color: #FFFFFF;
-  border-top-width: 0;
-}
-
-#iaerejbeie .gt_heading {
-  background-color: #FFFFFF;
-  text-align: center;
-  border-bottom-color: #FFFFFF;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#iaerejbeie .gt_bottom_border {
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#iaerejbeie .gt_col_headings {
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#iaerejbeie .gt_col_heading {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: normal;
-  text-transform: inherit;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: bottom;
-  padding-top: 5px;
-  padding-bottom: 6px;
-  padding-left: 5px;
-  padding-right: 5px;
-  overflow-x: hidden;
-}
-
-#iaerejbeie .gt_column_spanner_outer {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: normal;
-  text-transform: inherit;
-  padding-top: 0;
-  padding-bottom: 0;
-  padding-left: 4px;
-  padding-right: 4px;
-}
-
-#iaerejbeie .gt_column_spanner_outer:first-child {
-  padding-left: 0;
-}
-
-#iaerejbeie .gt_column_spanner_outer:last-child {
-  padding-right: 0;
-}
-
-#iaerejbeie .gt_column_spanner {
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  vertical-align: bottom;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  overflow-x: hidden;
-  display: inline-block;
-  width: 100%;
-}
-
-#iaerejbeie .gt_spanner_row {
-  border-bottom-style: hidden;
-}
-
-#iaerejbeie .gt_group_heading {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: middle;
-  text-align: left;
-}
-
-#iaerejbeie .gt_empty_group_heading {
-  padding: 0.5px;
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  vertical-align: middle;
-}
-
-#iaerejbeie .gt_from_md > :first-child {
-  margin-top: 0;
-}
-
-#iaerejbeie .gt_from_md > :last-child {
-  margin-bottom: 0;
-}
-
-#iaerejbeie .gt_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  margin: 10px;
-  border-top-style: solid;
-  border-top-width: 1px;
-  border-top-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: middle;
-  overflow-x: hidden;
-}
-
-#iaerejbeie .gt_stub {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-right-style: solid;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#iaerejbeie .gt_stub_row_group {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-right-style: solid;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  padding-left: 5px;
-  padding-right: 5px;
-  vertical-align: top;
-}
-
-#iaerejbeie .gt_row_group_first td {
-  border-top-width: 2px;
-}
-
-#iaerejbeie .gt_row_group_first th {
-  border-top-width: 2px;
-}
-
-#iaerejbeie .gt_summary_row {
-  color: #333333;
-  background-color: #FFFFFF;
-  text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#iaerejbeie .gt_first_summary_row {
-  border-top-style: solid;
-  border-top-color: #D3D3D3;
-}
-
-#iaerejbeie .gt_first_summary_row.thick {
-  border-top-width: 2px;
-}
-
-#iaerejbeie .gt_last_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#iaerejbeie .gt_grand_summary_row {
-  color: #333333;
-  background-color: #FFFFFF;
-  text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#iaerejbeie .gt_first_grand_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-top-style: double;
-  border-top-width: 6px;
-  border-top-color: #D3D3D3;
-}
-
-#iaerejbeie .gt_last_grand_summary_row_top {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-style: double;
-  border-bottom-width: 6px;
-  border-bottom-color: #D3D3D3;
-}
-
-#iaerejbeie .gt_striped {
-  background-color: rgba(128, 128, 128, 0.05);
-}
-
-#iaerejbeie .gt_table_body {
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#iaerejbeie .gt_footnotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#iaerejbeie .gt_footnote {
-  margin: 0px;
-  font-size: 90%;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#iaerejbeie .gt_sourcenotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#iaerejbeie .gt_sourcenote {
-  font-size: 90%;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#iaerejbeie .gt_left {
-  text-align: left;
-}
-
-#iaerejbeie .gt_center {
-  text-align: center;
-}
-
-#iaerejbeie .gt_right {
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-}
-
-#iaerejbeie .gt_font_normal {
-  font-weight: normal;
-}
-
-#iaerejbeie .gt_font_bold {
-  font-weight: bold;
-}
-
-#iaerejbeie .gt_font_italic {
-  font-style: italic;
-}
-
-#iaerejbeie .gt_super {
-  font-size: 65%;
-}
-
-#iaerejbeie .gt_footnote_marks {
-  font-size: 75%;
-  vertical-align: 0.4em;
-  position: initial;
-}
-
-#iaerejbeie .gt_asterisk {
-  font-size: 100%;
-  vertical-align: 0;
-}
-
-#iaerejbeie .gt_indent_1 {
-  text-indent: 5px;
-}
-
-#iaerejbeie .gt_indent_2 {
-  text-indent: 10px;
-}
-
-#iaerejbeie .gt_indent_3 {
-  text-indent: 15px;
-}
-
-#iaerejbeie .gt_indent_4 {
-  text-indent: 20px;
-}
-
-#iaerejbeie .gt_indent_5 {
-  text-indent: 25px;
-}
-
-#iaerejbeie .katex-display {
-  display: inline-flex !important;
-  margin-bottom: 0.75em !important;
-}
-
-#iaerejbeie div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
-  height: 0px !important;
-}
-</style>
-
-<table class="gt_table caption-top" data-quarto-bootstrap="false">
-<thead>
-<tr class="gt_col_headings header">
-<th id="Scenario" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Scenario</th>
-<th id="Difference" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Difference</th>
-<th id="Power" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Power</th>
-<th id="Significance" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Significance</th>
-<th id="n-per-arm" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">n per arm</th>
-</tr>
-</thead>
-<tbody class="gt_table_body">
-<tr class="odd">
-<td class="gt_row gt_left" headers="Scenario">Streptomycin baseline</td>
-<td class="gt_row gt_right" headers="Difference">0.36</td>
-<td class="gt_row gt_right" headers="Power">80%</td>
-<td class="gt_row gt_right" headers="Significance">5%</td>
-<td class="gt_row gt_left" headers="n per arm">29</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_left" headers="Scenario">Smaller difference</td>
-<td class="gt_row gt_right" headers="Difference">0.12</td>
-<td class="gt_row gt_right" headers="Power">80%</td>
-<td class="gt_row gt_right" headers="Significance">5%</td>
-<td class="gt_row gt_left" headers="n per arm">?</td>
-</tr>
-<tr class="odd">
-<td class="gt_row gt_left" headers="Scenario">Higher power</td>
-<td class="gt_row gt_right" headers="Difference">0.36</td>
-<td class="gt_row gt_right" headers="Power">90%</td>
-<td class="gt_row gt_right" headers="Significance">5%</td>
-<td class="gt_row gt_left" headers="n per arm">?</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_left" headers="Scenario">Stricter significance</td>
-<td class="gt_row gt_right" headers="Difference">0.36</td>
-<td class="gt_row gt_right" headers="Power">80%</td>
-<td class="gt_row gt_right" headers="Significance">1%</td>
-<td class="gt_row gt_left" headers="n per arm">?</td>
-</tr>
-</tbody>
-</table>
-
-</div>
-</div>
-</div>
-<ul>
-<li>Same control-arm proportion (0.33) throughout; each row after the first changes one thing only</li>
-<li>Which single change moves n the most?</li>
-<li>Roughly what n does the smaller difference need? Guess a number first</li>
-<li>Five minutes</li>
-</ul>
-</section>
-<section id="try-it-the-answer-3" class="slide level2">
-<h2>Try it: the answer</h2>
-
-<img data-src="week08-estimation_files/figure-revealjs/n-vs-effect-curve-1.png" width="768" class="r-stretch"><ul>
-<li>Smaller difference (0.12): 258 per arm, nearly nine times as many</li>
-<li>Higher power (90%): 38 per arm, a modest increase</li>
-<li>Stricter significance (1%): 44 per arm, a modest increase</li>
-<li>The difference is squared in the formula; power and significance enter far more gently, so shrinking the difference moves n the hardest</li>
-</ul>
-</section>
-<section id="why-post-hoc-power-tells-you-nothing" class="slide level2">
-<h2>Why post-hoc power tells you nothing</h2>
-<ul>
-<li>Power asks how likely a study is to detect an effect, before it runs</li>
-<li>Once the data are in, the estimate and its CI already say what the study could resolve</li>
-<li>Power computed from the observed effect is just a re-expression of the p-value</li>
-<li>A wide CI is the honest way to report a study that was too small</li>
-<li>A common request from supervisors and reviewers, and one worth declining, for these reasons</li>
-</ul>
-</section>
-<section id="what-a-protocol-has-to-state" class="slide level2 smaller">
-<h2>What a protocol has to state</h2>
-<ul>
-<li>Four things
-<ul>
-<li>The effect size assumed, and where it came from</li>
-<li>The variability assumed</li>
-<li>The power and significance level</li>
-<li>The resulting n per arm</li>
-</ul></li>
-<li>A power calculation is only valid for the analysis it was actually done for
-<ul>
-<li>A calculation for comparing two proportions does not licence a study analysed by regression with three covariates</li>
-</ul></li>
-<li>Sample size and power are the same calculation, solved for different unknowns, and both sit downstream of the analysis plan</li>
-</ul>
-</section>
-<section id="application" class="slide level2 divider" data-background-image="assets/skyline.jpg" data-background-size="cover">
-<h2>Application</h2>
-<p>Judging the interpretation in somebody else’s writing</p>
-</section>
-<section id="three-claims-three-cis" class="slide level2 smaller">
-<h2>Three claims, three CIs</h2>
-<ul>
-<li>Each result below is real: the paper’s own reported statistic, and its own conclusion, quoted exactly, with a link to the paper</li>
-<li>In pairs: does each sentence say what the CI supports? Where it does not, what would you write instead? Ten minutes</li>
-</ul>
-<div class="cell">
-<div class="cell-output-display">
-<div id="aywdsuysro" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#aywdsuysro table {
-  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-#aywdsuysro thead, #aywdsuysro tbody, #aywdsuysro tfoot, #aywdsuysro tr, #aywdsuysro td, #aywdsuysro th {
-  border-style: none;
-}
-
-#aywdsuysro p {
-  margin: 0;
-  padding: 0;
-}
-
-#aywdsuysro .gt_table {
-  display: table;
-  border-collapse: collapse;
-  line-height: normal;
-  margin-left: auto;
-  margin-right: auto;
-  color: #333333;
-  font-size: 17px;
-  font-weight: normal;
-  font-style: normal;
-  background-color: #FFFFFF;
-  width: auto;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #A8A8A8;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #A8A8A8;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-}
-
-#aywdsuysro .gt_caption {
-  padding-top: 4px;
-  padding-bottom: 4px;
-}
-
-#aywdsuysro .gt_title {
-  color: #333333;
-  font-size: 125%;
-  font-weight: initial;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-color: #FFFFFF;
-  border-bottom-width: 0;
-}
-
-#aywdsuysro .gt_subtitle {
-  color: #333333;
-  font-size: 85%;
-  font-weight: initial;
-  padding-top: 3px;
-  padding-bottom: 5px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-top-color: #FFFFFF;
-  border-top-width: 0;
-}
-
-#aywdsuysro .gt_heading {
-  background-color: #FFFFFF;
-  text-align: center;
-  border-bottom-color: #FFFFFF;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#aywdsuysro .gt_bottom_border {
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#aywdsuysro .gt_col_headings {
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#aywdsuysro .gt_col_heading {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: normal;
-  text-transform: inherit;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: bottom;
-  padding-top: 5px;
-  padding-bottom: 6px;
-  padding-left: 5px;
-  padding-right: 5px;
-  overflow-x: hidden;
-}
-
-#aywdsuysro .gt_column_spanner_outer {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: normal;
-  text-transform: inherit;
-  padding-top: 0;
-  padding-bottom: 0;
-  padding-left: 4px;
-  padding-right: 4px;
-}
-
-#aywdsuysro .gt_column_spanner_outer:first-child {
-  padding-left: 0;
-}
-
-#aywdsuysro .gt_column_spanner_outer:last-child {
-  padding-right: 0;
-}
-
-#aywdsuysro .gt_column_spanner {
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  vertical-align: bottom;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  overflow-x: hidden;
-  display: inline-block;
-  width: 100%;
-}
-
-#aywdsuysro .gt_spanner_row {
-  border-bottom-style: hidden;
-}
-
-#aywdsuysro .gt_group_heading {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: middle;
-  text-align: left;
-}
-
-#aywdsuysro .gt_empty_group_heading {
-  padding: 0.5px;
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  vertical-align: middle;
-}
-
-#aywdsuysro .gt_from_md > :first-child {
-  margin-top: 0;
-}
-
-#aywdsuysro .gt_from_md > :last-child {
-  margin-bottom: 0;
-}
-
-#aywdsuysro .gt_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  margin: 10px;
-  border-top-style: solid;
-  border-top-width: 1px;
-  border-top-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: middle;
-  overflow-x: hidden;
-}
-
-#aywdsuysro .gt_stub {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-right-style: solid;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#aywdsuysro .gt_stub_row_group {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-right-style: solid;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  padding-left: 5px;
-  padding-right: 5px;
-  vertical-align: top;
-}
-
-#aywdsuysro .gt_row_group_first td {
-  border-top-width: 2px;
-}
-
-#aywdsuysro .gt_row_group_first th {
-  border-top-width: 2px;
-}
-
-#aywdsuysro .gt_summary_row {
-  color: #333333;
-  background-color: #FFFFFF;
-  text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#aywdsuysro .gt_first_summary_row {
-  border-top-style: solid;
-  border-top-color: #D3D3D3;
-}
-
-#aywdsuysro .gt_first_summary_row.thick {
-  border-top-width: 2px;
-}
-
-#aywdsuysro .gt_last_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#aywdsuysro .gt_grand_summary_row {
-  color: #333333;
-  background-color: #FFFFFF;
-  text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#aywdsuysro .gt_first_grand_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-top-style: double;
-  border-top-width: 6px;
-  border-top-color: #D3D3D3;
-}
-
-#aywdsuysro .gt_last_grand_summary_row_top {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-style: double;
-  border-bottom-width: 6px;
-  border-bottom-color: #D3D3D3;
-}
-
-#aywdsuysro .gt_striped {
-  background-color: rgba(128, 128, 128, 0.05);
-}
-
-#aywdsuysro .gt_table_body {
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#aywdsuysro .gt_footnotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#aywdsuysro .gt_footnote {
-  margin: 0px;
-  font-size: 90%;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#aywdsuysro .gt_sourcenotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#aywdsuysro .gt_sourcenote {
-  font-size: 90%;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#aywdsuysro .gt_left {
-  text-align: left;
-}
-
-#aywdsuysro .gt_center {
-  text-align: center;
-}
-
-#aywdsuysro .gt_right {
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-}
-
-#aywdsuysro .gt_font_normal {
-  font-weight: normal;
-}
-
-#aywdsuysro .gt_font_bold {
-  font-weight: bold;
-}
-
-#aywdsuysro .gt_font_italic {
-  font-style: italic;
-}
-
-#aywdsuysro .gt_super {
-  font-size: 65%;
-}
-
-#aywdsuysro .gt_footnote_marks {
-  font-size: 75%;
-  vertical-align: 0.4em;
-  position: initial;
-}
-
-#aywdsuysro .gt_asterisk {
-  font-size: 100%;
-  vertical-align: 0;
-}
-
-#aywdsuysro .gt_indent_1 {
-  text-indent: 5px;
-}
-
-#aywdsuysro .gt_indent_2 {
-  text-indent: 10px;
-}
-
-#aywdsuysro .gt_indent_3 {
-  text-indent: 15px;
-}
-
-#aywdsuysro .gt_indent_4 {
-  text-indent: 20px;
-}
-
-#aywdsuysro .gt_indent_5 {
-  text-indent: 25px;
-}
-
-#aywdsuysro .katex-display {
-  display: inline-flex !important;
-  margin-bottom: 0.75em !important;
-}
-
-#aywdsuysro div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>

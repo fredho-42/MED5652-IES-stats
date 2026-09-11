@@ -229,23 +229,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#chapter-intended-learning-outcomes" id="toc-chapter-intended-learning-outcomes" class="nav-link active" data-scroll-target="#chapter-intended-learning-outcomes"><span class="header-section-number">4.1</span> Chapter intended learning outcomes</a></li>
   <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup"><span class="header-section-number">4.2</span> Setup</a></li>
   <li><a href="#point-estimate-and-standard-error-by-hand" id="toc-point-estimate-and-standard-error-by-hand" class="nav-link" data-scroll-target="#point-estimate-and-standard-error-by-hand"><span class="header-section-number">4.3</span> Point estimate and standard error, by hand</a></li>
-  <li><a href="#from-standard-error-to-a-confidence-interval" id="toc-from-standard-error-to-a-confidence-interval" class="nav-link" data-scroll-target="#from-standard-error-to-a-confidence-interval"><span class="header-section-number">4.4</span> From standard error to a confidence interval</a>
+  <li><a href="#from-standard-error-to-a-ci" id="toc-from-standard-error-to-a-ci" class="nav-link" data-scroll-target="#from-standard-error-to-a-ci"><span class="header-section-number">4.4</span> From standard error to a CI</a>
   <ul class="collapse">
-  <li><a href="#saying-what-the-interval-means-and-what-it-doesnt" id="toc-saying-what-the-interval-means-and-what-it-doesnt" class="nav-link" data-scroll-target="#saying-what-the-interval-means-and-what-it-doesnt"><span class="header-section-number">4.4.1</span> Saying what the interval means, and what it doesn’t</a></li>
+  <li><a href="#saying-what-the-ci-means-and-what-it-doesnt" id="toc-saying-what-the-ci-means-and-what-it-doesnt" class="nav-link" data-scroll-target="#saying-what-the-ci-means-and-what-it-doesnt"><span class="header-section-number">4.4.1</span> Saying what the CI means, and what it doesn’t</a></li>
   </ul></li>
-  <li><a href="#a-confidence-interval-for-a-proportion" id="toc-a-confidence-interval-for-a-proportion" class="nav-link" data-scroll-target="#a-confidence-interval-for-a-proportion"><span class="header-section-number">4.5</span> A confidence interval for a proportion</a>
+  <li><a href="#a-ci-for-a-proportion" id="toc-a-ci-for-a-proportion" class="nav-link" data-scroll-target="#a-ci-for-a-proportion"><span class="header-section-number">4.5</span> A CI for a proportion</a>
   <ul class="collapse">
   <li><a href="#the-standard-error-of-a-proportion-by-hand" id="toc-the-standard-error-of-a-proportion-by-hand" class="nav-link" data-scroll-target="#the-standard-error-of-a-proportion-by-hand"><span class="header-section-number">4.5.1</span> The standard error of a proportion, by hand</a></li>
-  <li><a href="#the-same-interval-from-prop.test" id="toc-the-same-interval-from-prop.test" class="nav-link" data-scroll-target="#the-same-interval-from-prop.test"><span class="header-section-number">4.5.2</span> The same interval from <code>prop.test()</code></a></li>
+  <li><a href="#the-same-ci-from-prop.test" id="toc-the-same-ci-from-prop.test" class="nav-link" data-scroll-target="#the-same-ci-from-prop.test"><span class="header-section-number">4.5.2</span> The same CI from <code>prop.test()</code></a></li>
   </ul></li>
-  <li><a href="#confidence-interval-for-a-difference-in-means" id="toc-confidence-interval-for-a-difference-in-means" class="nav-link" data-scroll-target="#confidence-interval-for-a-difference-in-means"><span class="header-section-number">4.6</span> Confidence interval for a difference in means</a>
+  <li><a href="#confidence-ci-for-a-difference-in-means" id="toc-confidence-ci-for-a-difference-in-means" class="nav-link" data-scroll-target="#confidence-ci-for-a-difference-in-means"><span class="header-section-number">4.6</span> Confidence CI for a difference in means</a>
   <ul class="collapse">
   <li><a href="#which-way-round-is-the-difference" id="toc-which-way-round-is-the-difference" class="nav-link" data-scroll-target="#which-way-round-is-the-difference"><span class="header-section-number">4.6.1</span> Which way round is the difference?</a></li>
   </ul></li>
-  <li><a href="#confidence-interval-for-a-difference-in-proportions" id="toc-confidence-interval-for-a-difference-in-proportions" class="nav-link" data-scroll-target="#confidence-interval-for-a-difference-in-proportions"><span class="header-section-number">4.7</span> Confidence interval for a difference in proportions</a></li>
+  <li><a href="#confidence-ci-for-a-difference-in-proportions" id="toc-confidence-ci-for-a-difference-in-proportions" class="nav-link" data-scroll-target="#confidence-ci-for-a-difference-in-proportions"><span class="header-section-number">4.7</span> Confidence CI for a difference in proportions</a></li>
   <li><a href="#width-and-sample-size-without-programming" id="toc-width-and-sample-size-without-programming" class="nav-link" data-scroll-target="#width-and-sample-size-without-programming"><span class="header-section-number">4.8</span> Width and sample size, without programming</a></li>
   <li><a href="#sample-size-and-power" id="toc-sample-size-and-power" class="nav-link" data-scroll-target="#sample-size-and-power"><span class="header-section-number">4.9</span> Sample size and power</a></li>
-  <li><a href="#worked-example-a-confidence-interval-for-age" id="toc-worked-example-a-confidence-interval-for-age" class="nav-link" data-scroll-target="#worked-example-a-confidence-interval-for-age"><span class="header-section-number">4.10</span> Worked example: a confidence interval for age</a></li>
+  <li><a href="#worked-example-a-ci-for-age" id="toc-worked-example-a-ci-for-age" class="nav-link" data-scroll-target="#worked-example-a-ci-for-age"><span class="header-section-number">4.10</span> Worked example: a CI for age</a></li>
   <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">4.11</span> Exercises</a></li>
   <li><a href="#writing-exercise" id="toc-writing-exercise" class="nav-link" data-scroll-target="#writing-exercise"><span class="header-section-number">4.12</span> Writing exercise</a></li>
   </ul>
@@ -274,7 +274,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>Chapter 3 taught us to describe a variable with a mean and a standard deviation. Take a different sample from the same population and both numbers come out different. That wobble isn’t a flaw in the method and it isn’t something to apologise for in a write-up. It’s measurable, and measuring it is what turns a number into an estimate we can defend. Sampling variability and the central limit theorem, from this week’s seminar, are what make it predictable enough to measure.</p>
-<p>Two terms that sound alike carry the whole chapter, and they aren’t interchangeable. The standard deviation describes the spread of the <em>data</em>. The standard error describes the precision of an <em>estimate</em>. Out of the second comes the confidence interval, which we calculate by hand before checking it against R’s own functions, since a formula met once from the inside is harder to misread later. The same intervals cover the difference between two groups as well as a single mean, and each one has to be stated in the units of the problem: an interval nobody can put into a sentence hasn’t really been interpreted. The machinery also runs backwards. An interval narrows as the sample grows, so fixing the width we want tells us the sample we need, which is how a study gets sized before anyone has collected anything.</p>
+<p>Two terms that sound alike carry the whole chapter, and they aren’t interchangeable. The standard deviation describes the spread of the <em>data</em>. The standard error describes the precision of an <em>estimate</em>. Out of the second comes the confidence interval, or CI, which we calculate by hand before checking it against R’s own functions, since a formula met once from the inside is harder to misread later. The same CIs cover the difference between two groups as well as a single mean, and each one has to be stated in the units of the problem: a CI nobody can put into a sentence hasn’t really been interpreted. The machinery also runs backwards. A CI narrows as the sample grows, so fixing the width we want tells us the sample we need, which is how a study gets sized before anyone has collected anything.</p>
 <section id="chapter-intended-learning-outcomes" class="level2" data-number="4.1">
 <h2 data-number="4.1" class="anchored" data-anchor-id="chapter-intended-learning-outcomes"><span class="header-section-number">4.1</span> Chapter intended learning outcomes</h2>
 <p>By the end of this chapter you will be able to:</p>
@@ -347,11 +347,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p><code>sqrt()</code> is base R’s square root function. The standard error of a mean is the standard deviation divided by the square root of the sample size, the algebra behind the seminar’s precision argument: as <code>n</code> grows, the denominator grows and the standard error shrinks.</p>
-<p><code>sed</code> was shown in Chapter 3 to be right-skewed, with a long tail of participants reporting many sedentary hours. That skew doesn’t disqualify it from a confidence interval on its <em>mean</em>, because of the Central Limit Theorem. As the sample size grows, the <em>sampling distribution</em> gets closer to a bell-shaped normal distribution.</p>
+<p><code>sed</code> was shown in Chapter 3 to be right-skewed, with a long tail of participants reporting many sedentary hours. That skew doesn’t disqualify it from a CI on its <em>mean</em>, because of the Central Limit Theorem. As the sample size grows, the <em>sampling distribution</em> gets closer to a bell-shaped normal distribution.</p>
 </section>
-<section id="from-standard-error-to-a-confidence-interval" class="level2" data-number="4.4">
-<h2 data-number="4.4" class="anchored" data-anchor-id="from-standard-error-to-a-confidence-interval"><span class="header-section-number">4.4</span> From standard error to a confidence interval</h2>
-<p>A 95% confidence interval for a mean is the point estimate plus or minus 1.96 standard errors. 1.96 is the value that cuts off the middle 95% of a normal distribution:</p>
+<section id="from-standard-error-to-a-ci" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="from-standard-error-to-a-ci"><span class="header-section-number">4.4</span> From standard error to a CI</h2>
+<p>A 95% CI for a mean is the point estimate plus or minus 1.96 standard errors. 1.96 is the value that cuts off the middle 95% of a normal distribution:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>sed_stats <span class="ot">&lt;-</span> sed_stats <span class="sc">|&gt;</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
@@ -367,7 +367,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 1     6.56   10.9 34434 0.0588     6.45     6.68</code></pre>
 </div>
 </div>
-<p>R has a function that does this directly. <code>t.test()</code> expects a single numeric vector, not a data frame, so we pull <code>sed</code> out of <code>nhanes</code> with <code>$</code>. <code>nhanes$sed</code> reads as ‘the <code>sed</code> column, inside <code>nhanes</code>’, and it returns that column on its own, as a plain vector of numbers, rather than a data frame containing it. That’s different from <code>select(sed)</code>, which keeps a one-column data frame instead of pulling the column out. <code>t.test()</code> then returns the mean and its 95% confidence interval without any of the arithmetic above:</p>
+<p>R has a function that does this directly. <code>t.test()</code> expects a single numeric vector, not a data frame, so we pull <code>sed</code> out of <code>nhanes</code> with <code>$</code>. <code>nhanes$sed</code> reads as ‘the <code>sed</code> column, inside <code>nhanes</code>’, and it returns that column on its own, as a plain vector of numbers, rather than a data frame containing it. That’s different from <code>select(sed)</code>, which keeps a one-column data frame instead of pulling the column out. <code>t.test()</code> then returns the mean and its 95% CI without any of the arithmetic above:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(nhanes<span class="sc">$</span>sed)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -384,12 +384,12 @@ mean of x
  6.564277 </code></pre>
 </div>
 </div>
-<p><code>t.test()</code> also reports a test statistic, degrees of freedom, and a p-value. These belong to a hypothesis test, which is Chapter 5’s subject. For now, look only at the confidence interval, and check that it closely matches the interval we calculated by hand above.</p>
-<p>One thing <code>t.test()</code> does quietly is it ignores all missing values. We passed it <code>nhanes$sed</code> whole, missing values and all, with no <code>filter()</code> and no <code>na.rm = TRUE</code>, and it ran anyway. It drops missing values itself, before calculating. The evidence is in the output: the degrees of freedom are 34,433, one less than the 34,434 participants we filtered down to by hand, which is why the two intervals agree at all. So whenever we run a <code>t.test()</code> in R, we should count the missing values ourselves.</p>
-<p>The two intervals are close but not identical, because <code>t.test()</code> doesn’t use a fixed multiplier of 1.96. It uses a value from the t-distribution, which is usually a better match to the actual sampling distribution, since it depends on the sample size through its degrees of freedom (<code>n - 1</code>). For a sample size this large, the normal and t-distributions are very similar and shouldn’t make a material difference. In practice, we’d use <code>t.test()</code> rather than working this out by hand every time, but the formula above is exactly what it’s doing underneath.</p>
-<section id="saying-what-the-interval-means-and-what-it-doesnt" class="level3" data-number="4.4.1">
-<h3 data-number="4.4.1" class="anchored" data-anchor-id="saying-what-the-interval-means-and-what-it-doesnt"><span class="header-section-number">4.4.1</span> Saying what the interval means, and what it doesn’t</h3>
-<p>We now have an interval. Writing it down correctly is a separate skill from calculating it, and it’s the one the seminar spent time on, contrasting the right sentence with the wrong one. Here is the right one, for the interval we just built:</p>
+<p><code>t.test()</code> also reports a test statistic, degrees of freedom, and a p-value. These belong to a hypothesis test, which is Chapter 5’s subject. For now, look only at the CI, and check that it closely matches the CI we calculated by hand above.</p>
+<p>One thing <code>t.test()</code> does quietly is it ignores all missing values. We passed it <code>nhanes$sed</code> whole, missing values and all, with no <code>filter()</code> and no <code>na.rm = TRUE</code>, and it ran anyway. It drops missing values itself, before calculating. The evidence is in the output: the degrees of freedom are 34,433, one less than the 34,434 participants we filtered down to by hand, which is why the two CIs agree at all. So whenever we run a <code>t.test()</code> in R, we should count the missing values ourselves.</p>
+<p>The two CIs are close but not identical, because <code>t.test()</code> doesn’t use a fixed multiplier of 1.96. It uses a value from the t-distribution, which is usually a better match to the actual sampling distribution, since it depends on the sample size through its degrees of freedom (<code>n - 1</code>). For a sample size this large, the normal and t-distributions are very similar and shouldn’t make a material difference. In practice, we’d use <code>t.test()</code> rather than working this out by hand every time, but the formula above is exactly what it’s doing underneath.</p>
+<section id="saying-what-the-ci-means-and-what-it-doesnt" class="level3" data-number="4.4.1">
+<h3 data-number="4.4.1" class="anchored" data-anchor-id="saying-what-the-ci-means-and-what-it-doesnt"><span class="header-section-number">4.4.1</span> Saying what the CI means, and what it doesn’t</h3>
+<p>We now have a CI. Writing it down correctly is a separate skill from calculating it, and it’s the one the seminar spent time on, contrasting the right sentence with the wrong one. Here is the right one, for the CI we just built:</p>
 <blockquote class="blockquote">
 <p>Mean sedentary time was 6.56 hours/day (95% CI: 6.45 to 6.68 hours/day).</p>
 </blockquote>
@@ -397,12 +397,12 @@ mean of x
 <blockquote class="blockquote">
 <p>There is a 95% probability that the true mean sedentary time lies between 6.45 and 6.68 hours/day.</p>
 </blockquote>
-<p>The true mean sedentary time in the population is a fixed number. We don’t know it, but it isn’t moving around, and it doesn’t have a 95% chance of being anywhere. What moves is the <em>interval</em>. Draw a different sample and we get a different mean, a different standard error, and so a different pair of numbers. The 95% belongs to that procedure: of all the intervals we could build this way, 95% of them would contain the true value. This particular interval either contains it or it doesn’t, and we have no way of knowing which.</p>
-<p>In practice the fix is easy, because the correct sentence is the shorter one. State the estimate, put the interval after it, and stop. The moment we write ‘probability’, ‘chance’, or ‘there’s a 95% likelihood the true value is’, we have said something about the parameter that the interval doesn’t support. Every interval in the rest of this book gets reported the first way, and so should yours.</p>
+<p>The true mean sedentary time in the population is a fixed number. We don’t know it, but it isn’t moving around, and it doesn’t have a 95% chance of being anywhere. What moves is the <em>CI</em>. Draw a different sample and we get a different mean, a different standard error, and so a different pair of numbers. The 95% belongs to that procedure: of all the CIs we could build this way, 95% of them would contain the true value. This particular CI either contains it or it doesn’t, and we have no way of knowing which.</p>
+<p>In practice the fix is easy, because the correct sentence is the shorter one. State the estimate, put the CI after it, and stop. The moment we write ‘probability’, ‘chance’, or ‘there’s a 95% likelihood the true value is’, we have said something about the parameter that the CI doesn’t support. Every CI in the rest of this book gets reported the first way, and so should yours.</p>
 </section>
 </section>
-<section id="a-confidence-interval-for-a-proportion" class="level2" data-number="4.5">
-<h2 data-number="4.5" class="anchored" data-anchor-id="a-confidence-interval-for-a-proportion"><span class="header-section-number">4.5</span> A confidence interval for a proportion</h2>
+<section id="a-ci-for-a-proportion" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="a-ci-for-a-proportion"><span class="header-section-number">4.5</span> A CI for a proportion</h2>
 <p><code>strep_tb</code>, from the <code>medicaldata</code> package, records the 1948 MRC streptomycin trial: a randomised controlled trial of streptomycin against tuberculosis in 107 patients, generally considered the first modern randomised controlled trial. Each patient was assigned to the <code>Streptomycin</code> or <code>Control</code> arm and followed up. Patients in the control arm received bed rest alone, not a placebo. <code>improved</code> records whether their chest X-ray had improved at six months. As with any new dataset, we look at what actually came in before writing code against it:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(strep_tb)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -461,7 +461,7 @@ FALSE  TRUE
 1         55     107      0.514      0.0483</code></pre>
 </div>
 </div>
-<p>The confidence interval is then built exactly the way it was for a mean: the estimate, plus or minus 1.96 standard errors.</p>
+<p>The CI is then built exactly the way it was for a mean: the estimate, plus or minus 1.96 standard errors.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>tb_stats<span class="sc">$</span>p_improved <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> tb_stats<span class="sc">$</span>se_improved</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -473,9 +473,9 @@ FALSE  TRUE
 </div>
 </div>
 </section>
-<section id="the-same-interval-from-prop.test" class="level3" data-number="4.5.2">
-<h3 data-number="4.5.2" class="anchored" data-anchor-id="the-same-interval-from-prop.test"><span class="header-section-number">4.5.2</span> The same interval from <code>prop.test()</code></h3>
-<p><code>prop.test()</code> returns a confidence interval for a proportion directly, given a count of successes (<code>x</code>) and a total (<code>n</code>), with none of the arithmetic above:</p>
+<section id="the-same-ci-from-prop.test" class="level3" data-number="4.5.2">
+<h3 data-number="4.5.2" class="anchored" data-anchor-id="the-same-ci-from-prop.test"><span class="header-section-number">4.5.2</span> The same CI from <code>prop.test()</code></h3>
+<p><code>prop.test()</code> returns a CI for a proportion directly, given a count of successes (<code>x</code>) and a total (<code>n</code>), with none of the arithmetic above:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.test</span>(<span class="at">x =</span> tb_stats<span class="sc">$</span>n_improved, <span class="at">n =</span> tb_stats<span class="sc">$</span>n_total)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -492,13 +492,13 @@ sample estimates:
 0.5140187 </code></pre>
 </div>
 </div>
-<p>The two intervals are close but not identical, and for the same kind of reason the hand-built and <code>t.test()</code> intervals differed earlier. The ± 1.96 version above is the textbook approximation, and it works well when n is large and p isn’t near 0 or 1. <code>prop.test()</code> uses a better method that behaves more sensibly in small samples and never runs past 0 or 1, which the approximation happily will if pushed too far. With 107 patients and a proportion near a half, both are perfectly reasonable and they agree to within a small margin of error.</p>
+<p>The two CIs are close but not identical, and for the same kind of reason the hand-built and <code>t.test()</code> CIs differed earlier. The ± 1.96 version above is the textbook approximation, and it works well when n is large and p isn’t near 0 or 1. <code>prop.test()</code> uses a better method that behaves more sensibly in small samples and never runs past 0 or 1, which the approximation happily will if pushed too far. With 107 patients and a proportion near a half, both are perfectly reasonable and they agree to within a small margin of error.</p>
 <p>Giving <code>prop.test()</code> the count and total directly, rather than a cross-tabulated table, avoids any doubt about which of the two categories we’re counting. A table of <code>improved</code> alone would still show both proportions clearly, but a table fed straight into <code>prop.test()</code> reports the proportion for only whichever category comes first, which is not necessarily the one we want.</p>
-<p>By default, <code>prop.test()</code> also tests whether this proportion differs from 50%. That default comparison isn’t of interest here, and it isn’t the subject of this chapter. The 95% confidence interval it reports alongside is what we want.</p>
+<p>By default, <code>prop.test()</code> also tests whether this proportion differs from 50%. That default comparison isn’t of interest here, and it isn’t the subject of this chapter. The 95% CI it reports alongside is what we want.</p>
 </section>
 </section>
-<section id="confidence-interval-for-a-difference-in-means" class="level2" data-number="4.6">
-<h2 data-number="4.6" class="anchored" data-anchor-id="confidence-interval-for-a-difference-in-means"><span class="header-section-number">4.6</span> Confidence interval for a difference in means</h2>
+<section id="confidence-ci-for-a-difference-in-means" class="level2" data-number="4.6">
+<h2 data-number="4.6" class="anchored" data-anchor-id="confidence-ci-for-a-difference-in-means"><span class="header-section-number">4.6</span> Confidence CI for a difference in means</h2>
 <p><code>t.test()</code> also compares two groups directly, using <strong>formula syntax</strong>. <code>chol ~ gender</code> reads as ‘<code>chol</code>, modelled by <code>gender</code>’. R splits <code>chol</code> into the groups defined by <code>gender</code> and compares them:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(chol <span class="sc">~</span> gender, <span class="at">data =</span> nhanes <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(gender)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -517,10 +517,10 @@ sample estimates:
 </div>
 </div>
 <p>Notice there’s no <code>$</code> anywhere in that call, even though <code>chol</code> and <code>gender</code> both are only found inside <code>nhanes</code>. The <code>data =</code> argument tells <code>t.test()</code> which data frame to search for names like <code>chol</code> and <code>gender</code>, so it looks them up there itself instead of us pulling each one out by hand first with <code>$</code>. <code>$</code> is still the right tool for getting a single column on its own, the way <code>nhanes$sed</code> was above; a formula’s <code>data =</code> argument does that lookup for every variable named in the formula at once.</p>
-<p>This is the same pairing we showed descriptively in Chapter 3’s boxplot and Table 1: cholesterol by gender. Now it’s attached to a confidence interval for the <em>difference</em> in means between the two groups. By default, <code>t.test()</code> doesn’t assume the two groups have equal variance, i.e.&nbsp;<em>Welch’s t-test</em>. That’s a sensible default and not something we need to adjust here.</p>
+<p>This is the same pairing we showed descriptively in Chapter 3’s boxplot and Table 1: cholesterol by gender. Now it’s attached to a CI for the <em>difference</em> in means between the two groups. By default, <code>t.test()</code> doesn’t assume the two groups have equal variance, i.e.&nbsp;<em>Welch’s t-test</em>. That’s a sensible default and not something we need to adjust here.</p>
 <section id="which-way-round-is-the-difference" class="level3" data-number="4.6.1">
 <h3 data-number="4.6.1" class="anchored" data-anchor-id="which-way-round-is-the-difference"><span class="header-section-number">4.6.1</span> Which way round is the difference?</h3>
-<p>Both ends of that interval are negative, and a negative difference in cholesterol isn’t obviously meaningful until we know what has been subtracted from what. R tells us, on the line beginning ‘alternative hypothesis’: <em>true difference in means between group Male and group Female</em>. So it has taken the men’s mean and subtracted the women’s.</p>
+<p>Both ends of that CI are negative, and a negative difference in cholesterol isn’t obviously meaningful until we know what has been subtracted from what. R tells us, on the line beginning ‘alternative hypothesis’: <em>true difference in means between group Male and group Female</em>. So it has taken the men’s mean and subtracted the women’s.</p>
 <p>That order isn’t R’s choice, and it isn’t alphabetical. It’s the order the factor’s levels are in, which we set ourselves in the setup chunk:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(nhanes<span class="sc">$</span>gender)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -528,12 +528,12 @@ sample estimates:
 <pre><code>[1] "Male"   "Female"</code></pre>
 </div>
 </div>
-<p><code>'Male'</code> is first, so men are group 1 and women are group 2, and the difference runs first minus second. A negative interval therefore says the first group is <em>lower</em>: mean cholesterol is lower in men than in women, by somewhere between 0.15 and 0.19 mmol/L.</p>
-<p>It is useful to check the alternative-hypothesis line before reading any two-group interval. If we’d rather write the comparison the other way round, which is often more natural to read, we flip the whole thing together. ‘Cholesterol was 0.17 mmol/L higher in women than in men (95% CI: 0.15 to 0.19)’ says exactly the same as R’s output, with every sign reversed. What we must never do is flip the words and leave the numbers, or flip one end of the interval and not the other. The direction of the estimate and the direction of the interval have to agree.</p>
+<p><code>'Male'</code> is first, so men are group 1 and women are group 2, and the difference runs first minus second. A negative CI therefore says the first group is <em>lower</em>: mean cholesterol is lower in men than in women, by somewhere between 0.15 and 0.19 mmol/L.</p>
+<p>It is useful to check the alternative-hypothesis line before reading any two-group CI. If we’d rather write the comparison the other way round, which is often more natural to read, we flip the whole thing together. ‘Cholesterol was 0.17 mmol/L higher in women than in men (95% CI: 0.15 to 0.19 mmol/L)’ says exactly the same as R’s output, with every sign reversed. What we must never do is flip the words and leave the numbers, or flip one end of the CI and not the other. The direction of the estimate and the direction of the CI have to agree.</p>
 </section>
 </section>
-<section id="confidence-interval-for-a-difference-in-proportions" class="level2" data-number="4.7">
-<h2 data-number="4.7" class="anchored" data-anchor-id="confidence-interval-for-a-difference-in-proportions"><span class="header-section-number">4.7</span> Confidence interval for a difference in proportions</h2>
+<section id="confidence-ci-for-a-difference-in-proportions" class="level2" data-number="4.7">
+<h2 data-number="4.7" class="anchored" data-anchor-id="confidence-ci-for-a-difference-in-proportions"><span class="header-section-number">4.7</span> Confidence CI for a difference in proportions</h2>
 <p>The same idea extends to two proportions: how many improved in each trial arm. <code>group_by()</code> and <code>summarise()</code>, already familiar from Chapter 3, give us the count and the number improved in each arm:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>strep_arm_summary <span class="ot">&lt;-</span> strep_tb <span class="sc">|&gt;</span></span>
@@ -572,20 +572,20 @@ sample estimates:
 0.6909091 0.3269231 </code></pre>
 </div>
 </div>
-<p>The confidence interval is for the difference in the proportion improved between the two arms. Before reading it, check the direction, exactly as we did for the difference in means above. The same rule applies: R takes the first group and subtracts the second, and the order comes from the factor’s levels.</p>
+<p>The CI is for the difference in the proportion improved between the two arms. Before reading it, check the direction, exactly as we did for the difference in means above. The same rule applies: R takes the first group and subtracts the second, and the order comes from the factor’s levels.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(strep_tb<span class="sc">$</span>arm)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Streptomycin" "Control"     </code></pre>
 </div>
 </div>
-<p><code>'Streptomycin'</code> is first, so <code>prop 1</code> is the streptomycin arm and <code>prop 2</code> is the control arm, and the difference runs streptomycin minus control. Both ends of the interval are positive, which therefore says the streptomycin arm improved <em>more</em>. Had the two levels been the other way round, every number in that interval would have carried a minus sign and meant exactly the same thing. Chapter 5 puts this same factor the other way round on purpose, which is exactly why checking the levels here first matters.</p>
-<p>The heading says ‘with continuity correction’: <code>prop.test()</code> applies a small adjustment by default that nudges the p-value up and the interval slightly wider. Chapter 5 explains what it does, so leave it for now, but notice that the p-value printed here, 0.0004, is the one that adjustment produces. That p-value itself belongs to a hypothesis test, which is still Chapter 5’s subject.</p>
-<p>Because <code>strep_tb</code> is a randomised trial rather than an observational study, a difference this large and this precisely estimated supports a causal reading in a way that an association in <code>nhanes_mph</code> would not. We can quite safely conclude, from the findings, that streptomycin improved the proportion of patients with X-ray improvement by about 36 percentage points, compared with bed rest alone. We say percentage points rather than percent here: percent would describe how much bigger one proportion is relative to the other, not the size of the gap between them, which is what this interval actually estimates.</p>
+<p><code>'Streptomycin'</code> is first, so <code>prop 1</code> is the streptomycin arm and <code>prop 2</code> is the control arm, and the difference runs streptomycin minus control. Both ends of the CI are positive, which therefore says the streptomycin arm improved <em>more</em>. Had the two levels been the other way round, every number in that CI would have carried a minus sign and meant exactly the same thing. Chapter 5 puts this same factor the other way round on purpose, which is exactly why checking the levels here first matters.</p>
+<p>The heading says ‘with continuity correction’: <code>prop.test()</code> applies a small adjustment by default that nudges the p-value up and the CI slightly wider. Chapter 5 explains what it does, so leave it for now, but notice that the p-value printed here, 0.0004, is the one that adjustment produces. That p-value itself belongs to a hypothesis test, which is still Chapter 5’s subject.</p>
+<p>Because <code>strep_tb</code> is a randomised trial rather than an observational study, a difference this large and this precisely estimated supports a causal reading in a way that an association in <code>nhanes_mph</code> would not. We can quite safely conclude, from the findings, that streptomycin improved the proportion of patients with X-ray improvement by about 36 percentage points (95% CI: 17 to 56 percentage points, p = 0.0004), compared with bed rest alone. We say percentage points rather than percent here: percent would describe how much bigger one proportion is relative to the other, not the size of the gap between them, which is what this CI actually estimates.</p>
 </section>
 <section id="width-and-sample-size-without-programming" class="level2" data-number="4.8">
 <h2 data-number="4.8" class="anchored" data-anchor-id="width-and-sample-size-without-programming"><span class="header-section-number">4.8</span> Width and sample size, without programming</h2>
-<p>The seminar’s rule was that a confidence interval narrows as sample size grows. We can show this directly, by computing the same interval on the full sample and on two smaller subsets of it. <code>slice_sample()</code>, from <code>dplyr</code>, keeps a random fraction of the rows. <code>set.seed()</code>, from base R, fixes the sequence of ‘random’ numbers R uses, so the same subset gets drawn every time this code is run, rather than a different one each time.</p>
+<p>The seminar’s rule was that a CI narrows as sample size grows. We can show this directly, by computing the same CI on the full sample and on two smaller subsets of it. <code>slice_sample()</code>, from <code>dplyr</code>, keeps a random fraction of the rows. <code>set.seed()</code>, from base R, fixes the sequence of ‘random’ numbers R uses, so the same subset gets drawn every time this code is run, rather than a different one each time.</p>
 <p>The full sample. This time we save the result into an object with <code>&lt;-</code> as well as printing it, because we want to reuse its numbers in a moment:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>tt_full <span class="ot">&lt;-</span> <span class="fu">t.test</span>(nhanes<span class="sc">$</span>chol)</span>
@@ -650,8 +650,8 @@ mean of x
  4.967457 </code></pre>
 </div>
 </div>
-<p>The point estimates are similar across all three, because all three are samples from the same population. But the confidence interval widens as the sample size drops.</p>
-<p>That’s hard to see across three blocks of output, so let’s put the three intervals in one small table. A <code>t.test()</code> result isn’t a data frame, but <code>$</code> still works on it, pulling out one named piece at a time exactly as it pulls one column out of a data frame. <code>tt_full$conf.int</code> is the pair of numbers at the ends of the interval, and <code>[1]</code> and <code>[2]</code> take the lower and the upper one, the same square-bracket indexing we used in Chapter 2. <code>data.frame()</code>, from Chapter 1, builds the table out of them, and <code>mutate()</code> adds the column we actually care about:</p>
+<p>The point estimates are similar across all three, because all three are samples from the same population. But the CI widens as the sample size drops.</p>
+<p>That’s hard to see across three blocks of output, so let’s put the three CIs in one small table. A <code>t.test()</code> result isn’t a data frame, but <code>$</code> still works on it, pulling out one named piece at a time exactly as it pulls one column out of a data frame. <code>tt_full$conf.int</code> is the pair of numbers at the ends of the CI, and <code>[1]</code> and <code>[2]</code> take the lower and the upper one, the same square-bracket indexing we used in Chapter 2. <code>data.frame()</code>, from Chapter 1, builds the table out of them, and <code>mutate()</code> adds the column we actually care about:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>widths <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
 <span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">sample =</span> <span class="fu">c</span>(<span class="st">'Full'</span>, <span class="st">'50% subset'</span>, <span class="st">'10% subset'</span>),</span>
@@ -669,7 +669,7 @@ mean of x
 3 10% subset  3917 4.933782 5.001132 0.06734956</code></pre>
 </div>
 </div>
-<p>Now the pattern is one column instead of six numbers on three screens. Cut the sample in half and the interval gets about 40% wider; cut it to a tenth and it’s roughly three times wider than we started. That last number is the useful one to hold onto. Ten times less data did not make the interval ten times wider, it made it about three times wider, and three is roughly the square root of ten. That’s the SE = s/√n formula showing up in an actual result. Precision improves with the square root of the sample size, not with the sample size itself. That’s exactly why doubling a study’s size buys much less than it feels like it should.</p>
+<p>Now the pattern is one column instead of six numbers on three screens. Cut the sample in half and the CI gets about 40% wider; cut it to a tenth and it’s roughly three times wider than we started. That last number is the useful one to hold onto. Ten times less data did not make the CI ten times wider, it made it about three times wider, and three is roughly the square root of ten. That’s the SE = s/√n formula showing up in an actual result. Precision improves with the square root of the sample size, not with the sample size itself. That’s exactly why doubling a study’s size buys much less than it feels like it should.</p>
 </section>
 <section id="sample-size-and-power" class="level2" data-number="4.9">
 <h2 data-number="4.9" class="anchored" data-anchor-id="sample-size-and-power"><span class="header-section-number">4.9</span> Sample size and power</h2>
@@ -691,7 +691,7 @@ mean of x
 NOTE: n is number in *each* group</code></pre>
 </div>
 </div>
-<p><code>sig.level = 0.05</code> is the Type I error rate the seminar introduced. <code>power = 0.8</code> is the conventional target: an 80% chance of detecting the effect if it’s really there. <code>n</code> is the number <strong>per group</strong> required. The gap observed in the original trial was unusually large. A smaller assumed gap needs a correspondingly larger trial:</p>
+<p><code>sig.level = 0.05</code> sets the Type I error rate: the chance we’re willing to accept of concluding there’s an effect when there really isn’t one. 0.05 is the conventional choice, the same five per cent threshold Chapter 5 uses for every test in this book. Next week’s seminar names it properly alongside Type II error and defines power itself. <code>power = 0.8</code> is the conventional target: an 80% chance of detecting the effect if it’s really there. <code>n</code> is the number <strong>per group</strong> required. The gap observed in the original trial was unusually large. A smaller assumed gap needs a correspondingly larger trial:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">power.prop.test</span>(<span class="at">p1 =</span> <span class="fl">0.33</span>, <span class="at">p2 =</span> <span class="fl">0.45</span>, <span class="at">sig.level =</span> <span class="fl">0.05</span>, <span class="at">power =</span> <span class="fl">0.8</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -747,7 +747,7 @@ NOTE: n is number in *each* group</code></pre>
 NOTE: n is number in *each* group</code></pre>
 </div>
 </div>
-<p>Both functions size a study <em>before</em> it is run, from an assumed effect. Power calculated after the fact, from a result already in hand, only re-expresses the p-value already obtained and adds nothing. The seminar’s point about post-hoc power applies to both <code>power.prop.test()</code> and <code>power.t.test()</code> equally.</p>
+<p>Both functions size a study <em>before</em> it is run, from an assumed effect. Power calculated after the fact, from a result already in hand, only re-expresses the p-value already obtained and adds nothing: this applies to both <code>power.prop.test()</code> and <code>power.t.test()</code> equally, and next week’s seminar explains why.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -762,8 +762,8 @@ NOTE: n is number in *each* group</code></pre>
 </div>
 </div>
 </section>
-<section id="worked-example-a-confidence-interval-for-age" class="level2" data-number="4.10">
-<h2 data-number="4.10" class="anchored" data-anchor-id="worked-example-a-confidence-interval-for-age"><span class="header-section-number">4.10</span> Worked example: a confidence interval for age</h2>
+<section id="worked-example-a-ci-for-age" class="level2" data-number="4.10">
+<h2 data-number="4.10" class="anchored" data-anchor-id="worked-example-a-ci-for-age"><span class="header-section-number">4.10</span> Worked example: a CI for age</h2>
 <p>A mean on its own says nothing about how much confidence we should place in it. So how precisely can we pin down the average age of participants in this sample? <code>age</code> hasn’t appeared elsewhere in this chapter, which makes it a fair test of the machinery just built.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>age_stats <span class="ot">&lt;-</span> nhanes <span class="sc">|&gt;</span></span>
@@ -803,19 +803,19 @@ mean of x
  47.51699 </code></pre>
 </div>
 </div>
-<p>The hand-calculated interval and the one from <code>t.test()</code> agree closely. Written as it would appear in a results section: the mean age of participants was 47.5 years (95% CI: 47.3 to 47.7 years). This is a statement about the precision of the <em>estimate</em> of the mean, not a description of how spread out individual ages are. That’s what the SD is for.</p>
+<p>The hand-calculated CI and the one from <code>t.test()</code> agree closely. Written as it would appear in a results section: the mean age of participants was 47.5 years (95% CI: 47.3 to 47.7 years). This is a statement about the precision of the <em>estimate</em> of the mean, not a description of how spread out individual ages are. That’s what the SD is for.</p>
 </section>
 <section id="exercises" class="level2" data-number="4.11">
 <h2 data-number="4.11" class="anchored" data-anchor-id="exercises"><span class="header-section-number">4.11</span> Exercises</h2>
-<p><strong>Exercise 1</strong> (ILOs 1, 2, 3). Calculate the mean and standard error of total cholesterol (<code>chol</code>), construct a 95% confidence interval by hand, and confirm it with <code>t.test()</code>. Report the result the way a results section would state it, in one sentence.</p>
-<p>Then use <code>t.test()</code> with formula syntax to obtain a 95% confidence interval for the <em>difference</em> in mean cholesterol between smoking groups, comparing current smokers with those who have never smoked. You’ll need <code>filter()</code> to restrict <code>smoking</code> to those two categories first, since <code>t.test()</code> compares exactly two groups. Write one sentence interpreting that interval, and one sentence saying how it differs in meaning from the interval you built in the first half of this exercise.</p>
-<p><strong>Exercise 2</strong> (ILOs 1, 2, 3). In <code>strep_tb</code>, find the proportion of patients with baseline cavitation present (<code>baseline_cavitation</code>) and calculate its standard error by hand, then build a 95% confidence interval from it and check the result against <code>prop.test()</code>. Then construct a 95% confidence interval for the difference in the proportion improved between men and women (<code>gender</code>). Write one interpretive sentence for each interval.</p>
-<p><strong>Exercise 3</strong> (ILOs 3, 4). Repeat the width exploration above (full sample, 50% subset, 10% subset) using <code>sed</code> instead of <code>chol</code>, and collect the three intervals into one table the way the chapter did, so their widths sit side by side. Describe what changes and what stays about the same as the sample size drops.</p>
+<p><strong>Exercise 1</strong> (ILOs 1, 2, 3). Calculate the mean and standard error of total cholesterol (<code>chol</code>), construct a 95% CI by hand, and confirm it with <code>t.test()</code>. Report the result the way a results section would state it, in one sentence.</p>
+<p>Then use <code>t.test()</code> with formula syntax to obtain a 95% CI for the <em>difference</em> in mean cholesterol between smoking groups, comparing current smokers with those who have never smoked. You’ll need <code>filter()</code> to restrict <code>smoking</code> to those two categories first, since <code>t.test()</code> compares exactly two groups. Write one sentence interpreting that CI, and one sentence saying how it differs in meaning from the CI you built in the first half of this exercise.</p>
+<p><strong>Exercise 2</strong> (ILOs 1, 2, 3). In <code>strep_tb</code>, find the proportion of patients with baseline cavitation present (<code>baseline_cavitation</code>) and calculate its standard error by hand, then build a 95% CI from it and check the result against <code>prop.test()</code>. Then construct a 95% CI for the difference in the proportion improved between men and women (<code>gender</code>). Write one interpretive sentence for each CI.</p>
+<p><strong>Exercise 3</strong> (ILOs 3, 4). Repeat the width exploration above (full sample, 50% subset, 10% subset) using <code>sed</code> instead of <code>chol</code>, and collect the three CIs into one table the way the chapter did, so their widths sit side by side. Describe what changes and what stays about the same as the sample size drops.</p>
 <p><strong>Exercise 4</strong> (ILOs 3, 5). Using <code>power.t.test()</code>, find the sample size needed to detect a difference in <code>chol</code> of 0.3 mmol/L, and again for a difference of 0.8 mmol/L, both at <code>power = 0.8</code>. Write one sentence explaining why the two required sample sizes differ so much.</p>
 </section>
 <section id="writing-exercise" class="level2" data-number="4.12">
 <h2 data-number="4.12" class="anchored" data-anchor-id="writing-exercise"><span class="header-section-number">4.12</span> Writing exercise</h2>
-<p>Using the cholesterol confidence interval from Exercise 1 and the <code>strep_tb</code> arm-improvement confidence interval from earlier in this chapter, write one sentence for each, in the same reporting style. Use the correct units, and don’t describe the interval as a probability statement about where the true value falls.</p>
+<p>Using the cholesterol CI from Exercise 1 and the <code>strep_tb</code> arm-improvement CI from earlier in this chapter, write one sentence for each, in the same reporting style. Use the correct units, and don’t describe the CI as a probability statement about where the true value falls.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -887,9 +887,9 @@ sample estimates:
 </div>
 </div>
 <p><code>smoking</code> still has three levels after the <code>filter()</code>, but only two of them have any rows left, and <code>t.test()</code> rebuilds the factor from the data it’s actually given, so the empty third group drops out on its own.</p>
-<p>Check the direction before reading the interval, as above. <code>'Never'</code> comes first in <code>smoking</code>’s levels, so R has subtracted current smokers from never smokers, and the difference is never minus current.</p>
-<p>Mean total cholesterol was -0.028 mmol/L in never smokers compared with current smokers (95% CI: -0.056 to 0.001 mmol/L), so a little lower on average in those who had never smoked. Notice that the estimate sits inside its own interval. Always check that: if it doesn’t, something is wrong, likely a sign has been flipped somewhere. The interval includes zero, so these data are consistent with no difference between the two groups, though they don’t rule out a small one either.</p>
-<p>The two intervals mean different things. The first is about a single quantity, mean cholesterol, and says how precisely this sample pins it down. The second is about a <em>comparison</em> between two groups, and the value that matters in it is zero: an interval containing zero is one where the data can’t establish which group is higher. From Chapter 5 onward, almost every interval in this course is of the second kind.</p>
+<p>Check the direction before reading the CI, as above. <code>'Never'</code> comes first in <code>smoking</code>’s levels, so R has subtracted current smokers from never smokers, and the difference is never minus current.</p>
+<p>Mean total cholesterol was -0.028 mmol/L in never smokers compared with current smokers (95% CI: -0.056 to 0.001 mmol/L), so a little lower on average in those who had never smoked. Notice that the estimate sits inside its own CI. Always check that: if it doesn’t, something is wrong, likely a sign has been flipped somewhere. The CI includes zero, so these data are consistent with no difference between the two groups, though they don’t rule out a small one either.</p>
+<p>The two CIs mean different things. The first is about a single quantity, mean cholesterol, and says how precisely this sample pins it down. The second is about a <em>comparison</em> between two groups, and the value that matters in it is zero: a CI containing zero is one where the data can’t establish which group is higher. From Chapter 5 onward, almost every CI in this course is of the second kind.</p>
 <p><strong>Exercise 2</strong></p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>cav_stats <span class="ot">&lt;-</span> strep_tb <span class="sc">|&gt;</span></span>
@@ -915,7 +915,8 @@ sample estimates:
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.6729761</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.test</span>(<span class="at">x =</span> cav_stats<span class="sc">$</span>n_cav, <span class="at">n =</span> cav_stats<span class="sc">$</span>n_total)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>cav_test <span class="ot">&lt;-</span> <span class="fu">prop.test</span>(<span class="at">x =</span> cav_stats<span class="sc">$</span>n_cav, <span class="at">n =</span> cav_stats<span class="sc">$</span>n_total)</span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>cav_test</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     1-sample proportions test with continuity correction
@@ -940,7 +941,8 @@ sample estimates:
 1 F            59         28
 2 M            48         27</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.test</span>(<span class="at">x =</span> gender_summary<span class="sc">$</span>n_improved, <span class="at">n =</span> gender_summary<span class="sc">$</span>n_gender)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>gender_test <span class="ot">&lt;-</span> <span class="fu">prop.test</span>(<span class="at">x =</span> gender_summary<span class="sc">$</span>n_improved, <span class="at">n =</span> gender_summary<span class="sc">$</span>n_gender)</span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>gender_test</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     2-sample test for equality of proportions with continuity
@@ -956,8 +958,8 @@ sample estimates:
 0.4745763 0.5625000 </code></pre>
 </div>
 </div>
-<p>The hand-built interval and the one from <code>prop.test()</code> agree closely, as they did for the proportion improved earlier in the chapter.</p>
-<p>Just over half of patients (58%) had cavitation present on their baseline chest X-ray, but the 95% confidence interval includes 50%, so these data don’t rule out the true proportion being exactly one half. The confidence interval for the difference in improvement between women (<code>prop 1</code>) and men (<code>prop 2</code>) includes zero, consistent with little or no difference in outcome by gender in this trial.</p>
+<p>The hand-built CI and the one from <code>prop.test()</code> agree closely, as they did for the proportion improved earlier in the chapter.</p>
+<p>Just over half of patients (58%) had cavitation present on their baseline chest X-ray (95% CI: 48% to 67%, p = 0.122). The CI includes 50%, so these data don’t rule out the true proportion being exactly one half. The CI for the difference in improvement between women (<code>prop 1</code>) and men (<code>prop 2</code>) runs from -0.3 to 0.12 (p = 0.477): it includes zero, consistent with little or no difference in outcome by gender in this trial.</p>
 <p><strong>Exercise 3</strong></p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>tt_sed_full <span class="ot">&lt;-</span> <span class="fu">t.test</span>(nhanes<span class="sc">$</span>sed)</span>
@@ -990,7 +992,7 @@ sample estimates:
 3 10% subset  3443 6.219105 6.983209 0.7641046</code></pre>
 </div>
 </div>
-<p>As with <code>chol</code>, the point estimate is broadly similar across all three samples, but the confidence interval widens substantially in the 10% subset, and by almost exactly the same factor of about three. The same pattern holds for a skewed variable as for a symmetric one, because it’s the <em>sample size</em>, not the shape of the raw data, that governs the width of the interval on the mean.</p>
+<p>As with <code>chol</code>, the point estimate is broadly similar across all three samples, but the CI widens substantially in the 10% subset, and by almost exactly the same factor of about three. The same pattern holds for a skewed variable as for a symmetric one, because it’s the <em>sample size</em>, not the shape of the raw data, that governs the width of the CI on the mean.</p>
 <p><strong>Exercise 4</strong></p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">power.t.test</span>(<span class="at">delta =</span> <span class="fl">0.3</span>, <span class="at">sd =</span> chol_stats<span class="sc">$</span>sd_chol, <span class="at">sig.level =</span> <span class="fl">0.05</span>, <span class="at">power =</span> <span class="fl">0.8</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1024,7 +1026,7 @@ NOTE: n is number in *each* group</code></pre>
 </div>
 <p>Detecting the smaller difference (0.3 mmol/L) needs a much larger sample than detecting the larger difference (0.8 mmol/L). Smaller effects are harder to distinguish from chance variation, so we need more participants to have the same 80% chance of detecting them.</p>
 <p><strong>Writing exercise (sample answer)</strong></p>
-<p>Mean total cholesterol was 4.97 mmol/L (95% CI: 4.96 to 4.98 mmol/L). In the streptomycin trial, the proportion of patients improved was about 36 percentage points higher in the streptomycin arm than in the control arm, with a 95% confidence interval for the difference that excludes zero. This is consistent with a real difference in improvement between the two arms, rather than one attributable to chance alone.</p>
+<p>Mean total cholesterol was 4.97 mmol/L (95% CI: 4.96 to 4.98 mmol/L). In the streptomycin trial, the proportion of patients improved was about 36 percentage points higher in the streptomycin arm than in the control arm (95% CI: 17 to 56 percentage points, p = 0.0004). The CI excludes zero, consistent with a real difference in improvement between the two arms, rather than one attributable to chance alone.</p>
 </div>
 </div>
 </div>

@@ -326,7 +326,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>[1] 0.09398053</code></pre>
 </div>
 </div>
-<p><code>use = 'complete.obs'</code> tells <code>cor()</code> to drop any participant missing either variable first; without it, a single missing value makes the whole calculation return <code>NA</code>. <code>cor.test()</code> adds a confidence interval and a p-value, and drops incomplete pairs automatically.</p>
+<p><code>use = 'complete.obs'</code> tells <code>cor()</code> to drop any participant missing either variable first; without it, a single missing value makes the whole calculation return <code>NA</code>. <code>cor.test()</code> adds a CI and a p-value, and drops incomplete pairs automatically.</p>
 <p><strong>Null hypothesis.</strong> In the population, the true correlation between age and cholesterol is zero.</p>
 <p><strong>Alternative hypothesis.</strong> The true correlation is not zero.</p>
 <div class="cell">
@@ -368,7 +368,7 @@ sample estimates:
 0.004619514 </code></pre>
 </div>
 </div>
-<p>Spearman’s rho here is about 0.005, p = 0.37: close enough to zero, and far from significant, so age and depression symptom category show no clear monotonic relationship. <code>cor.test()</code> doesn’t report a confidence interval for Spearman’s rho the way it did for Pearson’s r above; rho has no equivalent simple formula for one. The warning above, ‘cannot compute exact p-value with ties,’ isn’t a problem: with tens of thousands of participants spread across only three <code>phq.c</code> categories, many necessarily share a rank, so R falls back on an approximate p-value, which is still valid.</p>
+<p>Spearman’s rho here is about 0.005, p = 0.37: close enough to zero, and far from significant, so age and depression symptom category show no clear monotonic relationship. <code>cor.test()</code> doesn’t report a CI for Spearman’s rho the way it did for Pearson’s r above; rho has no equivalent simple formula for one. The warning above, ‘cannot compute exact p-value with ties,’ isn’t a problem: with tens of thousands of participants spread across only three <code>phq.c</code> categories, many necessarily share a rank, so R falls back on an approximate p-value, which is still valid.</p>
 </section>
 <section id="a-scatterplot-with-a-fitted-line-cholesterol-by-age" class="level2" data-number="6.4">
 <h2 data-number="6.4" class="anchored" data-anchor-id="a-scatterplot-with-a-fitted-line-cholesterol-by-age"><span class="header-section-number">6.4</span> A scatterplot with a fitted line: cholesterol by age</h2>
@@ -390,7 +390,7 @@ sample estimates:
 </div>
 </div>
 <p>Above the plot, <code>ggplot2</code> printed <code>`geom_smooth()` using formula = 'y ~ x'</code>. That’s a message, not a warning: it’s just reporting which formula it fitted, since <code>geom_smooth()</code> picks one for us if we don’t say. Here it chose a straight line in <code>x</code>, exactly the simple linear regression we asked for with <code>method = 'lm'</code>.</p>
-<p>The shaded band around the line is a 95% confidence interval for the line itself, the same idea as every other confidence interval in this course, just drawn as a band rather than printed as two numbers. The line slopes gently upward: cholesterol tends to be a little higher in older participants. The cloud of points around it is wide, though. Age doesn’t determine cholesterol on its own, and the next section puts a number on exactly how much of the variation in cholesterol age can explain.</p>
+<p>The shaded band around the line is a 95% CI for the line itself, the same idea as every other CI in this course, just drawn as a band rather than printed as two numbers. The line slopes gently upward: cholesterol tends to be a little higher in older participants. The cloud of points around it is wide, though. Age doesn’t determine cholesterol on its own, and the next section puts a number on exactly how much of the variation in cholesterol age can explain.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -439,7 +439,7 @@ F-statistic: 349.1 on 1 and 39174 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p><code>summary()</code> prints a lot at once. The <code>Coefficients</code> table has the two numbers that define the fitted line: the <code>(Intercept)</code>, the model’s predicted cholesterol at age zero, and the slope on <code>age</code>, the predicted change in cholesterol for each additional year of age. Each has a standard error, a t-value, and a p-value attached, exactly the reporting standard from Chapter 5. The slope here is small but non-zero: cholesterol tends to be about 0.0056 mmol/L higher for every extra year of age, and the p-value is far below 0.001.</p>
 <p><code>Multiple R-squared</code>, R², says what fraction of the variation in cholesterol this model accounts for. Here it’s under 0.01: age explains under 1% of the variation in cholesterol between participants. That isn’t a contradiction of the significant slope above. A relationship can be real, precisely estimated, and still leave most of the variation in the outcome unexplained. For a simple regression like this one, with a single predictor, the square of Pearson’s r is exactly the same number as the R² above, and the hypothesis test for Pearson’s r is equivalent to the test of the slope coefficient.</p>
 <p>A low R² would mean a poorer explanation or prediction of the variation of the outcome. However, that isn’t our goal here. Instead, we’re estimating how cholesterol varies with age, as precisely as the data allow. Chapter 7 returns to this distinction, between explaining an association and predicting an outcome, when it looks at what a regression model can and can’t claim to establish.</p>
-<p><code>coef()</code> and <code>confint()</code>, both base R, pull out just the coefficients and just their confidence intervals, without the rest of the printout:</p>
+<p><code>coef()</code> and <code>confint()</code>, both base R, pull out just the coefficients and just their CIs, without the rest of the printout:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(m_age)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -453,7 +453,7 @@ F-statistic: 349.1 on 1 and 39174 DF,  p-value: &lt; 2.2e-16</code></pre>
 age         0.004981885 0.006149643</code></pre>
 </div>
 </div>
-<p><code>broom::tidy()</code> puts the same information into a tidy data frame, one row per coefficient, which is easier to work with in code than <code>summary()</code>’s printed output. Adding <code>conf.int = TRUE</code> includes the confidence interval as two extra columns:</p>
+<p><code>broom::tidy()</code> puts the same information into a tidy data frame, one row per coefficient, which is easier to work with in code than <code>summary()</code>’s printed output. Adding <code>conf.int = TRUE</code> includes the CI as two extra columns:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(m_age, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -503,7 +503,7 @@ genderFemale 0.1469893 0.1901101</code></pre>
 </div>
 </div>
 <p>With a continuous predictor like <code>age</code>, the <code>(Intercept)</code> was an abstract number, cholesterol at age zero, nobody’s actual cholesterol. With a two-category predictor it’s concrete: <code>gender</code>’s first level is <code>'Male'</code>, so <code>(Intercept)</code>, 4.8859 mmol/L, is simply mean cholesterol in men. This is the reference level again, the same idea Chapter 3 introduced and Chapter 5’s <code>relevel()</code> work used a second time: whichever category is listed first becomes the one everything else in the model is compared against, and here that comparison is the whole model.</p>
-<p>The slope, on <code>genderFemale</code>, is the difference between the two group means: 0.1685 mmol/L, women minus men, with its own standard error, t-value, and p-value, and a 95% confidence interval of 0.1470 to 0.1901 mmol/L. Chapter 5 reported the same comparison as 0.17 mmol/L higher in women (95% CI: 0.15 to 0.19 mmol/L), but only after reversing the signs on what <code>t.test()</code> printed, because <code>t.test()</code> reports Male minus Female by default. <code>lm()</code> reports the comparison the other way round, reference category first, so the sign comes out already the way we want to read it: the same underlying result, with no sign-flipping needed here.</p>
+<p>The slope, on <code>genderFemale</code>, is the difference between the two group means: 0.1685 mmol/L, women minus men, with its own standard error, t-value, and p-value, and a 95% CI of 0.1470 to 0.1901 mmol/L. Chapter 5 reported the same comparison as 0.17 mmol/L higher in women (95% CI: 0.15 to 0.19 mmol/L), but only after reversing the signs on what <code>t.test()</code> printed, because <code>t.test()</code> reports Male minus Female by default. <code>lm()</code> reports the comparison the other way round, reference category first, so the sign comes out already the way we want to read it: the same underlying result, with no sign-flipping needed here.</p>
 <p>The two results agree this closely because they’re close to the same calculation, but not identically the same one. <code>t.test()</code>’s default doesn’t assume the two groups share one variance, as Chapter 5’s independent-samples section said explicitly; <code>lm()</code> does assume it, one shared residual variance for the whole model. Telling <code>t.test()</code> to make that same assumption, with <code>var.equal = TRUE</code>, closes the gap completely:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(chol <span class="sc">~</span> gender, <span class="at">data =</span> nhanes <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(gender)), <span class="at">var.equal =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -521,7 +521,7 @@ sample estimates:
             4.885939             5.054489 </code></pre>
 </div>
 </div>
-<p><code>t = -15.323</code> on 39174 degrees of freedom, the same degrees of freedom <code>summary(m_gender)</code> reported for the regression, and an interval of -0.1901 to -0.1470, the exact mirror of <code>lm()</code>‘s 0.1470 to 0.1901. <code>var.equal = TRUE</code> isn’t a better version of the default. Chapter 5’s default, unequal-variance form is the safer everyday choice, since it stays valid whether or not the two groups’ spreads match. Setting <code>var.equal = TRUE</code> here is only to show that a t-test <em>is</em> this regression, once both make the same assumption.</p>
+<p><code>t = -15.323</code> on 39174 degrees of freedom, the same degrees of freedom <code>summary(m_gender)</code> reported for the regression, and a CI of -0.1901 to -0.1470, the exact mirror of <code>lm()</code>‘s 0.1470 to 0.1901. <code>var.equal = TRUE</code> isn’t a better version of the default. Chapter 5’s default, unequal-variance form is the safer everyday choice, since it stays valid whether or not the two groups’ spreads match. Setting <code>var.equal = TRUE</code> here is only to show that a t-test <em>is</em> this regression, once both make the same assumption.</p>
 <p>An independent-samples t-test on cholesterol by gender, and a simple linear regression of cholesterol on the two-category factor <code>gender</code>, are the same model, read two ways. The diagnostic plots in the next section apply here too, and are worth trying on <code>m_gender</code>: with only two possible fitted values, the residuals-vs-fitted plot collapses into two vertical columns of points instead of the scattered cloud <code>m_age</code> produced, which is exactly what a two-category predictor should look like, not a sign that something has gone wrong.</p>
 </section>
 <section id="a-multi-level-categorical-predictor-cholesterol-by-education" class="level2" data-number="6.7">
@@ -562,7 +562,7 @@ eduHigh school graduate -0.04724638 0.01586769
 eduAbove high school    -0.03895027 0.01424346</code></pre>
 </div>
 </div>
-<p>Two rows this time, <code>eduHigh school graduate</code> and <code>eduAbove high school</code>, each a difference from whichever category is first in <code>levels(edu_chol_complete$edu)</code>. Neither is anywhere near significant here: on this evidence, education isn’t associated with cholesterol in this sample.</p>
+<p>Two rows this time, <code>eduHigh school graduate</code> and <code>eduAbove high school</code>, each a difference from whichever category is first in <code>levels(edu_chol_complete$edu)</code>. Compared with ‘Less than high school’, high school graduates’ cholesterol is about -0.016 mmol/L lower (95% CI: -0.047 to 0.016 mmol/L, p = 0.33), and those with more than high school are about 0.012 mmol/L lower (95% CI: -0.039 to 0.014 mmol/L, p = 0.363). Both CIs sit close to, and comfortably include, zero: these data are consistent with little or no difference in cholesterol by education level in this sample, and they don’t rule one out either.</p>
 <p><code>levels()</code> confirms the reference is <code>'Less than high school'</code>. <code>relevel()</code>, already met in Chapter 3, moves a different category to the front. This time we write the releveled factor back into a data frame, rather than working on a standalone copy the way Chapter 3 did: <code>lm()</code> needs to find <code>edu</code> already releveled inside whatever <code>data =</code> points at, so it goes into a new object, <code>edu_relevelled</code>, leaving <code>edu_chol_complete</code> and the model fitted on it untouched:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>edu_relevelled <span class="ot">&lt;-</span> edu_chol_complete <span class="sc">|&gt;</span></span>
@@ -666,17 +666,34 @@ eduHigh school graduate  -0.03073571 0.02406383</code></pre>
 2 5.543408 5.482643 5.604174</code></pre>
 </div>
 </div>
-<p><code>interval = 'confidence'</code> adds a confidence interval around each prediction. This confidence interval describes the precision of the predicted <strong>mean</strong> value, not the precision for an <strong>individual</strong>. The precision around an individual prediction is called a <strong>prediction interval</strong>. It’s always wider than the confidence interval around the mean, since predicting one person’s value is less certain than predicting the average across many. A prediction interval can be requested by stating <code>interval = 'prediction'</code> instead.</p>
+<p><code>interval = 'confidence'</code> adds a CI around each prediction. This CI describes the precision of the predicted <strong>mean</strong> value, not the precision for an <strong>individual</strong>. The precision around an individual prediction is called a <strong>prediction interval</strong>, a different quantity from a CI, not an abbreviated form of it. It’s always wider than the CI around the mean, since predicting one person’s value is less certain than predicting the average across many. A prediction interval can be requested by stating <code>interval = 'prediction'</code> instead.</p>
 <p>The first row, age 45, sits comfortably inside the range of ages actually observed in this sample (18 to 85), so this prediction is supported by data the model was fitted on. The second row, age 150, is not. Nobody in this dataset, or in any verified human population, is 150 years old. The model has no information about what happens at that age, and fitting a straight line through the data we do have says nothing reliable about what lies far outside it. The predicted value it returns looks like an ordinary number, which is exactly what makes extrapolation dangerous: a plausible-looking output doesn’t mean the input that produced it was reasonable. Always check a prediction’s input against the range the model was actually fitted on before trusting its output.</p>
 </section>
 <section id="worked-example-cholesterol-by-sedentary-time" class="level2" data-number="6.10">
 <h2 data-number="6.10" class="anchored" data-anchor-id="worked-example-cholesterol-by-sedentary-time"><span class="header-section-number">6.10</span> Worked example: cholesterol by sedentary time</h2>
-<p>Let’s bring the whole workflow together on another research question: is sedentary time (<code>sed</code>, in hours/day) associated with total cholesterol (<code>chol</code>)?</p>
+<p>Let’s bring the whole workflow together on another research question: is sedentary time (<code>sed</code>, in hours/day) associated with total cholesterol (<code>chol</code>)? <code>cor.test()</code> gives us Pearson’s r first, the same way it did for <code>age</code> and <code>chol</code> above:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(nhanes <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(sed), <span class="sc">!</span><span class="fu">is.na</span>(chol)), <span class="fu">aes</span>(<span class="at">x =</span> sed, <span class="at">y =</span> chol)) <span class="sc">+</span></span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">'lm'</span>) <span class="sc">+</span></span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">'Sedentary time (hours/day)'</span>, <span class="at">y =</span> <span class="st">'Total cholesterol (mmol/L)'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor.test</span>(nhanes<span class="sc">$</span>sed, nhanes<span class="sc">$</span>chol)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Pearson's product-moment correlation
+
+data:  nhanes$sed and nhanes$chol
+t = -1.794, df = 32307, p-value = 0.07282
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ -0.0208822546  0.0009237461
+sample estimates:
+         cor 
+-0.009980441 </code></pre>
+</div>
+</div>
+<p>r here is about -0.010 (95% CI: -0.021 to 0.001, p = 0.073), the weakest of the pairings this chapter looks at, and its CI includes zero.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(nhanes <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(sed), <span class="sc">!</span><span class="fu">is.na</span>(chol)), <span class="fu">aes</span>(<span class="at">x =</span> sed, <span class="at">y =</span> chol)) <span class="sc">+</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">'lm'</span>) <span class="sc">+</span></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">'Sedentary time (hours/day)'</span>, <span class="at">y =</span> <span class="st">'Total cholesterol (mmol/L)'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
@@ -690,9 +707,9 @@ eduHigh school graduate  -0.03073571 0.02406383</code></pre>
 </div>
 <p>The fitted line is nearly flat, and the confidence band around it is wide enough to include a flat, horizontal line, that is, no relationship at all. Fitting the model directly confirms what the plot suggests:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>sed_complete <span class="ot">&lt;-</span> nhanes <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(sed), <span class="sc">!</span><span class="fu">is.na</span>(chol))</span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>m_sed <span class="ot">&lt;-</span> <span class="fu">lm</span>(chol <span class="sc">~</span> sed, <span class="at">data =</span> sed_complete)</span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m_sed)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>sed_complete <span class="ot">&lt;-</span> nhanes <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(sed), <span class="sc">!</span><span class="fu">is.na</span>(chol))</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>m_sed <span class="ot">&lt;-</span> <span class="fu">lm</span>(chol <span class="sc">~</span> sed, <span class="at">data =</span> sed_complete)</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m_sed)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -713,22 +730,22 @@ Residual standard error: 1.083 on 32307 degrees of freedom
 Multiple R-squared:  9.961e-05, Adjusted R-squared:  6.866e-05 
 F-statistic: 3.218 on 1 and 32307 DF,  p-value: 0.07282</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(m_sed)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(m_sed)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                   2.5 %       97.5 %
 (Intercept)  4.940538020 4.968147e+00
 sed         -0.002095651 9.269529e-05</code></pre>
 </div>
 </div>
-<p>The slope is small and negative, about -0.0010 mmol/L for each additional hour/day of sedentary time, and the p-value is 0.073: above the conventional 0.05 threshold. The 95% confidence interval for the slope, -0.0021 to 0.0001 mmol/L, includes zero. R² is essentially zero. On this evidence alone, sedentary time and cholesterol show no clear linear relationship in this sample.</p>
+<p>The slope is small and negative, about -0.0010 mmol/L for each additional hour/day of sedentary time, and the p-value is 0.073: above the conventional 0.05 threshold. The 95% CI for the slope, -0.0021 to 0.0001 mmol/L, includes zero. R² is essentially zero. On this evidence alone, sedentary time and cholesterol show no clear linear relationship in this sample.</p>
 <p>We check the diagnostic plots anyway, since a weak result could be caused by violated assumptions:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>sed_aug <span class="ot">&lt;-</span> <span class="fu">augment</span>(m_sed)</span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(sed_aug, <span class="fu">aes</span>(<span class="at">x =</span> .fitted, <span class="at">y =</span> .resid)) <span class="sc">+</span></span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
-<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
-<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">'Fitted value (mmol/L)'</span>, <span class="at">y =</span> <span class="st">'Residual (mmol/L)'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>sed_aug <span class="ot">&lt;-</span> <span class="fu">augment</span>(m_sed)</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(sed_aug, <span class="fu">aes</span>(<span class="at">x =</span> .fitted, <span class="at">y =</span> .resid)) <span class="sc">+</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">'Fitted value (mmol/L)'</span>, <span class="at">y =</span> <span class="st">'Residual (mmol/L)'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -736,10 +753,10 @@ sed         -0.002095651 9.269529e-05</code></pre>
 </figure>
 </div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(sed_aug, <span class="fu">aes</span>(<span class="at">sample =</span> .std.resid)) <span class="sc">+</span></span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_qq</span>() <span class="sc">+</span></span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_qq_line</span>() <span class="sc">+</span></span>
-<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">'Theoretical quantiles'</span>, <span class="at">y =</span> <span class="st">'Standardised residuals'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(sed_aug, <span class="fu">aes</span>(<span class="at">sample =</span> .std.resid)) <span class="sc">+</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_qq</span>() <span class="sc">+</span></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_qq_line</span>() <span class="sc">+</span></span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">'Theoretical quantiles'</span>, <span class="at">y =</span> <span class="st">'Standardised residuals'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -753,15 +770,15 @@ sed         -0.002095651 9.269529e-05</code></pre>
 </section>
 <section id="exercises" class="level2" data-number="6.11">
 <h2 data-number="6.11" class="anchored" data-anchor-id="exercises"><span class="header-section-number">6.11</span> Exercises</h2>
-<p><strong>Exercise 1</strong> (ILOs 1, 2, 6). State the null and alternative hypotheses for the slope. Using <code>vpa_r</code>, vigorous physical activity outside work (hours/day), produce a scatterplot of <code>chol</code> against <code>vpa_r</code> with a fitted regression line. Fit the model with <code>lm()</code>, and extract its coefficients and their 95% confidence intervals with <code>confint()</code> and <code>broom::tidy()</code>. Report the slope in one sentence, in the same style used above.</p>
+<p><strong>Exercise 1</strong> (ILOs 1, 2, 6). State the null and alternative hypotheses for the slope. Using <code>vpa_r</code>, vigorous physical activity outside work (hours/day), produce a scatterplot of <code>chol</code> against <code>vpa_r</code> with a fitted regression line. Fit the model with <code>lm()</code>, and extract its coefficients and their 95% CIs with <code>confint()</code> and <code>broom::tidy()</code>. Report the slope in one sentence, in the same style used above.</p>
 <p><strong>Exercise 2</strong> (ILO 4). For the model fitted in Exercise 1, produce a residuals-vs-fitted plot and a QQ plot. Write one sentence describing what each plot shows, and one sentence commenting on anything the plots reveal about the shape of <code>vpa_r</code> itself.</p>
 <p><strong>Exercise 3</strong> (ILO 5). Using the model fitted in Exercise 1, predict total cholesterol at <code>vpa_r</code> = 1 hour/day and at <code>vpa_r</code> = 24 hours/day. Write one sentence stating which of the two predictions can be trusted, and one sentence explaining why the other cannot, referring to the range of <code>vpa_r</code> actually observed in the data.</p>
-<p><strong>Exercise 4</strong> (ILOs 2, 3). State the null and alternative hypotheses, then reproduce Chapter 5’s worked example, sedentary time (<code>sed</code>) by gender, with <code>lm()</code> instead of <code>t.test()</code>. Compare the confidence interval <code>lm()</code> gives you to the one Chapter 5 reported. Write one sentence on what you find, and a second sentence explaining it, using <code>var.equal = TRUE</code> to check your explanation.</p>
+<p><strong>Exercise 4</strong> (ILOs 2, 3). State the null and alternative hypotheses, then reproduce Chapter 5’s worked example, sedentary time (<code>sed</code>) by gender, with <code>lm()</code> instead of <code>t.test()</code>. Compare the CI <code>lm()</code> gives you to the one Chapter 5 reported. Write one sentence on what you find, and a second sentence explaining it, using <code>var.equal = TRUE</code> to check your explanation.</p>
 <p><strong>Exercise 5</strong> (ILOs 2, 6). State the null and alternative hypotheses, then fit <code>chol ~ smoking</code>. Use <code>levels()</code> to check which category of <code>smoking</code> the model used as its reference, then refit with <code>relevel()</code> using <code>'Current'</code> as the reference instead. Report the first model’s coefficients in one sentence, then write a second sentence stating what changed between the two model fits and a third stating what stayed exactly the same, and why.</p>
 </section>
 <section id="writing-exercise" class="level2" data-number="6.12">
 <h2 data-number="6.12" class="anchored" data-anchor-id="writing-exercise"><span class="header-section-number">6.12</span> Writing exercise</h2>
-<p>Using the <code>chol ~ sed</code> result from the worked example, write a short results paragraph of two to three sentences, as it would appear in a report. State the estimated slope, its 95% confidence interval, and its p-value, and say plainly what this evidence does and does not support. Avoid two common mistakes: don’t describe a non-significant result as proof there is no relationship at all, and don’t write around the p-value without stating it.</p>
+<p>Using the <code>chol ~ sed</code> result from the worked example, write a short results paragraph of two to three sentences, as it would appear in a report. State the estimated slope, its 95% CI, and its p-value, and say plainly what this evidence does and does not support. Avoid two common mistakes: don’t describe a non-significant result as proof there is no relationship at all, and don’t write around the p-value without stating it.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -778,12 +795,12 @@ sed         -0.002095651 9.269529e-05</code></pre>
 <p><strong>Null hypothesis.</strong> In the population, the slope of cholesterol on <code>vpa_r</code> is zero.</p>
 <p><strong>Alternative hypothesis.</strong> The slope is not zero.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>vpa_r_complete <span class="ot">&lt;-</span> nhanes <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(vpa_r), <span class="sc">!</span><span class="fu">is.na</span>(chol))</span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(vpa_r_complete, <span class="fu">aes</span>(<span class="at">x =</span> vpa_r, <span class="at">y =</span> chol)) <span class="sc">+</span></span>
-<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
-<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">'lm'</span>) <span class="sc">+</span></span>
-<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">'Vigorous activity outside work (hours/day)'</span>, <span class="at">y =</span> <span class="st">'Total cholesterol (mmol/L)'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>vpa_r_complete <span class="ot">&lt;-</span> nhanes <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(vpa_r), <span class="sc">!</span><span class="fu">is.na</span>(chol))</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(vpa_r_complete, <span class="fu">aes</span>(<span class="at">x =</span> vpa_r, <span class="at">y =</span> chol)) <span class="sc">+</span></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">'lm'</span>) <span class="sc">+</span></span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">'Vigorous activity outside work (hours/day)'</span>, <span class="at">y =</span> <span class="st">'Total cholesterol (mmol/L)'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
@@ -794,8 +811,8 @@ sed         -0.002095651 9.269529e-05</code></pre>
 </figure>
 </div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>m_vpa_r <span class="ot">&lt;-</span> <span class="fu">lm</span>(chol <span class="sc">~</span> vpa_r, <span class="at">data =</span> vpa_r_complete)</span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m_vpa_r)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>m_vpa_r <span class="ot">&lt;-</span> <span class="fu">lm</span>(chol <span class="sc">~</span> vpa_r, <span class="at">data =</span> vpa_r_complete)</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m_vpa_r)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -816,13 +833,13 @@ Residual standard error: 1.08 on 32329 degrees of freedom
 Multiple R-squared:  0.003579,  Adjusted R-squared:  0.003549 
 F-statistic: 116.1 on 1 and 32329 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(m_vpa_r)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(m_vpa_r)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                 2.5 %     97.5 %
 (Intercept)  4.9582959  4.9832860
 vpa_r       -0.2006789 -0.1389139</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(m_vpa_r, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(m_vpa_r, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 × 7
   term        estimate std.error statistic  p.value conf.low conf.high
@@ -831,15 +848,15 @@ vpa_r       -0.2006789 -0.1389139</code></pre>
 2 vpa_r         -0.170   0.0158      -10.8 4.94e-27   -0.201    -0.139</code></pre>
 </div>
 </div>
-<p>Total cholesterol was about 0.170 mmol/L lower for each additional hour/day of vigorous activity outside work (95% CI: -0.201 to -0.139 mmol/L, p &lt; 0.001).</p>
+<p>Total cholesterol was about 0.170 mmol/L lower for each additional hour/day of vigorous activity outside work (95% CI: 0.139 to 0.201 mmol/L lower, p &lt; 0.001).</p>
 <p><strong>Exercise 2</strong></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>vpa_r_aug <span class="ot">&lt;-</span> <span class="fu">augment</span>(m_vpa_r)</span>
-<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(vpa_r_aug, <span class="fu">aes</span>(<span class="at">x =</span> .fitted, <span class="at">y =</span> .resid)) <span class="sc">+</span></span>
-<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
-<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
-<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">'Fitted value (mmol/L)'</span>, <span class="at">y =</span> <span class="st">'Residual (mmol/L)'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>vpa_r_aug <span class="ot">&lt;-</span> <span class="fu">augment</span>(m_vpa_r)</span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(vpa_r_aug, <span class="fu">aes</span>(<span class="at">x =</span> .fitted, <span class="at">y =</span> .resid)) <span class="sc">+</span></span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">'Fitted value (mmol/L)'</span>, <span class="at">y =</span> <span class="st">'Residual (mmol/L)'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -847,10 +864,10 @@ vpa_r       -0.2006789 -0.1389139</code></pre>
 </figure>
 </div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(vpa_r_aug, <span class="fu">aes</span>(<span class="at">sample =</span> .std.resid)) <span class="sc">+</span></span>
-<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_qq</span>() <span class="sc">+</span></span>
-<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_qq_line</span>() <span class="sc">+</span></span>
-<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">'Theoretical quantiles'</span>, <span class="at">y =</span> <span class="st">'Standardised residuals'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(vpa_r_aug, <span class="fu">aes</span>(<span class="at">sample =</span> .std.resid)) <span class="sc">+</span></span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_qq</span>() <span class="sc">+</span></span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_qq_line</span>() <span class="sc">+</span></span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">'Theoretical quantiles'</span>, <span class="at">y =</span> <span class="st">'Standardised residuals'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -862,7 +879,7 @@ vpa_r       -0.2006789 -0.1389139</code></pre>
 <p>The residuals-vs-fitted plot checks linearity and constant variance; the QQ plot checks whether the residuals are approximately normally distributed. Most points in the residual plot fall into a small number of vertical strips rather than scattering freely. That’s because <code>vpa_r</code> itself only takes a small number of distinct values: most participants report exactly zero hours/day of vigorous activity outside work. Their fitted value and residual pattern is shared, not spread out. This is a feature of the predictor’s own distribution, not a sign that the model is wrongly specified.</p>
 <p><strong>Exercise 3</strong></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(m_vpa_r, <span class="at">newdata =</span> <span class="fu">data.frame</span>(<span class="at">vpa_r =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">24</span>)), <span class="at">interval =</span> <span class="st">'confidence'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(m_vpa_r, <span class="at">newdata =</span> <span class="fu">data.frame</span>(<span class="at">vpa_r =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">24</span>)), <span class="at">interval =</span> <span class="st">'confidence'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        fit       lwr      upr
 1 4.8009945 4.7718047 4.830184
@@ -874,10 +891,10 @@ vpa_r       -0.2006789 -0.1389139</code></pre>
 <p><strong>Null hypothesis.</strong> In the population, mean sedentary time is the same in men and women.</p>
 <p><strong>Alternative hypothesis.</strong> Mean sedentary time differs between men and women.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>sed_gender_complete <span class="ot">&lt;-</span> nhanes <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(gender), <span class="sc">!</span><span class="fu">is.na</span>(sed))</span>
-<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>m_sed_gender <span class="ot">&lt;-</span> <span class="fu">lm</span>(sed <span class="sc">~</span> gender, <span class="at">data =</span> sed_gender_complete)</span>
-<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m_sed_gender)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>sed_gender_complete <span class="ot">&lt;-</span> nhanes <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(gender), <span class="sc">!</span><span class="fu">is.na</span>(sed))</span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>m_sed_gender <span class="ot">&lt;-</span> <span class="fu">lm</span>(sed <span class="sc">~</span> gender, <span class="at">data =</span> sed_gender_complete)</span>
+<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m_sed_gender)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -898,16 +915,16 @@ Residual standard error: 10.9 on 34432 degrees of freedom
 Multiple R-squared:  0.0001413, Adjusted R-squared:  0.0001123 
 F-statistic: 4.866 on 1 and 34432 DF,  p-value: 0.0274</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(m_sed_gender)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(m_sed_gender)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                  2.5 %    97.5 %
 (Intercept)  6.26515458 6.5960288
 genderFemale 0.02889292 0.4897018</code></pre>
 </div>
 </div>
-<p><code>lm()</code> gives a slope of 0.259 hours/day (95% CI: 0.029 to 0.490 hours/day, p = 0.027), close to Chapter 5’s t-test result but not identical: Chapter 5 reported a mean difference of about 0.26 hours/day (95% CI: 0.03 to 0.49 hours/day, p = 0.026). The gap is small, but it’s real, in the third decimal of the p-value. It happens because <code>t.test()</code>’s default doesn’t assume the two groups share one variance and <code>lm()</code> does, and here that assumption isn’t quite free: <code>sed</code>’s spread genuinely differs by gender, a standard deviation of about 9.75 hours/day in men against about 11.9 in women. Setting <code>var.equal = TRUE</code> on the t-test confirms it:</p>
+<p><code>lm()</code> gives a slope of 0.259 hours/day (95% CI: 0.029 to 0.490 hours/day, p = 0.027), close to Chapter 5’s t-test result but not identical: Chapter 5 reported a mean difference of about 0.26 hours/day (95% CI: 0.03 to 0.49 hours/day, p = 0.026). The gap is small, but it’s real, in the third decimal of the p-value. It happens because <code>t.test()</code>’s default doesn’t assume the two groups share one variance and <code>lm()</code> does, and here that assumption isn’t quite free: <code>sed</code>’s spread genuinely differs by gender, a standard deviation of about 9.75 hours/day in men against about 11.9 hours/day in women. Setting <code>var.equal = TRUE</code> on the t-test confirms it:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(sed <span class="sc">~</span> gender, <span class="at">data =</span> sed_gender_complete, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(sed <span class="sc">~</span> gender, <span class="at">data =</span> sed_gender_complete, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Two Sample t-test
@@ -922,15 +939,15 @@ sample estimates:
             6.430592             6.689889 </code></pre>
 </div>
 </div>
-<p>With <code>var.equal = TRUE</code>, the t-test’s p-value becomes 0.027 and its interval 0.029 to 0.490 once the sign is reversed, matching <code>lm()</code> exactly. The <code>chol</code> model earlier in this chapter agreed with its t-test to four decimal places because the two groups’ spreads there were nearly equal; here they aren’t, so the equal-variance assumption <code>lm()</code> makes actually changes the answer, by a small amount.</p>
+<p>With <code>var.equal = TRUE</code>, the t-test’s p-value becomes 0.027 and its CI 0.029 to 0.490 once the sign is reversed, matching <code>lm()</code> exactly. The <code>chol</code> model earlier in this chapter agreed with its t-test to four decimal places because the two groups’ spreads there were nearly equal; here they aren’t, so the equal-variance assumption <code>lm()</code> makes actually changes the answer, by a small amount.</p>
 <p><strong>Exercise 5</strong></p>
 <p><strong>Null hypothesis.</strong> In the population, a non-reference smoking category’s mean cholesterol equals the reference category’s.</p>
 <p><strong>Alternative hypothesis.</strong> It differs. Each non-reference row tests this comparison separately.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>smoking_chol_complete <span class="ot">&lt;-</span> nhanes <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(smoking), <span class="sc">!</span><span class="fu">is.na</span>(chol))</span>
-<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>m_smoking <span class="ot">&lt;-</span> <span class="fu">lm</span>(chol <span class="sc">~</span> smoking, <span class="at">data =</span> smoking_chol_complete)</span>
-<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m_smoking)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>smoking_chol_complete <span class="ot">&lt;-</span> nhanes <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(smoking), <span class="sc">!</span><span class="fu">is.na</span>(chol))</span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>m_smoking <span class="ot">&lt;-</span> <span class="fu">lm</span>(chol <span class="sc">~</span> smoking, <span class="at">data =</span> smoking_chol_complete)</span>
+<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m_smoking)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -952,17 +969,17 @@ Residual standard error: 1.091 on 38874 degrees of freedom
 Multiple R-squared:  0.0001279, Adjusted R-squared:  7.644e-05 
 F-statistic: 2.486 on 2 and 38874 DF,  p-value: 0.08327</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(m_smoking)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(m_smoking)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                        2.5 %     97.5 %
 (Intercept)      4.9535405752 4.98244900
 smokingPrevious -0.0051953902 0.04839717
 smokingCurrent  -0.0001129389 0.05570047</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>smoking_relevelled <span class="ot">&lt;-</span> smoking_chol_complete <span class="sc">|&gt;</span></span>
-<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">smoking =</span> <span class="fu">relevel</span>(smoking, <span class="at">ref =</span> <span class="st">'Current'</span>))</span>
-<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>m_smoking_relevel <span class="ot">&lt;-</span> <span class="fu">lm</span>(chol <span class="sc">~</span> smoking, <span class="at">data =</span> smoking_relevelled)</span>
-<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m_smoking_relevel)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>smoking_relevelled <span class="ot">&lt;-</span> smoking_chol_complete <span class="sc">|&gt;</span></span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">smoking =</span> <span class="fu">relevel</span>(smoking, <span class="at">ref =</span> <span class="st">'Current'</span>))</span>
+<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>m_smoking_relevel <span class="ot">&lt;-</span> <span class="fu">lm</span>(chol <span class="sc">~</span> smoking, <span class="at">data =</span> smoking_relevelled)</span>
+<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m_smoking_relevel)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -984,7 +1001,7 @@ Residual standard error: 1.091 on 38874 degrees of freedom
 Multiple R-squared:  0.0001279, Adjusted R-squared:  7.644e-05 
 F-statistic: 2.486 on 2 and 38874 DF,  p-value: 0.08327</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(m_smoking_relevel)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(m_smoking_relevel)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                      2.5 %       97.5 %
 (Intercept)      4.97191682 5.0196602927
@@ -992,9 +1009,9 @@ smokingNever    -0.05570047 0.0001129389
 smokingPrevious -0.03904065 0.0266548955</code></pre>
 </div>
 </div>
-<p><code>levels()</code> on the original factor shows <code>'Never'</code> first, so that’s the reference the first model used: mean cholesterol is about 4.97 mmol/L in never-smokers, 0.022 mmol/L higher in previous smokers (95% CI -0.005 to 0.048, p = 0.114), and 0.028 mmol/L higher in current smokers (95% CI 0.000 to 0.056, p = 0.051), neither significant at the conventional 5% level. Releveled to <code>'Current'</code>, both rows change: the intercept becomes current smokers’ own mean, and the two remaining rows compare <code>'Never'</code> and <code>'Previous'</code> against <code>'Current'</code> instead. <code>Multiple R-squared</code> and <code>Residual standard error</code> are identical in both printouts, 0.0001279 and 1.091. Which category anchors the comparison changed; what the model actually fits, and predicts for any given participant, didn’t.</p>
+<p><code>levels()</code> on the original factor shows <code>'Never'</code> first, so that’s the reference the first model used: mean cholesterol is about 4.97 mmol/L in never-smokers, 0.022 mmol/L higher in previous smokers (95% CI -0.005 to 0.048 mmol/L, p = 0.114), and 0.028 mmol/L higher in current smokers (95% CI 0.000 to 0.056 mmol/L, p = 0.051), neither significant at the conventional 5% level. Releveled to <code>'Current'</code>, both rows change: the intercept becomes current smokers’ own mean, and the two remaining rows compare <code>'Never'</code> and <code>'Previous'</code> against <code>'Current'</code> instead. <code>Multiple R-squared</code> and <code>Residual standard error</code> are identical in both printouts, 0.0001279 and 1.091. Which category anchors the comparison changed; what the model actually fits, and predicts for any given participant, didn’t.</p>
 <p><strong>Writing exercise (sample answer)</strong></p>
-<p>Sedentary time was not significantly associated with total cholesterol in this sample (slope -0.0010 mmol/L per hour/day, 95% CI: -0.0021 to 0.0001 mmol/L, p = 0.073). The confidence interval includes zero, so these data are consistent with no true association. This model adjusts for nothing else, so it cannot say whether age, gender, or other characteristics are masking or accounting for this result.</p>
+<p>Sedentary time was not significantly associated with total cholesterol in this sample (slope -0.0010 mmol/L per hour/day, 95% CI: -0.0021 to 0.0001 mmol/L, p = 0.073). The CI includes zero, so these data are consistent with no true association. This model adjusts for nothing else, so it cannot say whether age, gender, or other characteristics are masking or accounting for this result.</p>
 </div>
 </div>
 </div>

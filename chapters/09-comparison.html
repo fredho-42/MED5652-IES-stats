@@ -235,7 +235,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#independent-samples-t-test-cholesterol-by-gender" id="toc-independent-samples-t-test-cholesterol-by-gender" class="nav-link" data-scroll-target="#independent-samples-t-test-cholesterol-by-gender"><span class="header-section-number">5.7</span> Independent-samples t-test: cholesterol by gender</a></li>
   <li><a href="#chi-squared-test-strep_tbs-primary-result" id="toc-chi-squared-test-strep_tbs-primary-result" class="nav-link" data-scroll-target="#chi-squared-test-strep_tbs-primary-result"><span class="header-section-number">5.8</span> Chi-squared test: <code>strep_tb</code>’s primary result</a></li>
   <li><a href="#fishers-exact-test" id="toc-fishers-exact-test" class="nav-link" data-scroll-target="#fishers-exact-test"><span class="header-section-number">5.9</span> Fisher’s exact test</a></li>
-  <li><a href="#risk-ratios-and-odds-ratios-with-confidence-intervals" id="toc-risk-ratios-and-odds-ratios-with-confidence-intervals" class="nav-link" data-scroll-target="#risk-ratios-and-odds-ratios-with-confidence-intervals"><span class="header-section-number">5.10</span> Risk ratios and odds ratios, with confidence intervals</a></li>
+  <li><a href="#risk-ratios-and-odds-ratios-with-cis" id="toc-risk-ratios-and-odds-ratios-with-cis" class="nav-link" data-scroll-target="#risk-ratios-and-odds-ratios-with-cis"><span class="header-section-number">5.10</span> Risk ratios and odds ratios, with CIs</a></li>
   <li><a href="#gtsummarytbl_summary-with-a-test-attached" id="toc-gtsummarytbl_summary-with-a-test-attached" class="nav-link" data-scroll-target="#gtsummarytbl_summary-with-a-test-attached"><span class="header-section-number">5.11</span> <code>gtsummary::tbl_summary()</code> with a test attached</a></li>
   <li><a href="#worked-example-sedentary-time-by-gender" id="toc-worked-example-sedentary-time-by-gender" class="nav-link" data-scroll-target="#worked-example-sedentary-time-by-gender"><span class="header-section-number">5.12</span> Worked example: sedentary time by gender</a></li>
   <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">5.13</span> Exercises</a></li>
@@ -265,8 +265,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>A confidence interval says how precise an estimate is. It doesn’t say whether the effect behind it is distinguishable from none at all: two groups’ cholesterol means could sit half a millimole apart with intervals that overlap, and whether that gap is a real difference or ordinary sampling noise is exactly the question Chapter 4 leaves open. A hypothesis test closes it, and gets reported alongside the interval rather than in place of it. Binary outcomes raise a version of the same question the descriptive statistics from Chapter 3 can’t answer on their own: is a health outcome more common in one group than another, and by how much? The risk ratio and the odds ratio from epidemiology measure that, and here we attach a confidence interval and a p-value to each.</p>
-<p>Every test in this chapter runs on the same logic underneath: a null hypothesis, an alternative, a test statistic, and a p-value stating how surprising the observed data would be if the null were actually true. Which test applies depends on the shape of the data in front of us, one measurement per person or two, one group or several, continuous or count, and telling those apart correctly matters as much as running the test itself. Reported together, an effect size, its 95% confidence interval, and a p-value make up the standard this book writes results in from here on.</p>
+<p>A confidence interval, or CI, says how precise an estimate is. It doesn’t say whether the effect behind it is distinguishable from none at all: two groups’ cholesterol means could sit half a millimole apart with CIs that overlap, and whether that gap is a real difference or ordinary sampling noise is exactly the question Chapter 4 leaves open. A hypothesis test closes it, and gets reported alongside the CI rather than in place of it. Binary outcomes raise a version of the same question the descriptive statistics from Chapter 3 can’t answer on their own: is a health outcome more common in one group than another, and by how much? The risk ratio and the odds ratio from epidemiology measure that, and here we attach a CI and a p-value to each.</p>
+<p>Every test in this chapter runs on the same logic underneath: a null hypothesis, an alternative, a test statistic, and a p-value stating how surprising the observed data would be if the null were actually true. Which test applies depends on the shape of the data in front of us, one measurement per person or two, one group or several, continuous or count, and telling those apart correctly matters as much as running the test itself. Reported together, an effect size, its 95% CI, and a p-value make up the standard this book writes results in from here on.</p>
 <section id="chapter-intended-learning-outcomes" class="level2" data-number="5.1">
 <h2 data-number="5.1" class="anchored" data-anchor-id="chapter-intended-learning-outcomes"><span class="header-section-number">5.1</span> Chapter intended learning outcomes</h2>
 <p>By the end of this chapter you will be able to:</p>
@@ -323,11 +323,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="5.3" class="anchored" data-anchor-id="the-logic-of-a-test"><span class="header-section-number">5.3</span> The logic of a test</h2>
 <p>A classical hypothesis test starts from two competing statements about the <strong>population</strong>. The <strong>null hypothesis</strong>, written H0, says there’s nothing going on: no difference between groups, or no association between variables. The exact wording depends on what is being tested, but it always describes the population, never the sample we happen to have measured. The <strong>alternative hypothesis</strong>, H1, says there is a difference. A one-sided alternative hypothesis, specifying the direction of the difference in advance, exists too, but is rarely used in practice; every test in this chapter uses the two-sided form. A test never proves the null hypothesis true. It only asks whether the pattern shown from the sample is surprising enough to reject the null hypothesis.</p>
 <p>A test turns the sample data into a single number, a <strong>test statistic</strong>, that measures how far the data sit from what the null hypothesis predicts under the sampling distribution. R then converts that statistic into a <strong>p-value</strong>: the probability of seeing that test statistic at least this extreme, if the null hypothesis were actually true. A p-value is not the probability that the null hypothesis is true, and it’s not the probability the result happened by chance. A small p-value, conventionally below 0.05, means the data would be unusual under the null hypothesis, so we reject it in favour of the alternative. A p-value alone says nothing about how large an effect is, only about how surprising it is.</p>
-<p>A confidence interval and a hypothesis test carry the same information, read two different ways. If a 95% confidence interval for a difference excludes the null value, 0 for a difference, 1 for a risk ratio or odds ratio, the matching test rejects the null hypothesis at the 5% level, and vice versa. That’s why Chapter 4 could already show us a real effect using intervals alone, before this chapter ever named a null hypothesis. From here on, every test in this book states its null and alternative hypothesis in words before running the test, always as a statement about the population, never about the sample or the particular study, and every result is reported the way the seminar set out: an effect size, a confidence interval, and a p-value, together.</p>
+<p>A CI and a hypothesis test carry the same information, read two different ways. If a 95% CI for a difference excludes the null value, 0 for a difference, 1 for a risk ratio or odds ratio, the matching test rejects the null hypothesis at the 5% level, and vice versa. That’s why Chapter 4 could already show us a real effect using CIs alone, before this chapter ever named a null hypothesis. From here on, every test in this book states its null and alternative hypothesis in words before running the test, always as a statement about the population, never about the sample or the particular study, and every result is reported the way the seminar set out: an effect size, a CI, and a p-value, together.</p>
 </section>
 <section id="one-sample-t-test-total-cholesterol-against-a-clinical-benchmark" class="level2" data-number="5.4">
 <h2 data-number="5.4" class="anchored" data-anchor-id="one-sample-t-test-total-cholesterol-against-a-clinical-benchmark"><span class="header-section-number">5.4</span> One-sample t-test: total cholesterol against a clinical benchmark</h2>
-<p>Guideline bodies often set a single reference value for a measurement: a ‘desirable’ total cholesterol of under 5.2 mmol/L is a standard clinical benchmark. A one-sample t-test asks whether the population’s mean differs from a single fixed value like that one, instead of from another group’s mean.</p>
+<p>Guideline bodies often set a single reference value for a measurement: a ‘desirable’ total cholesterol of under 5.2 mmol/L is a standard clinical benchmark. That specific figure is the American guideline; UK guidance instead sets the desirable level at 5.0 mmol/L. Either is a reasonable fixed value to test a sample’s mean against, and this chapter works with 5.2 mmol/L throughout. A one-sample t-test asks whether the population’s mean differs from a single fixed value like that one, instead of from another group’s mean.</p>
 <p><strong>Null hypothesis.</strong> Mean total cholesterol in the population is 5.2 mmol/L.</p>
 <p><strong>Alternative hypothesis.</strong> Mean total cholesterol in the population is not 5.2 mmol/L.</p>
 <p><code>t.test()</code> runs a one-sample test when we give it one variable and a value to test it against, <code>mu</code>:</p>
@@ -347,7 +347,7 @@ mean of x
  4.973316 </code></pre>
 </div>
 </div>
-<p>R prints a 95% confidence interval for the mean itself, 4.96 to 4.98 mmol/L, not for the quantity the test is actually about, which is how far that mean sits from the 5.2 mmol/L benchmark. Subtracting 5.2 from both ends turns it into the effect size we want: mean total cholesterol in this sample is about 4.97 mmol/L, 0.23 mmol/L below the 5.2 mmol/L benchmark (95% CI: 0.22 to 0.24 mmol/L below, p &lt; 0.001). This is the same move the independent-samples section further on makes with its own confidence interval: read what R printed, then work out what it means for the comparison actually being asked.</p>
+<p>R prints a 95% CI for the mean itself, 4.96 to 4.98 mmol/L, not for the quantity the test is actually about, which is how far that mean sits from the 5.2 mmol/L benchmark. Subtracting 5.2 from both ends turns it into the effect size we want: mean total cholesterol in this sample is about 4.97 mmol/L, 0.23 mmol/L below the 5.2 mmol/L benchmark (95% CI: 0.22 to 0.24 mmol/L below, p &lt; 0.001). This is the same move the independent-samples section further on makes with its own CI: read what R printed, then work out what it means for the comparison actually being asked.</p>
 <p>A one-sample t-test assumes the <strong>sampling distribution</strong> of the mean is roughly normally distributed, not that <code>chol</code> itself is. We never see a sampling distribution directly, since we only have the one sample, so the shape of the data is the evidence we have about it. The central limit theorem says the sampling distribution of the mean gets closer to normal as the sample grows, whatever shape the data themselves have, and the more skewed the data, the larger a sample that takes. Chapter 3’s histogram of <code>chol</code> showed a distribution with a mild right skew, not a perfectly symmetric bell shape, but with a sample this large, tens of thousands of participants, that skew is easily large enough for the theorem to apply. So the question a histogram answers here is not ‘is <code>chol</code> normal?’ but ‘is this sample large enough, given how skewed <code>chol</code> is?’, and for <code>chol</code> the answer is a comfortable yes. <code>wilcox.test()</code> is the non-parametric alternative, for a smaller sample (typically &lt;30) or a more pronounced skew where that reassurance is less safe.</p>
 <p><strong>Null hypothesis (<code>wilcox.test()</code>).</strong> The population median of <code>chol</code> is 5.2 mmol/L.</p>
 <p><strong>Alternative hypothesis.</strong> The population median is not 5.2 mmol/L.</p>
@@ -448,7 +448,7 @@ alternative hypothesis: true location shift is not equal to 0</code></pre>
 </section>
 <section id="independent-samples-t-test-cholesterol-by-gender" class="level2" data-number="5.7">
 <h2 data-number="5.7" class="anchored" data-anchor-id="independent-samples-t-test-cholesterol-by-gender"><span class="header-section-number">5.7</span> Independent-samples t-test: cholesterol by gender</h2>
-<p>Unlike the paired comparison just above, an independent-samples t-test compares two entirely separate groups of people, with no link between a value in one group and a value in the other. <code>t.test()</code> compares two independent groups directly. We already used it in Chapter 4 to build a confidence interval for the difference in total cholesterol (<code>chol</code>, in mmol/L) between men and women.</p>
+<p>Unlike the paired comparison just above, an independent-samples t-test compares two entirely separate groups of people, with no link between a value in one group and a value in the other. <code>t.test()</code> compares two independent groups directly. We already used it in Chapter 4 to build a CI for the difference in total cholesterol (<code>chol</code>, in mmol/L) between men and women.</p>
 <p><strong>Null hypothesis.</strong> Mean total cholesterol is the same in men and women in the population.</p>
 <p><strong>Alternative hypothesis.</strong> Mean total cholesterol differs between men and women in the population.</p>
 <div class="cell">
@@ -467,7 +467,7 @@ sample estimates:
             4.885939             5.054489 </code></pre>
 </div>
 </div>
-<p>This is the exact same call as Chapter 4’s. <code>t.test()</code> was already giving us a hypothesis test; Chapter 4 just hadn’t introduced hypothesis testing yet, so we only looked at the confidence interval. Now we bring the rest into view: a t-statistic, degrees of freedom, and a p-value.</p>
+<p>This is the exact same call as Chapter 4’s. <code>t.test()</code> was already giving us a hypothesis test; Chapter 4 just hadn’t introduced hypothesis testing yet, so we only looked at the CI. Now we bring the rest into view: a t-statistic, degrees of freedom, and a p-value.</p>
 <p>Before trusting a t-test, we check that the two groups aren’t wildly different in spread or shape, the way Chapter 3’s boxplot of <code>chol</code> by <code>gender</code> already let us do. This is a different check from the sampling-distribution question the one-sample and paired sections asked: there, the concern was whether one sampling distribution was close to normal; here, with two separate groups, the concern is whether the two groups look comparable enough in spread and shape for a difference in their means to be meaningful.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(nhanes <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(gender)), <span class="fu">aes</span>(<span class="at">x =</span> gender, <span class="at">y =</span> chol)) <span class="sc">+</span></span>
@@ -486,7 +486,7 @@ sample estimates:
 </div>
 </div>
 <p>The two boxplots are similar in spread and shape, just shifted slightly. Nothing here rules out a t-test. If, instead, the shape of the boxplot looks very different between the two groups, a t-test might not be appropriate, since it only compares the sample means. <code>t.test()</code> also doesn’t assume equal variance between the two groups by default, which protects us even where the spreads differ more than they do here.</p>
-<p>Before reading the interval, check the direction, exactly as Chapter 4 set out. The alternative-hypothesis line says <em>group Male and group Female</em>, because <code>'Male'</code> is the first level of <code>gender</code>, so R has printed men minus women and both ends come out negative. Reversing every sign together turns it into the more natural reading: mean total cholesterol was about 0.17 mmol/L higher in women than in men (95% CI: 0.15 to 0.19 mmol/L, p &lt; 0.001). The two statements are the same result written from a different perspective. This is the reporting standard the seminar introduced: effect size, confidence interval, and p-value, together, every time, from here on. <code>p &lt; 0.001</code> is how we write a p-value that R prints as something like <code>&lt; 2.2e-16</code>. Convention in public health (or clinical medicine) reports a very small p-value this way rather than typing out the scientific notation.</p>
+<p>Before reading the CI, check the direction, exactly as Chapter 4 set out. The alternative-hypothesis line says <em>group Male and group Female</em>, because <code>'Male'</code> is the first level of <code>gender</code>, so R has printed men minus women and both ends come out negative. Reversing every sign together turns it into the more natural reading: mean total cholesterol was about 0.17 mmol/L higher in women than in men (95% CI: 0.15 to 0.19 mmol/L, p &lt; 0.001). The two statements are the same result written from a different perspective. This is the reporting standard the seminar introduced: effect size, CI, and p-value, together, every time, from here on. <code>p &lt; 0.001</code> is how we write a p-value that R prints as something like <code>&lt; 2.2e-16</code>. Convention in public health (or clinical medicine) reports a very small p-value this way rather than typing out the scientific notation.</p>
 </section>
 <section id="chi-squared-test-strep_tbs-primary-result" class="level2" data-number="5.8">
 <h2 data-number="5.8" class="anchored" data-anchor-id="chi-squared-test-strep_tbs-primary-result"><span class="header-section-number">5.8</span> Chi-squared test: <code>strep_tb</code>’s primary result</h2>
@@ -539,7 +539,7 @@ X-squared = 14.176, df = 1, p-value = 0.0001665</code></pre>
 </div>
 <div class="callout-body-container callout-body">
 <p>Chapter 4’s <code>prop.test()</code> compares two proportions; this section’s <code>chisq.test()</code> tests association in a two-way table. Run <code>prop.test(tab_arm, correct = FALSE)</code> and compare its chi-squared statistic and p-value to <code>chisq.test(tab_arm, correct = FALSE)</code> above, digit for digit. Write one sentence on what that match tells us about how the two tests relate, for a 2×2 table like this one.</p>
-<p><code>prop.test()</code> also prints something <code>chisq.test()</code> doesn’t: a confidence interval for the difference between the two proportions. Read the two proportions R prints and check which category of <code>improved</code> they refer to, the same way Chapter 4 warned to check before feeding a table straight in. Reverse the signs if needed, the way the independent-samples section above reversed its own interval, and write a one-sentence results statement giving the risk difference between the two arms with its 95% confidence interval. Write a second sentence on why that statement is something <code>chisq.test()</code> alone could never have given us.</p>
+<p><code>prop.test()</code> also prints something <code>chisq.test()</code> doesn’t: a CI for the difference between the two proportions. Read the two proportions R prints and check which category of <code>improved</code> they refer to, the same way Chapter 4 warned to check before feeding a table straight in. Reverse the signs if needed, the way the independent-samples section above reversed its own CI, and write a one-sentence results statement giving the risk difference between the two arms with its 95% CI. Write a second sentence on why that statement is something <code>chisq.test()</code> alone could never have given us.</p>
 </div>
 </div>
 </section>
@@ -565,9 +565,9 @@ odds ratio
 <p>The p-value, 0.0002218, is close to the chi-squared test’s 0.000166. Both lead to the same conclusion here, a clear association between arm and improvement. <code>riskratio()</code> and <code>oddsratio()</code>, met below, report a Fisher’s exact p-value of their own for the same table, so this number will reappear.</p>
 <p>On a larger table, with many categories instead of the 2×2 shape here, <code>fisher.test()</code> can become slow, because it enumerates every possible table with the same row and column totals to work out the exact probability. If it runs too slowly or refuses with an error on a bigger table, adding <code>simulate.p.value = TRUE</code> switches it to a Monte Carlo estimate instead of the exact calculation, trading a small amount of precision for speed. That isn’t needed here.</p>
 </section>
-<section id="risk-ratios-and-odds-ratios-with-confidence-intervals" class="level2" data-number="5.10">
-<h2 data-number="5.10" class="anchored" data-anchor-id="risk-ratios-and-odds-ratios-with-confidence-intervals"><span class="header-section-number">5.10</span> Risk ratios and odds ratios, with confidence intervals</h2>
-<p>The epidemiology half already taught how to calculate a risk ratio and an odds ratio from a 2×2 table like <code>tab_arm</code> above, and what each one means. We don’t re-derive those formulas here. What’s new is attaching a confidence interval and a p-value to numbers we can already compute by hand, and checking that R’s version agrees with ours.</p>
+<section id="risk-ratios-and-odds-ratios-with-cis" class="level2" data-number="5.10">
+<h2 data-number="5.10" class="anchored" data-anchor-id="risk-ratios-and-odds-ratios-with-cis"><span class="header-section-number">5.10</span> Risk ratios and odds ratios, with CIs</h2>
+<p>The epidemiology half already taught how to calculate a risk ratio and an odds ratio from a 2×2 table like <code>tab_arm</code> above, and what each one means. We don’t re-derive those formulas here. What’s new is attaching a CI and a p-value to numbers we can already compute by hand, and checking that R’s version agrees with ours.</p>
 <p><code>riskratio()</code> and <code>oddsratio()</code>, both from <code>epitools</code>, take a 2×2 table and compare its rows, treating the first row as the reference category everything else is measured against.</p>
 <p><strong>Null hypothesis.</strong> In the population, the risk ratio is 1, and the odds ratio is 1: no association between arm and improvement.</p>
 <p><strong>Alternative hypothesis.</strong> The risk ratio, and the odds ratio, differ from 1.</p>
@@ -627,7 +627,7 @@ attr(,"method")
 [1] "Unconditional MLE &amp; normal approximation (Wald) CI"</code></pre>
 </div>
 </div>
-<p><code>oddsratio()</code> works the same way. We ask for <code>method = 'wald'</code>, which uses the same normal-approximation logic behind the ± 1.96 × SE intervals from Chapter 4. This matches the simple cross-product formula from the hand calculation directly:</p>
+<p><code>oddsratio()</code> works the same way. We ask for <code>method = 'wald'</code>, which uses the same normal-approximation logic behind the ± 1.96 × SE CIs from Chapter 4. This matches the simple cross-product formula from the hand calculation directly:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">oddsratio</span>(tab_arm_releveled, <span class="at">method =</span> <span class="st">'wald'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -657,7 +657,7 @@ attr(,"method")
 [1] "Unconditional MLE &amp; normal approximation (Wald) CI"</code></pre>
 </div>
 </div>
-<p>From the table above: 38 of 55 patients improved in the streptomycin arm (risk = 0.69), and 17 of 52 improved in the control arm (risk = 0.33). By hand, risk ratio = 0.69 / 0.33 = 2.11, and odds ratio = (38 × 35) / (17 × 17) = 4.60. Both match what <code>riskratio()</code> and <code>oddsratio()</code> just reported, with a confidence interval attached to each: a risk ratio of 2.11 (95% CI: 1.38 to 3.24) and an odds ratio of 4.60 (95% CI: 2.04 to 10.39). Neither interval comes close to including 1, the null value for both a risk ratio and an odds ratio, consistent with the chi-squared test above.</p>
+<p>From the table above: 38 of 55 patients improved in the streptomycin arm (risk = 0.69), and 17 of 52 improved in the control arm (risk = 0.33). By hand, risk ratio = 0.69 / 0.33 = 2.11, and odds ratio = (38 × 35) / (17 × 17) = 4.60. Both match what <code>riskratio()</code> and <code>oddsratio()</code> just reported, with a CI attached to each: a risk ratio of 2.11 (95% CI: 1.38 to 3.24, p &lt; 0.001) and an odds ratio of 4.60 (95% CI: 2.04 to 10.39, p &lt; 0.001). Neither CI comes close to including 1, the null value for both a risk ratio and an odds ratio, consistent with the chi-squared test above.</p>
 <p><code>riskratio()</code> and <code>oddsratio()</code> each also report three p-values alongside the estimate: a mid-p exact test, Fisher’s exact test, and a chi-squared test. All three agree closely here. The chi-squared one is 0.000166, exactly the p-value <code>chisq.test(tab_arm, correct = FALSE)</code> gave us above, to every digit printed. That’s only because we switched the continuity correction off. Had we left the correction on, <code>chisq.test()</code> would have reported 0.0003548, the number Chapter 4’s <code>prop.test()</code> printed, while <code>epitools</code> reported 0.000166. There’d be no way to tell from the output that the two functions had simply made different default choices.</p>
 </section>
 <section id="gtsummarytbl_summary-with-a-test-attached" class="level2" data-number="5.11">
@@ -675,23 +675,23 @@ Table&nbsp;5.1
 </figcaption>
 <div aria-describedby="tbl-summary-addp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div id="aqxviwtthh" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#aqxviwtthh table {
+<div id="yombtsnsfn" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#yombtsnsfn table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#aqxviwtthh thead, #aqxviwtthh tbody, #aqxviwtthh tfoot, #aqxviwtthh tr, #aqxviwtthh td, #aqxviwtthh th {
+#yombtsnsfn thead, #yombtsnsfn tbody, #yombtsnsfn tfoot, #yombtsnsfn tr, #yombtsnsfn td, #yombtsnsfn th {
   border-style: none;
 }
 
-#aqxviwtthh p {
+#yombtsnsfn p {
   margin: 0;
   padding: 0;
 }
 
-#aqxviwtthh .gt_table {
+#yombtsnsfn .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -717,12 +717,12 @@ Table&nbsp;5.1
   border-left-color: #D3D3D3;
 }
 
-#aqxviwtthh .gt_caption {
+#yombtsnsfn .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#aqxviwtthh .gt_title {
+#yombtsnsfn .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -734,7 +734,7 @@ Table&nbsp;5.1
   border-bottom-width: 0;
 }
 
-#aqxviwtthh .gt_subtitle {
+#yombtsnsfn .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -746,7 +746,7 @@ Table&nbsp;5.1
   border-top-width: 0;
 }
 
-#aqxviwtthh .gt_heading {
+#yombtsnsfn .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -758,13 +758,13 @@ Table&nbsp;5.1
   border-right-color: #D3D3D3;
 }
 
-#aqxviwtthh .gt_bottom_border {
+#yombtsnsfn .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#aqxviwtthh .gt_col_headings {
+#yombtsnsfn .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -779,7 +779,7 @@ Table&nbsp;5.1
   border-right-color: #D3D3D3;
 }
 
-#aqxviwtthh .gt_col_heading {
+#yombtsnsfn .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -799,7 +799,7 @@ Table&nbsp;5.1
   overflow-x: hidden;
 }
 
-#aqxviwtthh .gt_column_spanner_outer {
+#yombtsnsfn .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -811,15 +811,15 @@ Table&nbsp;5.1
   padding-right: 4px;
 }
 
-#aqxviwtthh .gt_column_spanner_outer:first-child {
+#yombtsnsfn .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#aqxviwtthh .gt_column_spanner_outer:last-child {
+#yombtsnsfn .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#aqxviwtthh .gt_column_spanner {
+#yombtsnsfn .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -831,11 +831,11 @@ Table&nbsp;5.1
   width: 100%;
 }
 
-#aqxviwtthh .gt_spanner_row {
+#yombtsnsfn .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#aqxviwtthh .gt_group_heading {
+#yombtsnsfn .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -861,7 +861,7 @@ Table&nbsp;5.1
   text-align: left;
 }
 
-#aqxviwtthh .gt_empty_group_heading {
+#yombtsnsfn .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -876,15 +876,15 @@ Table&nbsp;5.1
   vertical-align: middle;
 }
 
-#aqxviwtthh .gt_from_md > :first-child {
+#yombtsnsfn .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#aqxviwtthh .gt_from_md > :last-child {
+#yombtsnsfn .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#aqxviwtthh .gt_row {
+#yombtsnsfn .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -903,7 +903,7 @@ Table&nbsp;5.1
   overflow-x: hidden;
 }
 
-#aqxviwtthh .gt_stub {
+#yombtsnsfn .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -916,7 +916,7 @@ Table&nbsp;5.1
   padding-right: 5px;
 }
 
-#aqxviwtthh .gt_stub_row_group {
+#yombtsnsfn .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -930,15 +930,15 @@ Table&nbsp;5.1
   vertical-align: top;
 }
 
-#aqxviwtthh .gt_row_group_first td {
+#yombtsnsfn .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#aqxviwtthh .gt_row_group_first th {
+#yombtsnsfn .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#aqxviwtthh .gt_summary_row {
+#yombtsnsfn .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -948,16 +948,16 @@ Table&nbsp;5.1
   padding-right: 5px;
 }
 
-#aqxviwtthh .gt_first_summary_row {
+#yombtsnsfn .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#aqxviwtthh .gt_first_summary_row.thick {
+#yombtsnsfn .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#aqxviwtthh .gt_last_summary_row {
+#yombtsnsfn .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -967,7 +967,7 @@ Table&nbsp;5.1
   border-bottom-color: #D3D3D3;
 }
 
-#aqxviwtthh .gt_grand_summary_row {
+#yombtsnsfn .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -977,7 +977,7 @@ Table&nbsp;5.1
   padding-right: 5px;
 }
 
-#aqxviwtthh .gt_first_grand_summary_row {
+#yombtsnsfn .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -987,7 +987,7 @@ Table&nbsp;5.1
   border-top-color: #D3D3D3;
 }
 
-#aqxviwtthh .gt_last_grand_summary_row_top {
+#yombtsnsfn .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -997,11 +997,11 @@ Table&nbsp;5.1
   border-bottom-color: #D3D3D3;
 }
 
-#aqxviwtthh .gt_striped {
+#yombtsnsfn .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#aqxviwtthh .gt_table_body {
+#yombtsnsfn .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1010,7 +1010,7 @@ Table&nbsp;5.1
   border-bottom-color: #D3D3D3;
 }
 
-#aqxviwtthh .gt_footnotes {
+#yombtsnsfn .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1024,7 +1024,7 @@ Table&nbsp;5.1
   border-right-color: #D3D3D3;
 }
 
-#aqxviwtthh .gt_footnote {
+#yombtsnsfn .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1033,7 +1033,7 @@ Table&nbsp;5.1
   padding-right: 5px;
 }
 
-#aqxviwtthh .gt_sourcenotes {
+#yombtsnsfn .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1047,7 +1047,7 @@ Table&nbsp;5.1
   border-right-color: #D3D3D3;
 }
 
-#aqxviwtthh .gt_sourcenote {
+#yombtsnsfn .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1055,72 +1055,72 @@ Table&nbsp;5.1
   padding-right: 5px;
 }
 
-#aqxviwtthh .gt_left {
+#yombtsnsfn .gt_left {
   text-align: left;
 }
 
-#aqxviwtthh .gt_center {
+#yombtsnsfn .gt_center {
   text-align: center;
 }
 
-#aqxviwtthh .gt_right {
+#yombtsnsfn .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#aqxviwtthh .gt_font_normal {
+#yombtsnsfn .gt_font_normal {
   font-weight: normal;
 }
 
-#aqxviwtthh .gt_font_bold {
+#yombtsnsfn .gt_font_bold {
   font-weight: bold;
 }
 
-#aqxviwtthh .gt_font_italic {
+#yombtsnsfn .gt_font_italic {
   font-style: italic;
 }
 
-#aqxviwtthh .gt_super {
+#yombtsnsfn .gt_super {
   font-size: 65%;
 }
 
-#aqxviwtthh .gt_footnote_marks {
+#yombtsnsfn .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#aqxviwtthh .gt_asterisk {
+#yombtsnsfn .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#aqxviwtthh .gt_indent_1 {
+#yombtsnsfn .gt_indent_1 {
   text-indent: 5px;
 }
 
-#aqxviwtthh .gt_indent_2 {
+#yombtsnsfn .gt_indent_2 {
   text-indent: 10px;
 }
 
-#aqxviwtthh .gt_indent_3 {
+#yombtsnsfn .gt_indent_3 {
   text-indent: 15px;
 }
 
-#aqxviwtthh .gt_indent_4 {
+#yombtsnsfn .gt_indent_4 {
   text-indent: 20px;
 }
 
-#aqxviwtthh .gt_indent_5 {
+#yombtsnsfn .gt_indent_5 {
   text-indent: 25px;
 }
 
-#aqxviwtthh .katex-display {
+#yombtsnsfn .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#aqxviwtthh div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#yombtsnsfn div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1177,7 +1177,7 @@ N = 52<span class="gt_footnote_marks" style="white-space:nowrap;font-style:itali
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Using <code>slice_sample()</code> from Chapter 4, take a 10% random subsample of <code>nhanes</code> (remember to <code>set.seed()</code> first, so the subsample is reproducible) and re-run the <code>chol ~ gender</code> t-test from earlier in this chapter on it. Compare the p-value and the confidence interval to the ones from the full sample. Note what changed in one sentence, then explain in a second what it means for judging whether a small p-value reflects a large effect or simply a large sample.</p>
+<p>Using <code>slice_sample()</code> from Chapter 4, take a 10% random subsample of <code>nhanes</code> (remember to <code>set.seed()</code> first, so the subsample is reproducible) and re-run the <code>chol ~ gender</code> t-test from earlier in this chapter on it. Compare the p-value and the CI to the ones from the full sample. Note what changed in one sentence, then explain in a second what it means for judging whether a small p-value reflects a large effect or simply a large sample.</p>
 </div>
 </div>
 </section>
@@ -1216,7 +1216,7 @@ sample estimates:
             6.430592             6.689889 </code></pre>
 </div>
 </div>
-<p>The boxplots overlap substantially, with similar spread in each group, so a t-test is reasonable here too. R prints the difference men minus women once again, so the interval on the page runs from -0.49 to -0.03. Put into a sentence, with the whole thing reversed: women reported slightly more sedentary time than men (mean difference about 0.26 hours/day, 95% CI: 0.03 to 0.49 hours/day, p = 0.026). The interval doesn’t include zero, so the difference is statistically significant, but it’s a small effect, about 15 minutes a day, on a scale of many hours a day.</p>
+<p>The boxplots overlap substantially, with similar spread in each group, so a t-test is reasonable here too. R prints the difference men minus women once again, so the CI on the page runs from -0.49 to -0.03. Put into a sentence, with the whole thing reversed: women reported slightly more sedentary time than men (mean difference about 0.26 hours/day, 95% CI: 0.03 to 0.49 hours/day, p = 0.026). The CI doesn’t include zero, so the difference is statistically significant, but it’s a small effect, about 15 minutes a day, on a scale of many hours a day.</p>
 </section>
 <section id="exercises" class="level2" data-number="5.13">
 <h2 data-number="5.13" class="anchored" data-anchor-id="exercises"><span class="header-section-number">5.13</span> Exercises</h2>
@@ -1224,11 +1224,11 @@ sample estimates:
 <p><strong>Exercise 2</strong> (ILOs 1, 3). State the null and alternative hypotheses for a paired comparison of <code>met_w</code> and <code>met_r</code>. Using <code>filter()</code>, restrict <code>nhanes</code> to participants whose sedentary time (<code>sed</code>) is above the sample median. On this subgroup, run both a paired t-test and a Wilcoxon signed-rank test comparing <code>met_w</code> and <code>met_r</code>. Write one sentence stating whether your conclusion changes in this more sedentary subgroup, and one sentence explaining why <code>met_w</code> and <code>met_r</code> are still a paired comparison here, not an independent one, even after filtering.</p>
 <p><strong>Exercise 3</strong> (ILO 1). State the null and alternative hypotheses, then perform an independent-samples t-test comparing age (<code>age</code>) between men and women. Check the assumption graphically first with a boxplot. Report the result in a single sentence, and add one more sentence on whether a statistically significant result here is also a practically important one.</p>
 <p><strong>Exercise 4</strong> (ILOs 2, 3). State the null and alternative hypotheses, then construct a contingency table of baseline cavitation (<code>baseline_cavitation</code>) against improvement (<code>improved</code>) in <code>strep_tb</code>. Run a chi-squared test, check the expected counts, and write one sentence interpreting the result.</p>
-<p><strong>Exercise 5</strong> (ILOs 4, 5). State the null and alternative hypotheses for the risk ratio and the odds ratio, noting the scale their null value sits on. Using the same method as the <code>arm</code>/<code>improved</code> example above, check with <code>levels()</code> which category of <code>gender</code> is already the reference, then use <code>relevel()</code> to set it explicitly (even if it turns out to already be the one you want). Obtain a risk ratio and an odds ratio, each with a 95% confidence interval, for improvement in men compared with women. Reconcile the software output with a hand calculation from the same 2×2 table, and write a two-sentence results statement.</p>
+<p><strong>Exercise 5</strong> (ILOs 4, 5). State the null and alternative hypotheses for the risk ratio and the odds ratio, noting the scale their null value sits on. Using the same method as the <code>arm</code>/<code>improved</code> example above, check with <code>levels()</code> which category of <code>gender</code> is already the reference, then use <code>relevel()</code> to set it explicitly (even if it turns out to already be the one you want). Obtain a risk ratio and an odds ratio, each with a 95% CI, for improvement in men compared with women. Reconcile the software output with a hand calculation from the same 2×2 table, and write a two-sentence results statement.</p>
 </section>
 <section id="writing-exercise" class="level2" data-number="5.14">
 <h2 data-number="5.14" class="anchored" data-anchor-id="writing-exercise"><span class="header-section-number">5.14</span> Writing exercise</h2>
-<p>Using the <code>arm</code>/<code>improved</code> result from earlier in this chapter, write two sentences for <code>strep_tb</code>’s primary outcome. State the proportion improved in each arm, and report the risk ratio or the odds ratio (your choice), its 95% confidence interval, and its p-value, together.</p>
+<p>Using the <code>arm</code>/<code>improved</code> result from earlier in this chapter, write two sentences for <code>strep_tb</code>’s primary outcome. State the proportion improved in each arm, and report the risk ratio or the odds ratio (your choice), its 95% CI, and its p-value, together.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -1269,7 +1269,7 @@ V = 216498063, p-value &lt; 2.2e-16
 alternative hypothesis: true location is not equal to 6</code></pre>
 </div>
 </div>
-<p>R’s confidence interval, 6.45 to 6.68 hours/day, is for the mean itself; subtracting the 6-hour benchmark from both ends gives the effect size: mean sedentary time is about 6.56 hours/day, 0.56 hours/day above 6 hours/day (95% CI: 0.45 to 0.68 hours/day above, p &lt; 0.001). The Wilcoxon test is significant too (p &lt; 0.001), but it’s testing a different quantity, so its effect size is a median, not a mean: sample median 5 hours/day (IQR: 3 to 8 hours/day), <em>below</em> the 6-hour benchmark. The mean and the median disagree on which side of 6 hours ‘typical’ sedentary time falls. Sedentary time is right-skewed: a small number of participants report very high values, which pulls the mean up above the median, and above the benchmark, while the middle of the distribution, where most participants actually sit, remains below it. A typical participant, in the middle of the distribution, reports noticeably less sedentary time than the mean alone would suggest.</p>
+<p>R’s CI, 6.45 to 6.68 hours/day, is for the mean itself; subtracting the 6-hour benchmark from both ends gives the effect size: mean sedentary time is about 6.56 hours/day, 0.56 hours/day above 6 hours/day (95% CI: 0.45 to 0.68 hours/day above, p &lt; 0.001). The Wilcoxon test is significant too (p &lt; 0.001), but it’s testing a different quantity, so its effect size is a median, not a mean: sample median 5 hours/day (IQR: 3 to 8 hours/day), <em>below</em> the 6-hour benchmark. The mean and the median disagree on which side of 6 hours ‘typical’ sedentary time falls. Sedentary time is right-skewed: a small number of participants report very high values, which pulls the mean up above the median, and above the benchmark, while the middle of the distribution, where most participants actually sit, remains below it. A typical participant, in the middle of the distribution, reports noticeably less sedentary time than the mean alone would suggest.</p>
 <p><strong>Exercise 2</strong></p>
 <p><strong>Null hypothesis.</strong> In the population of participants in this more sedentary subgroup, the mean within-person difference between <code>met_w</code> and <code>met_r</code> is zero.</p>
 <p><strong>Alternative hypothesis.</strong> The mean within-person difference is not zero.</p>
@@ -1277,7 +1277,8 @@ alternative hypothesis: true location is not equal to 6</code></pre>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>sed_above_median <span class="ot">&lt;-</span> nhanes <span class="sc">|&gt;</span></span>
 <span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(sed), sed <span class="sc">&gt;</span> <span class="fu">median</span>(sed, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
 <span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(sed_above_median<span class="sc">$</span>met_w, sed_above_median<span class="sc">$</span>met_r, <span class="at">paired =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>tt_subgroup <span class="ot">&lt;-</span> <span class="fu">t.test</span>(sed_above_median<span class="sc">$</span>met_w, sed_above_median<span class="sc">$</span>met_r, <span class="at">paired =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>tt_subgroup</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Paired t-test
@@ -1301,7 +1302,7 @@ V = 25597758, p-value &lt; 2.2e-16
 alternative hypothesis: true location shift is not equal to 0</code></pre>
 </div>
 </div>
-<p>Both tests still reject the null hypothesis in this more sedentary subgroup, though the mean difference is much smaller than in the whole sample (about 0.49 MET-hours/day here, versus about 3.07 MET-hours/day overall). <code>met_w</code> and <code>met_r</code> remain two measurements taken on the same person at the same time, so the comparison is paired regardless of filtering.</p>
+<p>Both tests still reject the null hypothesis in this more sedentary subgroup, though the mean difference is much smaller than in the whole sample (about 0.49 MET-hours/day here, 95% CI: 0.36 to 0.62 MET-hours/day, p &lt; 0.001, versus about 3.07 MET-hours/day overall). <code>met_w</code> and <code>met_r</code> remain two measurements taken on the same person at the same time, so the comparison is paired regardless of filtering.</p>
 <p><strong>Exercise 3</strong></p>
 <p><strong>Null hypothesis.</strong> Mean age is the same in men and women in the population.</p>
 <p><strong>Alternative hypothesis.</strong> Mean age differs between men and women in the population.</p>
@@ -1331,7 +1332,7 @@ sample estimates:
             47.89355             47.16813 </code></pre>
 </div>
 </div>
-<p>This time R’s interval is already positive, and that’s informative: the difference is still men minus women, so a positive interval means the first group is the higher one. Men in this sample were on average about 0.7 years older than women (95% CI: 0.4 to 1.1 years, p &lt; 0.001), and no signs need reversing to say so. The difference is statistically significant but tiny relative to a population averaging around 47 years old. With a sample this large, tens of thousands of participants, even a very small true difference will produce a small p-value. Statistical significance here is not the same as a practically important difference, and it doesn’t really contradict Chapter 3’s impression that age looked similar across the two groups.</p>
+<p>This time R’s CI is already positive, and that’s informative: the difference is still men minus women, so a positive CI means the first group is the higher one. Men in this sample were on average about 0.7 years older than women (95% CI: 0.4 to 1.1 years, p &lt; 0.001), and no signs need reversing to say so. The difference is statistically significant but tiny relative to a population averaging around 47 years old. With a sample this large, tens of thousands of participants, even a very small true difference will produce a small p-value. Statistical significance here is not the same as a practically important difference, and it doesn’t really contradict Chapter 3’s impression that age looked similar across the two groups.</p>
 <p><strong>Exercise 4</strong></p>
 <p><strong>Null hypothesis.</strong> In the population, improvement is not associated with baseline cavitation.</p>
 <p><strong>Alternative hypothesis.</strong> Improvement depends on baseline cavitation.</p>
@@ -1361,7 +1362,7 @@ X-squared = 3.6399, df = 1, p-value = 0.05641</code></pre>
 </div>
 </div>
 <p>All expected counts are comfortably above 5, the smallest being just under 22, so <code>correct = FALSE</code> is the right call here, for the same reason it was for the <code>arm</code> table.</p>
-<p>The chi-squared test gives a p-value of about 0.056. That’s above the conventional 0.05 threshold, but only just, and it would be a mistake to read much into which side of it the number landed on. The honest reading is the same either way: this is weak evidence of an association between baseline cavitation and improvement. The data don’t establish a relationship, but they don’t rule one out either. A trial of 107 patients simply cannot settle a question this size, and the result is best reported as inconclusive.</p>
+<p>The chi-squared test gives a p-value of about 0.056. That’s above the conventional 0.05 threshold, but only just, and it would be a mistake to read much into which side of it the number landed on. The proportions behind it: 62% improved among patients without baseline cavitation, against 44% among those with it, an 18 percentage point gap the test can’t confirm at this sample size. The honest reading is the same either way: this is weak evidence of an association between baseline cavitation and improvement. The data don’t establish a relationship, but they don’t rule one out either. A trial of 107 patients simply cannot settle a question this size, and the result is best reported as inconclusive.</p>
 <p><strong>Exercise 5</strong></p>
 <p><strong>Null hypothesis.</strong> In the population, the risk ratio is 1 and the odds ratio is 1: no association between gender and improvement.</p>
 <p><strong>Alternative hypothesis.</strong> The risk ratio, and the odds ratio, differ from 1. Both nulls sit at 1, not 0, since these are ratios instead of differences.</p>
@@ -1434,7 +1435,7 @@ attr(,"method")
 [1] "Unconditional MLE &amp; normal approximation (Wald) CI"</code></pre>
 </div>
 </div>
-<p><code>levels()</code> shows that <code>'F'</code> is already listed first, so <code>relevel()</code> here confirms that choice explicitly. By hand, from the table: 27 of 48 men improved (risk = 0.5625) and 28 of 59 women improved (risk = 0.4746), giving a risk ratio of 0.5625 / 0.4746 = 1.19, and an odds ratio of (27 × 31) / (21 × 28) = 1.42. Both match the software output. The proportion improved was slightly higher in men than in women (risk ratio 1.19, 95% CI: 0.82 to 1.71; odds ratio 1.42, 95% CI: 0.66 to 3.06, chi-squared p = 0.37). But both confidence intervals include the null value of 1, so this trial gives no good evidence of a difference in improvement by gender. <code>oddsratio()</code> prints three p-values, as it did for the <code>arm</code> table; the chi-squared one is quoted here because that’s the one that reconciles with <code>chisq.test()</code>.</p>
+<p><code>levels()</code> shows that <code>'F'</code> is already listed first, so <code>relevel()</code> here confirms that choice explicitly. By hand, from the table: 27 of 48 men improved (risk = 0.5625) and 28 of 59 women improved (risk = 0.4746), giving a risk ratio of 0.5625 / 0.4746 = 1.19, and an odds ratio of (27 × 31) / (21 × 28) = 1.42. Both match the software output. The proportion improved was slightly higher in men than in women (risk ratio 1.19, 95% CI: 0.82 to 1.71; odds ratio 1.42, 95% CI: 0.66 to 3.06, chi-squared p = 0.37). But both CIs include the null value of 1, so this trial gives no good evidence of a difference in improvement by gender. <code>oddsratio()</code> prints three p-values, as it did for the <code>arm</code> table; the chi-squared one is quoted here because that’s the one that reconciles with <code>chisq.test()</code>.</p>
 <p><strong>Writing exercise (sample answer)</strong></p>
 <p>Among patients receiving streptomycin, 69% (38 of 55) showed radiological improvement at six months, compared with 33% (17 of 52) among those receiving the control treatment. This corresponds to a risk ratio of 2.11 (95% CI: 1.38 to 3.24, p &lt; 0.001): about twice the proportion improved with streptomycin compared with control in this trial.</p>
 </div>
