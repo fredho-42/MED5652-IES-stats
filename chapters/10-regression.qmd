@@ -80,7 +80,7 @@ A correlation coefficient examines whether and to what extent two variables move
 cor(nhanes$age, nhanes$chol, use = 'complete.obs')
 ```
 
-`use = 'complete.obs'` tells `cor()` to drop any participant missing either variable first; without it, a single missing value makes the whole calculation return `NA`. `cor.test()` adds a confidence interval and a p-value, and drops incomplete pairs automatically.
+`use = 'complete.obs'` tells `cor()` to drop any participant missing either variable first; without it, a single missing value makes the whole calculation return `NA`. `cor.test()` adds a CI and a p-value, and drops incomplete pairs automatically.
 
 **Null hypothesis.** In the population, the true correlation between age and cholesterol is zero.
 
@@ -105,7 +105,7 @@ phq_numeric <- as.numeric(nhanes$phq.c)
 cor.test(nhanes$age, phq_numeric, method = 'spearman')
 ```
 
-Spearman's rho here is about 0.005, p = 0.37: close enough to zero, and far from significant, so age and depression symptom category show no clear monotonic relationship. `cor.test()` doesn't report a confidence interval for Spearman's rho the way it did for Pearson's r above; rho has no equivalent simple formula for one. The warning above, 'cannot compute exact p-value with ties,' isn't a problem: with tens of thousands of participants spread across only three `phq.c` categories, many necessarily share a rank, so R falls back on an approximate p-value, which is still valid.
+Spearman's rho here is about 0.005, p = 0.37: close enough to zero, and far from significant, so age and depression symptom category show no clear monotonic relationship. `cor.test()` doesn't report a CI for Spearman's rho the way it did for Pearson's r above; rho has no equivalent simple formula for one. The warning above, 'cannot compute exact p-value with ties,' isn't a problem: with tens of thousands of participants spread across only three `phq.c` categories, many necessarily share a rank, so R falls back on an approximate p-value, which is still valid.
 
 ## A scatterplot with a fitted line: cholesterol by age
 
@@ -121,7 +121,7 @@ ggplot(nhanes |> filter(!is.na(age), !is.na(chol)), aes(x = age, y = chol)) +
 
 Above the plot, `ggplot2` printed `` `geom_smooth()` using formula = 'y ~ x' ``. That's a message, not a warning: it's just reporting which formula it fitted, since `geom_smooth()` picks one for us if we don't say. Here it chose a straight line in `x`, exactly the simple linear regression we asked for with `method = 'lm'`.
 
-The shaded band around the line is a 95% confidence interval for the line itself, the same idea as every other confidence interval in this course, just drawn as a band rather than printed as two numbers. The line slopes gently upward: cholesterol tends to be a little higher in older participants. The cloud of points around it is wide, though. Age doesn't determine cholesterol on its own, and the next section puts a number on exactly how much of the variation in cholesterol age can explain.
+The shaded band around the line is a 95% CI for the line itself, the same idea as every other CI in this course, just drawn as a band rather than printed as two numbers. The line slopes gently upward: cholesterol tends to be a little higher in older participants. The cloud of points around it is wide, though. Age doesn't determine cholesterol on its own, and the next section puts a number on exactly how much of the variation in cholesterol age can explain.
 
 ::: {.callout-note}
 ## Try it yourself: what the band shows
@@ -152,7 +152,7 @@ As with `t.test()` in Chapter 4, there's no `$` anywhere in that call. `lm()`'s 
 
 A low R² would mean a poorer explanation or prediction of the variation of the outcome. However, that isn't our goal here. Instead, we're estimating how cholesterol varies with age, as precisely as the data allow. Chapter 7 returns to this distinction, between explaining an association and predicting an outcome, when it looks at what a regression model can and can't claim to establish.
 
-`coef()` and `confint()`, both base R, pull out just the coefficients and just their confidence intervals, without the rest of the printout:
+`coef()` and `confint()`, both base R, pull out just the coefficients and just their CIs, without the rest of the printout:
 
 ```{r}
 #| label: coef-confint-age
@@ -160,7 +160,7 @@ coef(m_age)
 confint(m_age)
 ```
 
-`broom::tidy()` puts the same information into a tidy data frame, one row per coefficient, which is easier to work with in code than `summary()`'s printed output. Adding `conf.int = TRUE` includes the confidence interval as two extra columns:
+`broom::tidy()` puts the same information into a tidy data frame, one row per coefficient, which is easier to work with in code than `summary()`'s printed output. Adding `conf.int = TRUE` includes the CI as two extra columns:
 
 ```{r}
 #| label: tidy-age
@@ -187,7 +187,7 @@ confint(m_gender)
 
 With a continuous predictor like `age`, the `(Intercept)` was an abstract number, cholesterol at age zero, nobody's actual cholesterol. With a two-category predictor it's concrete: `gender`'s first level is `'Male'`, so `(Intercept)`, 4.8859 mmol/L, is simply mean cholesterol in men. This is the reference level again, the same idea Chapter 3 introduced and Chapter 5's `relevel()` work used a second time: whichever category is listed first becomes the one everything else in the model is compared against, and here that comparison is the whole model.
 
-The slope, on `genderFemale`, is the difference between the two group means: 0.1685 mmol/L, women minus men, with its own standard error, t-value, and p-value, and a 95% confidence interval of 0.1470 to 0.1901 mmol/L. Chapter 5 reported the same comparison as 0.17 mmol/L higher in women (95% CI: 0.15 to 0.19 mmol/L), but only after reversing the signs on what `t.test()` printed, because `t.test()` reports Male minus Female by default. `lm()` reports the comparison the other way round, reference category first, so the sign comes out already the way we want to read it: the same underlying result, with no sign-flipping needed here.
+The slope, on `genderFemale`, is the difference between the two group means: 0.1685 mmol/L, women minus men, with its own standard error, t-value, and p-value, and a 95% CI of 0.1470 to 0.1901 mmol/L. Chapter 5 reported the same comparison as 0.17 mmol/L higher in women (95% CI: 0.15 to 0.19 mmol/L), but only after reversing the signs on what `t.test()` printed, because `t.test()` reports Male minus Female by default. `lm()` reports the comparison the other way round, reference category first, so the sign comes out already the way we want to read it: the same underlying result, with no sign-flipping needed here.
 
 The two results agree this closely because they're close to the same calculation, but not identically the same one. `t.test()`'s default doesn't assume the two groups share one variance, as Chapter 5's independent-samples section said explicitly; `lm()` does assume it, one shared residual variance for the whole model. Telling `t.test()` to make that same assumption, with `var.equal = TRUE`, closes the gap completely:
 
@@ -196,7 +196,7 @@ The two results agree this closely because they're close to the same calculation
 t.test(chol ~ gender, data = nhanes |> filter(!is.na(gender)), var.equal = TRUE)
 ```
 
-`t = -15.323` on 39174 degrees of freedom, the same degrees of freedom `summary(m_gender)` reported for the regression, and an interval of -0.1901 to -0.1470, the exact mirror of `lm()`'s 0.1470 to 0.1901. `var.equal = TRUE` isn't a better version of the default. Chapter 5's default, unequal-variance form is the safer everyday choice, since it stays valid whether or not the two groups' spreads match. Setting `var.equal = TRUE` here is only to show that a t-test *is* this regression, once both make the same assumption.
+`t = -15.323` on 39174 degrees of freedom, the same degrees of freedom `summary(m_gender)` reported for the regression, and a CI of -0.1901 to -0.1470, the exact mirror of `lm()`'s 0.1470 to 0.1901. `var.equal = TRUE` isn't a better version of the default. Chapter 5's default, unequal-variance form is the safer everyday choice, since it stays valid whether or not the two groups' spreads match. Setting `var.equal = TRUE` here is only to show that a t-test *is* this regression, once both make the same assumption.
 
 An independent-samples t-test on cholesterol by gender, and a simple linear regression of cholesterol on the two-category factor `gender`, are the same model, read two ways. The diagnostic plots in the next section apply here too, and are worth trying on `m_gender`: with only two possible fitted values, the residuals-vs-fitted plot collapses into two vertical columns of points instead of the scattered cloud `m_age` produced, which is exactly what a two-category predictor should look like, not a sign that something has gone wrong.
 
@@ -216,7 +216,15 @@ summary(m_edu)
 confint(m_edu)
 ```
 
-Two rows this time, `eduHigh school graduate` and `eduAbove high school`, each a difference from whichever category is first in `levels(edu_chol_complete$edu)`. Neither is anywhere near significant here: on this evidence, education isn't associated with cholesterol in this sample.
+```{r}
+#| label: lm-edu-numbers
+#| include: false
+edu_tidy <- tidy(m_edu, conf.int = TRUE)
+edu_hs <- edu_tidy |> filter(term == 'eduHigh school graduate')
+edu_above <- edu_tidy |> filter(term == 'eduAbove high school')
+```
+
+Two rows this time, `eduHigh school graduate` and `eduAbove high school`, each a difference from whichever category is first in `levels(edu_chol_complete$edu)`. Compared with 'Less than high school', high school graduates' cholesterol is about `r round(edu_hs$estimate, 3)` mmol/L lower (95% CI: `r round(edu_hs$conf.low, 3)` to `r round(edu_hs$conf.high, 3)` mmol/L, p = `r round(edu_hs$p.value, 3)`), and those with more than high school are about `r round(abs(edu_above$estimate), 3)` mmol/L lower (95% CI: `r round(edu_above$conf.low, 3)` to `r round(edu_above$conf.high, 3)` mmol/L, p = `r round(edu_above$p.value, 3)`). Both CIs sit close to, and comfortably include, zero: these data are consistent with little or no difference in cholesterol by education level in this sample, and they don't rule one out either.
 
 `levels()` confirms the reference is `'Less than high school'`. `relevel()`, already met in Chapter 3, moves a different category to the front. This time we write the releveled factor back into a data frame, rather than working on a standalone copy the way Chapter 3 did: `lm()` needs to find `edu` already releveled inside whatever `data =` points at, so it goes into a new object, `edu_relevelled`, leaving `edu_chol_complete` and the model fitted on it untouched:
 
@@ -276,13 +284,20 @@ Points that fall on the line are consistent with normally distributed residuals.
 predict(m_age, newdata = data.frame(age = c(45, 150)), interval = 'confidence')
 ```
 
-`interval = 'confidence'` adds a confidence interval around each prediction. This confidence interval describes the precision of the predicted **mean** value, not the precision for an **individual**. The precision around an individual prediction is called a **prediction interval**. It's always wider than the confidence interval around the mean, since predicting one person's value is less certain than predicting the average across many. A prediction interval can be requested by stating `interval = 'prediction'` instead.
+`interval = 'confidence'` adds a CI around each prediction. This CI describes the precision of the predicted **mean** value, not the precision for an **individual**. The precision around an individual prediction is called a **prediction interval**, a different quantity from a CI, not an abbreviated form of it. It's always wider than the CI around the mean, since predicting one person's value is less certain than predicting the average across many. A prediction interval can be requested by stating `interval = 'prediction'` instead.
 
 The first row, age 45, sits comfortably inside the range of ages actually observed in this sample (18 to 85), so this prediction is supported by data the model was fitted on. The second row, age 150, is not. Nobody in this dataset, or in any verified human population, is 150 years old. The model has no information about what happens at that age, and fitting a straight line through the data we do have says nothing reliable about what lies far outside it. The predicted value it returns looks like an ordinary number, which is exactly what makes extrapolation dangerous: a plausible-looking output doesn't mean the input that produced it was reasonable. Always check a prediction's input against the range the model was actually fitted on before trusting its output.
 
 ## Worked example: cholesterol by sedentary time
 
-Let's bring the whole workflow together on another research question: is sedentary time (`sed`, in hours/day) associated with total cholesterol (`chol`)?
+Let's bring the whole workflow together on another research question: is sedentary time (`sed`, in hours/day) associated with total cholesterol (`chol`)? `cor.test()` gives us Pearson's r first, the same way it did for `age` and `chol` above:
+
+```{r}
+#| label: cortest-sed
+cor.test(nhanes$sed, nhanes$chol)
+```
+
+r here is about -0.010 (95% CI: -0.021 to 0.001, p = 0.073), the weakest of the pairings this chapter looks at, and its CI includes zero.
 
 ```{r}
 #| label: worked-scatter-sed
@@ -302,7 +317,7 @@ summary(m_sed)
 confint(m_sed)
 ```
 
-The slope is small and negative, about -0.0010 mmol/L for each additional hour/day of sedentary time, and the p-value is 0.073: above the conventional 0.05 threshold. The 95% confidence interval for the slope, -0.0021 to 0.0001 mmol/L, includes zero. R² is essentially zero. On this evidence alone, sedentary time and cholesterol show no clear linear relationship in this sample.
+The slope is small and negative, about -0.0010 mmol/L for each additional hour/day of sedentary time, and the p-value is 0.073: above the conventional 0.05 threshold. The 95% CI for the slope, -0.0021 to 0.0001 mmol/L, includes zero. R² is essentially zero. On this evidence alone, sedentary time and cholesterol show no clear linear relationship in this sample.
 
 We check the diagnostic plots anyway, since a weak result could be caused by violated assumptions:
 
@@ -327,19 +342,19 @@ In an academic report this becomes: sedentary time was not associated with total
 
 ## Exercises
 
-**Exercise 1** (ILOs 1, 2, 6). State the null and alternative hypotheses for the slope. Using `vpa_r`, vigorous physical activity outside work (hours/day), produce a scatterplot of `chol` against `vpa_r` with a fitted regression line. Fit the model with `lm()`, and extract its coefficients and their 95% confidence intervals with `confint()` and `broom::tidy()`. Report the slope in one sentence, in the same style used above.
+**Exercise 1** (ILOs 1, 2, 6). State the null and alternative hypotheses for the slope. Using `vpa_r`, vigorous physical activity outside work (hours/day), produce a scatterplot of `chol` against `vpa_r` with a fitted regression line. Fit the model with `lm()`, and extract its coefficients and their 95% CIs with `confint()` and `broom::tidy()`. Report the slope in one sentence, in the same style used above.
 
 **Exercise 2** (ILO 4). For the model fitted in Exercise 1, produce a residuals-vs-fitted plot and a QQ plot. Write one sentence describing what each plot shows, and one sentence commenting on anything the plots reveal about the shape of `vpa_r` itself.
 
 **Exercise 3** (ILO 5). Using the model fitted in Exercise 1, predict total cholesterol at `vpa_r` = 1 hour/day and at `vpa_r` = 24 hours/day. Write one sentence stating which of the two predictions can be trusted, and one sentence explaining why the other cannot, referring to the range of `vpa_r` actually observed in the data.
 
-**Exercise 4** (ILOs 2, 3). State the null and alternative hypotheses, then reproduce Chapter 5's worked example, sedentary time (`sed`) by gender, with `lm()` instead of `t.test()`. Compare the confidence interval `lm()` gives you to the one Chapter 5 reported. Write one sentence on what you find, and a second sentence explaining it, using `var.equal = TRUE` to check your explanation.
+**Exercise 4** (ILOs 2, 3). State the null and alternative hypotheses, then reproduce Chapter 5's worked example, sedentary time (`sed`) by gender, with `lm()` instead of `t.test()`. Compare the CI `lm()` gives you to the one Chapter 5 reported. Write one sentence on what you find, and a second sentence explaining it, using `var.equal = TRUE` to check your explanation.
 
 **Exercise 5** (ILOs 2, 6). State the null and alternative hypotheses, then fit `chol ~ smoking`. Use `levels()` to check which category of `smoking` the model used as its reference, then refit with `relevel()` using `'Current'` as the reference instead. Report the first model's coefficients in one sentence, then write a second sentence stating what changed between the two model fits and a third stating what stayed exactly the same, and why.
 
 ## Writing exercise
 
-Using the `chol ~ sed` result from the worked example, write a short results paragraph of two to three sentences, as it would appear in a report. State the estimated slope, its 95% confidence interval, and its p-value, and say plainly what this evidence does and does not support. Avoid two common mistakes: don't describe a non-significant result as proof there is no relationship at all, and don't write around the p-value without stating it.
+Using the `chol ~ sed` result from the worked example, write a short results paragraph of two to three sentences, as it would appear in a report. State the estimated slope, its 95% CI, and its p-value, and say plainly what this evidence does and does not support. Avoid two common mistakes: don't describe a non-significant result as proof there is no relationship at all, and don't write around the p-value without stating it.
 
 ::: {.callout-note collapse='true'}
 ## Solutions
@@ -365,7 +380,7 @@ confint(m_vpa_r)
 tidy(m_vpa_r, conf.int = TRUE)
 ```
 
-Total cholesterol was about 0.170 mmol/L lower for each additional hour/day of vigorous activity outside work (95% CI: -0.201 to -0.139 mmol/L, p < 0.001).
+Total cholesterol was about 0.170 mmol/L lower for each additional hour/day of vigorous activity outside work (95% CI: 0.139 to 0.201 mmol/L lower, p < 0.001).
 
 **Exercise 2**
 
@@ -410,14 +425,14 @@ summary(m_sed_gender)
 confint(m_sed_gender)
 ```
 
-`lm()` gives a slope of 0.259 hours/day (95% CI: 0.029 to 0.490 hours/day, p = 0.027), close to Chapter 5's t-test result but not identical: Chapter 5 reported a mean difference of about 0.26 hours/day (95% CI: 0.03 to 0.49 hours/day, p = 0.026). The gap is small, but it's real, in the third decimal of the p-value. It happens because `t.test()`'s default doesn't assume the two groups share one variance and `lm()` does, and here that assumption isn't quite free: `sed`'s spread genuinely differs by gender, a standard deviation of about 9.75 hours/day in men against about 11.9 in women. Setting `var.equal = TRUE` on the t-test confirms it:
+`lm()` gives a slope of 0.259 hours/day (95% CI: 0.029 to 0.490 hours/day, p = 0.027), close to Chapter 5's t-test result but not identical: Chapter 5 reported a mean difference of about 0.26 hours/day (95% CI: 0.03 to 0.49 hours/day, p = 0.026). The gap is small, but it's real, in the third decimal of the p-value. It happens because `t.test()`'s default doesn't assume the two groups share one variance and `lm()` does, and here that assumption isn't quite free: `sed`'s spread genuinely differs by gender, a standard deviation of about 9.75 hours/day in men against about 11.9 hours/day in women. Setting `var.equal = TRUE` on the t-test confirms it:
 
 ```{r}
 #| label: sol-ex4-varequal
 t.test(sed ~ gender, data = sed_gender_complete, var.equal = TRUE)
 ```
 
-With `var.equal = TRUE`, the t-test's p-value becomes 0.027 and its interval 0.029 to 0.490 once the sign is reversed, matching `lm()` exactly. The `chol` model earlier in this chapter agreed with its t-test to four decimal places because the two groups' spreads there were nearly equal; here they aren't, so the equal-variance assumption `lm()` makes actually changes the answer, by a small amount.
+With `var.equal = TRUE`, the t-test's p-value becomes 0.027 and its CI 0.029 to 0.490 once the sign is reversed, matching `lm()` exactly. The `chol` model earlier in this chapter agreed with its t-test to four decimal places because the two groups' spreads there were nearly equal; here they aren't, so the equal-variance assumption `lm()` makes actually changes the answer, by a small amount.
 
 **Exercise 5**
 
@@ -440,9 +455,9 @@ summary(m_smoking_relevel)
 confint(m_smoking_relevel)
 ```
 
-`levels()` on the original factor shows `'Never'` first, so that's the reference the first model used: mean cholesterol is about 4.97 mmol/L in never-smokers, 0.022 mmol/L higher in previous smokers (95% CI -0.005 to 0.048, p = 0.114), and 0.028 mmol/L higher in current smokers (95% CI 0.000 to 0.056, p = 0.051), neither significant at the conventional 5% level. Releveled to `'Current'`, both rows change: the intercept becomes current smokers' own mean, and the two remaining rows compare `'Never'` and `'Previous'` against `'Current'` instead. `Multiple R-squared` and `Residual standard error` are identical in both printouts, 0.0001279 and 1.091. Which category anchors the comparison changed; what the model actually fits, and predicts for any given participant, didn't.
+`levels()` on the original factor shows `'Never'` first, so that's the reference the first model used: mean cholesterol is about 4.97 mmol/L in never-smokers, 0.022 mmol/L higher in previous smokers (95% CI -0.005 to 0.048 mmol/L, p = 0.114), and 0.028 mmol/L higher in current smokers (95% CI 0.000 to 0.056 mmol/L, p = 0.051), neither significant at the conventional 5% level. Releveled to `'Current'`, both rows change: the intercept becomes current smokers' own mean, and the two remaining rows compare `'Never'` and `'Previous'` against `'Current'` instead. `Multiple R-squared` and `Residual standard error` are identical in both printouts, 0.0001279 and 1.091. Which category anchors the comparison changed; what the model actually fits, and predicts for any given participant, didn't.
 
 **Writing exercise (sample answer)**
 
-Sedentary time was not significantly associated with total cholesterol in this sample (slope -0.0010 mmol/L per hour/day, 95% CI: -0.0021 to 0.0001 mmol/L, p = 0.073). The confidence interval includes zero, so these data are consistent with no true association. This model adjusts for nothing else, so it cannot say whether age, gender, or other characteristics are masking or accounting for this result.
+Sedentary time was not significantly associated with total cholesterol in this sample (slope -0.0010 mmol/L per hour/day, 95% CI: -0.0021 to 0.0001 mmol/L, p = 0.073). The CI includes zero, so these data are consistent with no true association. This model adjusts for nothing else, so it cannot say whether age, gender, or other characteristics are masking or accounting for this result.
 :::

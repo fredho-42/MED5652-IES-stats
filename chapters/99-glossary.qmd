@@ -188,7 +188,7 @@ This appendix is a reference: packages, functions, R syntax, and statistical ter
 | Reference level | The category everything else in a table or model is compared against. In R the default is the first level in a factor. | Chapter 3 |
 | Mean, median | Two measures of a distribution's centre: the arithmetic average, and the middle value when sorted. | Chapter 3 |
 | Standard deviation (SD) | A measure of a distribution's spread, usually paired with the mean. When used without context an SD can be assumed to describe the population. | Chapter 3 |
-| Interquartile range (IQR) | Another measure of a distribution's spread, usually paired with the median. | Chapter 3 |
+| Interquartile range (IQR) | Another measure of a distribution's spread, usually paired with the median. Reported as the range it spans, the first quartile to the third, not as the single number the gap between them makes. | Chapter 3 |
 | Skew | A distribution with a longer tail on one side, where the mean and median differ. | Chapter 3 |
 | Complete-case | An analysis that keeps only the rows with no missing value on any variable it uses. | Chapter 3 |
 | Table 1 | The semi-standard first table of a paper: participant characteristics, often stratified by group. | Chapter 3 |
@@ -205,8 +205,9 @@ This appendix is a reference: packages, functions, R syntax, and statistical ter
 | Standard error (SE) | The standard deviation of the sampling distribution. It measures the precision of our point estimate, smaller SE means more precise, and does not describe the variability of individuals in the population, which is what the standard deviation is for. | Chapter 4 |
 | Central limit theorem (CLT) | The rule stating that if our sample size is large enough, the sampling distribution of the mean will be approximately normal, regardless of the underlying population's shape. | Chapter 4 |
 | Confidence interval (CI) | A range of values, built around a point estimate and based on the standard error, that quantifies our uncertainty about the true population parameter. Also known as an 'interval estimate'. | Chapter 4 |
-| 95% CI | If we repeated our sampling process indefinitely, 95% of the calculated intervals would contain the true population value. It is incorrect to say 'there is a 95% chance our specific interval holds the true value'. | Chapter 4 |
+| 95% CI | If we repeated our sampling process indefinitely, 95% of the calculated CIs would contain the true population value. It is incorrect to say 'there is a 95% chance our specific CI holds the true value'. | Chapter 4 |
 | Power, sample size calculation | The chance a study detects a real effect of a given size, and the calculation that sizes a study to hit a target power. | Chapter 4 |
+| Type I error rate | The chance we're willing to accept of concluding there's an effect when there really isn't one. `sig.level` sets it, conventionally at 0.05. | Chapter 4 |
 
 ### Hypothesis tests and measures of association
 

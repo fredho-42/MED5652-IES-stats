@@ -182,7 +182,7 @@ dp5 <- function(x) sprintf('%.5f', x)
 dp3 <- function(x) sprintf('%.3f', x)
 ```
 
-Crude, the slope on `sed` is about `r dp5(crude_sed$estimate)` mmol/L per hour/day (95% CI `r dp5(crude_sed$conf.low)` to `r dp5(crude_sed$conf.high)`, p = `r round(crude_sed$p.value, 3)`). Adjusted for age, gender, and education, it moves to about `r dp5(adj_sed$estimate)` mmol/L per hour/day (95% CI `r dp5(adj_sed$conf.low)` to `r dp5(adj_sed$conf.high)`, p = `r round(adj_sed$p.value, 3)`).
+Crude, the slope on `sed` is about `r dp5(crude_sed$estimate)` mmol/L per hour/day (95% CI `r dp5(crude_sed$conf.low)` to `r dp5(crude_sed$conf.high)` mmol/L per hour/day, p = `r round(crude_sed$p.value, 3)`). Adjusted for age, gender, and education, it moves to about `r dp5(adj_sed$estimate)` mmol/L per hour/day (95% CI `r dp5(adj_sed$conf.low)` to `r dp5(adj_sed$conf.high)` mmol/L per hour/day, p = `r round(adj_sed$p.value, 3)`).
 
 Look at the estimate first, not the p-value. The adjusted slope is about `r round(adj_sed$estimate / crude_sed$estimate, 1)` times the size of the crude one: holding age, gender, and education constant pulls the association between sedentary time and cholesterol substantially further from zero. That movement is what confounding looks like. Age and gender were masking part of a real association, and the model that ignores them understates it. The p-value crossing 0.05 is a consequence of the estimate moving away from zero, not a separate finding.
 
@@ -254,7 +254,7 @@ exp(confint(m_dead_crude))
 
 `confint()` printed `Waiting for profiling to be done...` before the answer. That's a message, not a warning, and it marks a real difference between `glm()` and `lm()`.
 
-For a linear model, `confint()` builds each interval the way Chapter 4 built one by hand: an estimate, plus or minus a multiplier times a standard error. For a logistic model that shortcut is only an approximation, so `confint()` does something better instead. It works along each coefficient, refitting the model repeatedly to find the range of values the data are consistent with. That search is the 'profiling', and the message is `glm()` saying it's running. On this dataset it takes a second or two. On a much larger model it can take noticeably longer, which is the only reason the message exists at all.
+For a linear model, `confint()` builds each CI the way Chapter 4 built one by hand: an estimate, plus or minus a multiplier times a standard error. For a logistic model that shortcut is only an approximation, so `confint()` does something better instead. It works along each coefficient, refitting the model repeatedly to find the range of values the data are consistent with. That search is the 'profiling', and the message is `glm()` saying it's running. On this dataset it takes a second or two. On a much larger model it can take noticeably longer, which is the only reason the message exists at all.
 
 ```{r}
 #| label: or-adjusted
@@ -280,7 +280,7 @@ or_adj <- tidy(m_dead_adj, exponentiate = TRUE, conf.int = TRUE) |>
   filter(term == 'sed')
 ```
 
-Crude, each additional hour/day of sedentary time is associated with an odds ratio of about `r dp3(or_crude$estimate)` for ten-year mortality (95% CI: `r dp3(or_crude$conf.low)` to `r dp3(or_crude$conf.high)`, p < 0.001). Adjusted for age, gender, and education, the odds ratio attenuates to about `r dp3(or_adj$estimate)` (95% CI: `r dp3(or_adj$conf.low)` to `r dp3(or_adj$conf.high)`, p < 0.001). Both intervals sit entirely above 1, the null value for an odds ratio, so both are statistically significant. But the adjusted estimate is noticeably smaller than the crude one. Part of the crude association was really age. Older participants are both more sedentary and more likely to die within ten years, for reasons that have nothing to do with sedentary behaviour itself.
+Crude, each additional hour/day of sedentary time is associated with an odds ratio of about `r dp3(or_crude$estimate)` for ten-year mortality (95% CI: `r dp3(or_crude$conf.low)` to `r dp3(or_crude$conf.high)`, p < 0.001). Adjusted for age, gender, and education, the odds ratio attenuates to about `r dp3(or_adj$estimate)` (95% CI: `r dp3(or_adj$conf.low)` to `r dp3(or_adj$conf.high)`, p < 0.001). Both CIs sit entirely above 1, the null value for an odds ratio, so both are statistically significant. But the adjusted estimate is noticeably smaller than the crude one. Part of the crude association was really age. Older participants are both more sedentary and more likely to die within ten years, for reasons that have nothing to do with sedentary behaviour itself.
 
 Both odds ratios sit close to 1, so confounding matters less here than it will in Exercise 2, where the same mechanism, age, moves the estimate by a factor of about six instead of a couple of percent. Do that exercise before deciding how seriously to take adjustment.
 
@@ -346,17 +346,17 @@ The odds ratio for `sed` moves only a little between the two models: `r dp3(or_w
 
 ## Exercises
 
-**Exercise 1** (ILOs 1, 2). State the null and alternative hypotheses for the adjusted slope. Fit `chol ~ met_t + age + gender + edu`, where `met_t` is total physical activity in MET-hours/day, and compare it with the crude model `chol ~ met_t`. Report both slopes for `met_t` with their 95% confidence intervals and p-values, and write one sentence describing how the adjusted estimate differs from the crude one, including its direction.
+**Exercise 1** (ILOs 1, 2). State the null and alternative hypotheses for the adjusted slope. Fit `chol ~ mpa_w + age + gender + edu`, where `mpa_w` is moderate physical activity at work in hours/day, and compare it with the crude model `chol ~ mpa_w`. Report both slopes for `mpa_w` with their 95% CIs and p-values, and write one sentence describing how the adjusted estimate differs from the crude one, including its direction.
 
-**Exercise 2** (ILOs 3, 5). State the null and alternative hypotheses for the odds ratio, noting the scale its null value sits on. Fit `dead_10yr ~ vpa_r + age + gender + edu`, where `vpa_r` is vigorous physical activity outside work in hours/day, and compare it with the crude model `dead_10yr ~ vpa_r`. Exponentiate both models' coefficients to obtain odds ratios with confidence intervals, and build a `tbl_regression()` table for the adjusted model. Write one sentence interpreting the adjusted odds ratio for `vpa_r` in context.
+**Exercise 2** (ILOs 3, 5). State the null and alternative hypotheses for the odds ratio, noting the scale its null value sits on. Fit `dead_10yr ~ vpa_t + age + gender + edu`, where `vpa_t` is vigorous physical activity overall in hours/day, and compare it with the crude model `dead_10yr ~ vpa_t`. Exponentiate both models' coefficients to obtain odds ratios with CIs, and build a `tbl_regression()` table for the adjusted model. Write one sentence interpreting the adjusted odds ratio for `vpa_t` in context.
 
-**Exercise 3** (ILO 4). Using the adjusted model from Exercise 2, fit a second version that also adjusts for `blm.cvd`. Combine both models into one table with `tbl_merge()`, and write one sentence comparing the two odds ratios for `vpa_r` and one sentence stating what each model assumes about `blm.cvd`.
+**Exercise 3** (ILO 4). Using the adjusted model from Exercise 2, fit a second version that also adjusts for `blm.cvd`. Combine both models into one table with `tbl_merge()`, and write one sentence comparing the two odds ratios for `vpa_t` and one sentence stating what each model assumes about `blm.cvd`.
 
 ## Writing exercise
 
 Write two short paragraphs, as they would appear in a results section.
 
-In the first, report the adjusted association between sedentary time and cholesterol from this chapter's linear model, and the adjusted odds ratio for sedentary time and ten-year mortality from the logistic model, each with its 95% confidence interval and p-value. Add one sentence on what this analysis cannot establish: an observational adjustment reduces confounding by the variables actually included, but it cannot rule out confounding by variables that were never measured.
+In the first, report the adjusted association between sedentary time and cholesterol from this chapter's linear model, and the adjusted odds ratio for sedentary time and ten-year mortality from the logistic model, each with its 95% CI and p-value. Add one sentence on what this analysis cannot establish: an observational adjustment reduces confounding by the variables actually included, but it cannot rule out confounding by variables that were never measured.
 
 In the second, separate paragraph, report both odds ratios for `sed` from the sensitivity analysis, with and without `blm.cvd`, and state plainly what each model assumes about baseline CVD's role and why the data available here cannot decide between those assumptions.
 
@@ -365,87 +365,87 @@ In the second, separate paragraph, report both odds ratios for `sed` from the se
 
 **Exercise 1**
 
-**Null hypothesis.** In the population, the adjusted slope of cholesterol on `met_t` is zero, once age, gender, and education are held constant.
+**Null hypothesis.** In the population, the adjusted slope of cholesterol on `mpa_w` is zero, once age, gender, and education are held constant.
 
 **Alternative hypothesis.** The adjusted slope is not zero.
 
 ```{r}
 #| label: sol-ex1
-met_t_complete <- nhanes |>
-  filter(!is.na(met_t), !is.na(chol), !is.na(age), !is.na(gender), !is.na(edu))
+mpa_w_complete <- nhanes |>
+  filter(!is.na(mpa_w), !is.na(chol), !is.na(age), !is.na(gender), !is.na(edu))
 
-m_met_t_crude <- lm(chol ~ met_t, data = met_t_complete)
-m_met_t_adj <- lm(chol ~ met_t + age + gender + edu, data = met_t_complete)
+m_mpa_w_crude <- lm(chol ~ mpa_w, data = mpa_w_complete)
+m_mpa_w_adj <- lm(chol ~ mpa_w + age + gender + edu, data = mpa_w_complete)
 
-tidy(m_met_t_crude, conf.int = TRUE) |> filter(term == 'met_t')
-tidy(m_met_t_adj, conf.int = TRUE) |> filter(term == 'met_t')
+tidy(m_mpa_w_crude, conf.int = TRUE) |> filter(term == 'mpa_w')
+tidy(m_mpa_w_adj, conf.int = TRUE) |> filter(term == 'mpa_w')
 ```
 
 ```{r}
 #| label: sol-ex1-numbers
 #| include: false
-crude_met <- tidy(m_met_t_crude, conf.int = TRUE) |> filter(term == 'met_t')
-adj_met <- tidy(m_met_t_adj, conf.int = TRUE) |> filter(term == 'met_t')
+crude_mpa <- tidy(m_mpa_w_crude, conf.int = TRUE) |> filter(term == 'mpa_w')
+adj_mpa <- tidy(m_mpa_w_adj, conf.int = TRUE) |> filter(term == 'mpa_w')
 ```
 
-Crude, the slope on `met_t` is about `r dp5(crude_met$estimate)` mmol/L per MET-hour/day (95% CI: `r dp5(crude_met$conf.low)` to `r dp5(crude_met$conf.high)`, p = `r round(crude_met$p.value, 3)`). The interval includes zero, so on its own this says very little: these data are consistent with no association between total activity and cholesterol, and they don't rule one out either.
+Crude, the slope on `mpa_w` is about `r dp5(crude_mpa$estimate)` mmol/L per hour/day (95% CI: `r dp5(crude_mpa$conf.low)` to `r dp5(crude_mpa$conf.high)` mmol/L per hour/day, p = `r round(crude_mpa$p.value, 3)`). The CI sits almost symmetrically either side of zero, so on its own this says very little: these data are consistent with no association between moderate activity at work and cholesterol, and they don't rule one out either.
 
-Adjusted for age, gender, and education, the slope changes sign and becomes clearly non-zero, at about `r dp5(adj_met$estimate)` mmol/L per MET-hour/day (95% CI: `r dp5(adj_met$conf.low)` to `r dp5(adj_met$conf.high)`, p < 0.001). Once those three are held constant, more total activity is associated with slightly *higher* cholesterol in this sample. That's a reminder that adjustment can change a result's direction, not just its size, and that a crude estimate near zero can hide an association rather than rule one out. Both models are fitted on `met_t_complete`, the same participants, so the difference between them is the adjustment and nothing else.
+Adjusted for age, gender, and education, the slope changes sign and becomes clearly non-zero, at about `r dp5(adj_mpa$estimate)` mmol/L per hour/day (95% CI: `r dp5(adj_mpa$conf.low)` to `r dp5(adj_mpa$conf.high)` mmol/L per hour/day, p = `r round(adj_mpa$p.value, 3)`). Once those three are held constant, more moderate activity at work is associated with slightly *higher* cholesterol in this sample. That's a reminder that adjustment can change a result's direction, not just its size, and that a crude estimate near zero can hide an association rather than rule one out. Both models are fitted on `mpa_w_complete`, the same participants, so the difference between them is the adjustment and nothing else.
 
 ```{r}
 #| label: sol-ex1-levels
-levels(met_t_complete$edu)
+levels(mpa_w_complete$edu)
 ```
 
 `'Less than high school'` is listed first, so that's the reference this model used: both `edu` rows in the adjusted output above are differences from that group. We don't read them further than that here, for the same reason the chapter gave: `edu` wasn't the exposure this model was built to estimate.
 
 **Exercise 2**
 
-**Null hypothesis.** In the population, the adjusted odds ratio for `vpa_r` is 1: no association between vigorous activity outside work and ten-year mortality, once age, gender, and education are held constant.
+**Null hypothesis.** In the population, the adjusted odds ratio for `vpa_t` is 1: no association between vigorous activity overall and ten-year mortality, once age, gender, and education are held constant.
 
 **Alternative hypothesis.** The adjusted odds ratio is not 1. The null sits at 1, not 0, since this is a ratio.
 
 ```{r}
 #| label: sol-ex2
-vpa_r_dead_complete <- nhanes |>
-  filter(!is.na(vpa_r), !is.na(dead_10yr), !is.na(age), !is.na(gender), !is.na(edu))
+vpa_t_dead_complete <- nhanes |>
+  filter(!is.na(vpa_t), !is.na(dead_10yr), !is.na(age), !is.na(gender), !is.na(edu))
 
-m_vpa_r_crude <- glm(dead_10yr ~ vpa_r, data = vpa_r_dead_complete, family = binomial)
-m_vpa_r_adj <- glm(dead_10yr ~ vpa_r + age + gender + edu,
-  data = vpa_r_dead_complete, family = binomial)
+m_vpa_t_crude <- glm(dead_10yr ~ vpa_t, data = vpa_t_dead_complete, family = binomial)
+m_vpa_t_adj <- glm(dead_10yr ~ vpa_t + age + gender + edu,
+  data = vpa_t_dead_complete, family = binomial)
 
-tidy(m_vpa_r_crude, exponentiate = TRUE, conf.int = TRUE) |> filter(term == 'vpa_r')
-tidy(m_vpa_r_adj, exponentiate = TRUE, conf.int = TRUE) |> filter(term == 'vpa_r')
+tidy(m_vpa_t_crude, exponentiate = TRUE, conf.int = TRUE) |> filter(term == 'vpa_t')
+tidy(m_vpa_t_adj, exponentiate = TRUE, conf.int = TRUE) |> filter(term == 'vpa_t')
 
-tbl_regression(m_vpa_r_adj, exponentiate = TRUE)
+tbl_regression(m_vpa_t_adj, exponentiate = TRUE)
 ```
 
 ```{r}
 #| label: sol-ex2-numbers
 #| include: false
-or_vpa_crude <- tidy(m_vpa_r_crude, exponentiate = TRUE, conf.int = TRUE) |>
-  filter(term == 'vpa_r')
-or_vpa_adj <- tidy(m_vpa_r_adj, exponentiate = TRUE, conf.int = TRUE) |>
-  filter(term == 'vpa_r')
+or_vpa_crude <- tidy(m_vpa_t_crude, exponentiate = TRUE, conf.int = TRUE) |>
+  filter(term == 'vpa_t')
+or_vpa_adj <- tidy(m_vpa_t_adj, exponentiate = TRUE, conf.int = TRUE) |>
+  filter(term == 'vpa_t')
 ```
 
-Adjusted for age, gender, and education, each additional hour/day of vigorous activity outside work is associated with an odds ratio of about `r dp3(or_vpa_adj$estimate)` for ten-year mortality (95% CI: `r dp3(or_vpa_adj$conf.low)` to `r dp3(or_vpa_adj$conf.high)`, p < 0.001): participants reporting more vigorous activity had substantially lower odds of dying within ten years, holding age, gender, and education constant.
+Adjusted for age, gender, and education, each additional hour/day of vigorous activity overall is associated with an odds ratio of about `r dp3(or_vpa_adj$estimate)` for ten-year mortality (95% CI: `r dp3(or_vpa_adj$conf.low)` to `r dp3(or_vpa_adj$conf.high)`, p < 0.001): participants reporting more vigorous activity had lower odds of dying within ten years, holding age, gender, and education constant.
 
-Now compare that with the crude model, because the gap is the biggest one in this chapter. Crude, the odds ratio is `r dp3(or_vpa_crude$estimate)`, which would say that an extra hour a day of vigorous activity cuts the odds of dying by something like 94%. Adjusted, it is `r dp3(or_vpa_adj$estimate)`: still a substantial association, but a fraction of the size. Almost all of that difference is age. Older participants do far less vigorous activity, and are far more likely to die within ten years, for reasons that have nothing to do with the activity itself. So a crude comparison of the active against the inactive is largely a comparison of the young against the old. This is the same confounding story the chapter told with `sed`, in a much louder version: there the adjusted estimate moved from `r dp3(or_crude$estimate)` to `r dp3(or_adj$estimate)`, here it moves by a factor of about `r round(or_vpa_adj$estimate / or_vpa_crude$estimate)`. Reporting the crude figure on its own would badly overstate what vigorous activity does.
+Now compare that with the crude model. Crude, the odds ratio is `r dp3(or_vpa_crude$estimate)`, which would say that an extra hour a day of vigorous activity cuts the odds of dying by something like `r round((1 - or_vpa_crude$estimate) * 100)`%. Adjusted, it's `r dp3(or_vpa_adj$estimate)`: still a real association, but noticeably weaker. Part of that gap is age. Older participants do less vigorous activity overall, and are more likely to die within ten years, for reasons that have nothing to do with the activity itself. So a crude comparison of the active against the inactive is partly a comparison of the young against the old. This is the same confounding story the chapter told with `sed`, moving the estimate the same way, toward the null: there the adjusted odds ratio moved from `r dp3(or_crude$estimate)` to `r dp3(or_adj$estimate)`, closer to 1; here it moves from `r dp3(or_vpa_crude$estimate)` to `r dp3(or_vpa_adj$estimate)`, also closer to 1, from further below it. Reporting the crude figure on its own would overstate what vigorous activity does.
 
 **Exercise 3**
 
 ```{r}
 #| label: sol-ex3
-vpa_r_cvd_complete <- vpa_r_dead_complete |> filter(!is.na(blm.cvd))
+vpa_t_cvd_complete <- vpa_t_dead_complete |> filter(!is.na(blm.cvd))
 
-m_vpa_r_without <- glm(dead_10yr ~ vpa_r + age + gender + edu,
-  data = vpa_r_cvd_complete, family = binomial)
-m_vpa_r_with <- glm(dead_10yr ~ vpa_r + age + gender + edu + blm.cvd,
-  data = vpa_r_cvd_complete, family = binomial)
+m_vpa_t_without <- glm(dead_10yr ~ vpa_t + age + gender + edu,
+  data = vpa_t_cvd_complete, family = binomial)
+m_vpa_t_with <- glm(dead_10yr ~ vpa_t + age + gender + edu + blm.cvd,
+  data = vpa_t_cvd_complete, family = binomial)
 
-tbl_vpa_without <- tbl_regression(m_vpa_r_without, exponentiate = TRUE)
-tbl_vpa_with <- tbl_regression(m_vpa_r_with, exponentiate = TRUE)
+tbl_vpa_without <- tbl_regression(m_vpa_t_without, exponentiate = TRUE)
+tbl_vpa_with <- tbl_regression(m_vpa_t_with, exponentiate = TRUE)
 
 tbl_merge(list(tbl_vpa_without, tbl_vpa_with),
   tab_spanner = c('Without baseline CVD', 'With baseline CVD'), quiet = TRUE)
@@ -454,17 +454,17 @@ tbl_merge(list(tbl_vpa_without, tbl_vpa_with),
 ```{r}
 #| label: sol-ex3-numbers
 #| include: false
-or_vpa_without <- tidy(m_vpa_r_without, exponentiate = TRUE, conf.int = TRUE) |>
-  filter(term == 'vpa_r')
-or_vpa_with <- tidy(m_vpa_r_with, exponentiate = TRUE, conf.int = TRUE) |>
-  filter(term == 'vpa_r')
+or_vpa_without <- tidy(m_vpa_t_without, exponentiate = TRUE, conf.int = TRUE) |>
+  filter(term == 'vpa_t')
+or_vpa_with <- tidy(m_vpa_t_with, exponentiate = TRUE, conf.int = TRUE) |>
+  filter(term == 'vpa_t')
 ```
 
-The odds ratio for `vpa_r` moves a little between the two models: `r dp3(or_vpa_without$estimate)` (95% CI `r dp3(or_vpa_without$conf.low)` to `r dp3(or_vpa_without$conf.high)`, p < 0.001) without `blm.cvd`, and `r dp3(or_vpa_with$estimate)` (95% CI `r dp3(or_vpa_with$conf.low)` to `r dp3(or_vpa_with$conf.high)`, p < 0.001) with it. That's a smaller shift than the main adjustment step but still a real one. Without `blm.cvd`, the model assumes that any relationship between baseline CVD and mortality operates entirely through the predictors already in the model; with it, the model assumes `blm.cvd` is a separate cause of death, worth adjusting for directly. Both are defensible readings of a single measurement taken at one study visit, and nothing in this dataset can say which one is correct.
+The odds ratio for `vpa_t` moves a little between the two models: `r dp3(or_vpa_without$estimate)` (95% CI `r dp3(or_vpa_without$conf.low)` to `r dp3(or_vpa_without$conf.high)`, p < 0.001) without `blm.cvd`, and `r dp3(or_vpa_with$estimate)` (95% CI `r dp3(or_vpa_with$conf.low)` to `r dp3(or_vpa_with$conf.high)`, p < 0.001) with it. That's a smaller shift than the main adjustment step but still a real one. Without `blm.cvd`, the model assumes that any relationship between baseline CVD and mortality operates entirely through the predictors already in the model; with it, the model assumes `blm.cvd` is a separate cause of death, worth adjusting for directly. Both are defensible readings of a single measurement taken at one study visit, and nothing in this dataset can say which one is correct.
 
 **Writing exercise (sample answer)**
 
-Sedentary time was associated with total cholesterol after adjustment for age, gender, and education (slope `r dp5(adj_sed$estimate)` mmol/L per hour/day, 95% CI `r dp5(adj_sed$conf.low)` to `r dp5(adj_sed$conf.high)`, p = `r round(adj_sed$p.value, 3)`), and with higher odds of ten-year all-cause mortality (adjusted odds ratio `r dp3(or_adj$estimate)`, 95% CI `r dp3(or_adj$conf.low)` to `r dp3(or_adj$conf.high)`, p < 0.001). Both estimates adjust only for the variables included in this model; they cannot rule out confounding by factors that were never measured, such as overall frailty or comorbidity not captured here.
+Sedentary time was associated with total cholesterol after adjustment for age, gender, and education (slope `r dp5(adj_sed$estimate)` mmol/L per hour/day, 95% CI `r dp5(adj_sed$conf.low)` to `r dp5(adj_sed$conf.high)` mmol/L per hour/day, p = `r round(adj_sed$p.value, 3)`), and with higher odds of ten-year all-cause mortality (adjusted odds ratio `r dp3(or_adj$estimate)`, 95% CI `r dp3(or_adj$conf.low)` to `r dp3(or_adj$conf.high)`, p < 0.001). Both estimates adjust only for the variables included in this model; they cannot rule out confounding by factors that were never measured, such as overall frailty or comorbidity not captured here.
 
-In a sensitivity analysis, the adjusted odds ratio for sedentary time and ten-year mortality was `r dp3(or_without$estimate)` (95% CI `r dp3(or_without$conf.low)` to `r dp3(or_without$conf.high)`) without baseline cardiovascular disease in the model, and `r dp3(or_with$estimate)` (95% CI `r dp3(or_with$conf.low)` to `r dp3(or_with$conf.high)`) with it included. The first model assumes baseline CVD's influence on mortality runs entirely through the other adjustment variables; the second treats it as an independent contributor to mortality risk worth adjusting for directly. Because sedentary behaviour and baseline CVD were both measured at the same study visit, this dataset cannot establish which assumption is correct, and both estimates are reported for that reason.
+In a sensitivity analysis, the adjusted odds ratio for sedentary time and ten-year mortality was `r dp3(or_without$estimate)` (95% CI `r dp3(or_without$conf.low)` to `r dp3(or_without$conf.high)`, p < 0.001) without baseline cardiovascular disease in the model, and `r dp3(or_with$estimate)` (95% CI `r dp3(or_with$conf.low)` to `r dp3(or_with$conf.high)`, p < 0.001) with it included. The first model assumes baseline CVD's influence on mortality runs entirely through the other adjustment variables; the second treats it as an independent contributor to mortality risk worth adjusting for directly. Because sedentary behaviour and baseline CVD were both measured at the same study visit, this dataset cannot establish which assumption is correct, and both estimates are reported for that reason.
 :::

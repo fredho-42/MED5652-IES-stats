@@ -211,7 +211,7 @@ nhanes |>
 
 `filter()` here takes two conditions separated by a comma, which means the same as `&`: a row only stays if both are true. That's a shorter way to write `filter(!is.na(gender) & !is.na(chol))`, and it's the form used throughout this book whenever several conditions apply at once.
 
-Four of those functions are new. `mean()` we already met in Chapter 1. `sd()`, from base R, returns the standard deviation: a measure of how spread out the values are, in the same units as the variable itself. `median()`, also base R, returns the middle value once everything is sorted, so half the participants sit below it and half above. `quantile()`, also base R, calculates any quantile we ask for: `probs = 0.25` and `probs = 0.75` ask for the first and third quartile, the two values the interquartile range sits between. There's a separate function, `IQR()`, that returns just the gap between them as a single number, in the same units as the variable itself, instead of the two quartiles. We'll use it in the worked example below.
+Four of those functions are new. `mean()` we already met in Chapter 1. `sd()`, from base R, returns the standard deviation: a measure of how spread out the values are, in the same units as the variable itself. `median()`, also base R, returns the middle value once everything is sorted, so half the participants sit below it and half above. `quantile()`, also base R, calculates any quantile we ask for: `probs = 0.25` and `probs = 0.75` ask for the first and third quartile, the two values the interquartile range sits between. There's a separate function, `IQR()`, that returns just the gap between them as a single number, in the same units as the variable itself, instead of the two quartiles. This book reports the two quartiles, not that gap: the gap on its own doesn't say *where* the middle half of the data sits, and two variables with the same gap can sit in completely different places.
 
 `na.rm = TRUE` tells the functions to drop missing values before calculating. Without it, any `NA` in a column makes the whole result `NA`. The `filter()` step above drops rows where `gender` or `chol` itself is missing, so the group sizes reported in `n` reflect exactly the rows the means are calculated from. `n()`, used inside `summarise()`, counts the rows in each group.
 
@@ -341,7 +341,7 @@ nhanes |>
   tbl_summary(by = gender)
 ```
 
-`tbl_summary()`'s default display for a continuous variable is the median and IQR. To change it to mean and SD, we tell it what statistic to use with the `statistic` argument:
+`tbl_summary()`'s default display for a continuous variable is the median with the first and third quartiles, which the table footnotes as `Median (Q1, Q3)`. To change it to mean and SD, we tell it what statistic to use with the `statistic` argument:
 
 ```{r}
 #| label: table1-by-gender-2
@@ -366,7 +366,8 @@ nhanes |>
     mean_age = mean(age, na.rm = TRUE),
     sd_age = sd(age, na.rm = TRUE),
     median_age = median(age, na.rm = TRUE),
-    iqr_age = IQR(age, na.rm = TRUE)
+    q1_age = quantile(age, probs = 0.25, na.rm = TRUE),
+    q3_age = quantile(age, probs = 0.75, na.rm = TRUE)
   )
 ```
 
@@ -453,7 +454,8 @@ nhanes |>
 nhanes |>
   summarise(
     median_sed = median(sed, na.rm = TRUE),
-    iqr_sed = IQR(sed, na.rm = TRUE)
+    q1_sed = quantile(sed, probs = 0.25, na.rm = TRUE),
+    q3_sed = quantile(sed, probs = 0.75, na.rm = TRUE)
   )
 
 ggplot(nhanes, aes(x = sed)) +
