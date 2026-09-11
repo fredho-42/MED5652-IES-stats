@@ -59,7 +59,6 @@ sed_sd <- sd(nhanes$sed, na.rm = TRUE)
 sed_median <- median(nhanes$sed, na.rm = TRUE)
 sed_q1 <- quantile(nhanes$sed, 0.25, na.rm = TRUE)
 sed_q3 <- quantile(nhanes$sed, 0.75, na.rm = TRUE)
-sed_iqr <- IQR(nhanes$sed, na.rm = TRUE)
 sed_min <- min(nhanes$sed, na.rm = TRUE)
 sed_max <- max(nhanes$sed, na.rm = TRUE)
 sed_n <- sum(!is.na(nhanes$sed))
@@ -129,18 +128,13 @@ nrt_df <- tibble(
 
 ## Block 1: summarising and visualising {background-image="assets/skyline.jpg" background-size="cover" .divider}
 
-Getting a feel for one variable at a time
-
 ## Why summary? {.smaller}
 
 - Four people's data fits on a slide
 - `r format(nrow(nhanes), big.mark = ",")` people's does not
 - A statistic compresses a column to a few numbers
 - These measures are known as descriptive, or summary, statistics
-- Also called 'exploratory data analysis'
-
-\ 
-
+- Also called 'exploratory data analysis'[]{.gap}
 - The goal: get a feel for one variable at a time
 - Spot quirks before any transformation or analysis
 
@@ -235,8 +229,10 @@ ggplot(nhanes, aes(x = vpa_t)) +
 
 ::: {.column width="38%"}
 - A **normal distribution** is symmetric, bell-shaped
-- Any normal distribution is fully described by two numbers, its mean and its SD
-- Mean and median sit at the same place
+- Any normal distribution is fully described by two numbers
+  - **mean**: central peak of the bell
+  - **SD**: spread of the bell
+- Mean and median are the same, because it is fully symmetric
 - The **68-95-99.7 rule**: about 68% within 1 SD, 95% within 2, 99.7% within 3
 :::
 
@@ -273,7 +269,7 @@ ggplot(curve_df, aes(x, y)) +
 
 $$\text{IQR} = Q_3 - Q_1$$
 
-- Often reported as the range itself, Q1 to Q3, not one number
+- Often reported as the range, Q1 to Q3, not just one number
 
 ## Which do we report: mean/SD, or median/IQR?
 
@@ -331,10 +327,7 @@ ggplot(skew_df, aes(x = value)) +
 ## The five-number summary
 
 - Mean, SD, median and IQR give a crude description
-- Five numbers give a fuller picture: minimum, Q1, median, Q3, maximum
-
-\ 
-
+- Five numbers give a fuller picture: minimum, Q1, median, Q3, maximum[]{.gap}
 - **Q1**, the 25th percentile: a quarter of the data falls at or below it
 - **Q3**, the 75th percentile: three quarters of the data falls at or below it
 - Together, the five numbers split the data into four equal-sized chunks
@@ -373,7 +366,7 @@ tibble(
 ::: {.column width="45%"}
 - Sorted: 2, 3, 3, 3, 4, 4, 5, 5, 22, 30
 - Minimum 2, Q1 3, median 4, Q3 5, maximum 30 minutes
-- IQR = 5 - 3 = 2 minutes
+- IQR: 3 to 5 minutes
 - The mean, 8.1 minutes, is longer than eight of the ten waits: the two long waits pulled it
 :::
 
@@ -457,10 +450,10 @@ tibble(
   Mean = sed_mean,
   SD = sed_sd,
   Median = sed_median,
-  IQR = sed_iqr
+  IQR = paste(round(sed_q1, 1), 'to', round(sed_q3, 1))
 ) |>
   gt() |>
-  fmt_number(decimals = 1)
+  fmt_number(columns = c(Mean, SD, Median), decimals = 1)
 ```
 
 - Sedentary time (`sed`), hours/day
@@ -640,8 +633,6 @@ ggplot(nhanes |> filter(!is.na(smoking), !is.na(gender)),
 
 ## Block 2: data and variable types {background-image="assets/skyline.jpg" background-size="cover" .divider}
 
-Naming the property that decided every choice in Block 1
-
 ## Which columns can we take a mean of?
 
 - We treated `sed` as a number and `smoking` as labels, without much thought
@@ -702,10 +693,7 @@ dictionary |>
 - `age` is recorded in whole years, but treated as continuous
 - A count with many possible values is often handled as continuous too
 - Ordinal categories are sometimes scored as numbers for convenience
-- Or treated as nominal categories, for reasons we will see later
-
-\ 
-
+- Or treated as nominal categories, for reasons we will see later[]{.gap}
 - This is sometimes a judgement call depending on the analysis need
 
 ## Try it: what kind of variable is each column?
@@ -723,7 +711,7 @@ strep_sample |>
 
 ## Try it: the answer
 
-- `patient_id`: nominal, while this is a number this is a label for each individual 
+- `patient_id`: nominal; it is a number, but it labels an individual
 - `arm`: nominal (binary); Streptomycin or Control
 - `gender`: nominal (binary); the values are the letters F and M
 - `baseline_condition`: ordinal; Good, Fair, Poor run in a real order
@@ -857,10 +845,7 @@ strep_sample |>
 - Treatment in the rows, outcome in the columns, as in the epi half
 - Streptomycin: 4 improved, 1 not
 - Control: 2 improved, 3 not
-- The exposure defines the groups being compared, so it gets the rows
-
-\ 
-
+- The exposure defines the groups being compared, so it gets the rows[]{.gap}
 - Ten patients cannot support a measure of association
 - The real trial has 107, and Week 9 does it
 
@@ -868,10 +853,7 @@ strep_sample |>
 
 - The conventional first table in a paper, describing the participants
 - Often stratified by the exposure or group of interest
-- Each row shows the appropriate summary for that variable's type
-
-\ 
-
+- Each row shows the appropriate summary for that variable's type[]{.gap}
 - Mean/SD or median/IQR for numeric, count/percentage for categorical
 - The same choice from a few slides ago
 
@@ -888,8 +870,6 @@ nhanes |>
 - `r format(nrow(nhanes) - 4499, big.mark = ',')` of `r format(nrow(nhanes), big.mark = ',')` classified
 
 ## Application {background-image="assets/skyline.jpg" background-size="cover" .divider}
-
-Somebody else's figure, and the design choice behind it
 
 ## What does each chart make you believe? {.smaller}
 

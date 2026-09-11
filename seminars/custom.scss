@@ -71,6 +71,34 @@ $code-block-font-size: 0.75em;
   }
 }
 
+// A deliberate visual break between two clusters of bullets on the same
+// slide (see shared-ground-rules.md's bullet-grouping rule): a trailing
+// inline marker on the last bullet of a group, not a separate line. Three
+// mechanisms were tried before this one. A bare `\ ` line rendered
+// invisibly (confirmed 2026-09-09: with no blank line around it, pandoc
+// treats it as a lazy continuation of the previous bullet, so it merges in
+// as trailing whitespace, no gap at all). Wrapping it in blank lines fixed
+// that but rendered as a bare browser-default <p>, whose own margins
+// stacked with the lists' own into a gap bigger than intended, fixed in
+// turn with a <div class="bullet-gap"></div> of an explicit height instead
+// of the <p> — correct, but a full div is slow and easy to mistype by
+// hand. A bare blank line with no div was also tried, since it needs no
+// markup at all, and rejected: confirmed with `quarto pandoc` that where a
+// group's last line is a nested or numbered sub-bullet, a blank line is
+// silently absorbed as the sub-list's own terminator (zero gap, the same
+// failure as the original `\ ` bug), and where the last line is flat, it
+// makes the *entire* list loose (every <li> wrapped in <p>), spacing every
+// bullet on the slide apart uniformly instead of breaking two groups apart.
+// A trailing span, `[]{.gap}` appended to the end of the group's last
+// bullet, avoids all three failures: it lives inside that bullet's own
+// <li>, so the list is never split and no blank line is needed either
+// side, and it behaves identically whether that last line is flat or
+// nested.
+.reveal .slides section span.gap {
+  display: block;
+  height: 0.5em;
+}
+
 // A single retyped console value or short result (never full R syntax, never
 // a multi-column table standing in as monospace text: see the figure and
 // output supply chain rules in seminars/CLAUDE.md).

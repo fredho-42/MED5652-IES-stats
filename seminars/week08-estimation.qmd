@@ -96,14 +96,6 @@ strep_arm_summary <- strep_tb |>
 pt_arm <- prop.test(x = strep_arm_summary$n_improved, n = strep_arm_summary$n_arm)
 arm_diff <- strep_arm_summary$prop_improved[1] - strep_arm_summary$prop_improved[2]
 
-power_big <- power.prop.test(p1 = 0.33, p2 = 0.69, sig.level = 0.05, power = 0.8)
-power_small <- power.prop.test(p1 = 0.33, p2 = 0.45, sig.level = 0.05, power = 0.8)
-# Two further scenarios off the same streptomycin baseline, for the Block 3
-# Try it on which input moves n the most: power raised to 90% (else
-# unchanged), and significance tightened to 1% (else unchanged).
-power_90 <- power.prop.test(p1 = 0.33, p2 = 0.69, sig.level = 0.05, power = 0.9)
-power_sig01 <- power.prop.test(p1 = 0.33, p2 = 0.69, sig.level = 0.01, power = 0.8)
-
 # Real second difference-in-proportions example, for the new Block 2 Try it
 # (a CI for a difference in proportions, not the streptomycin trial again).
 # Current-smoking prevalence by gender, computed the same way the rest of
@@ -135,22 +127,6 @@ width_points <- tibble(
   width = 2 * 1.96 * sed_stats$sd_sed / sqrt(c(100, 10000)),
   label = c('n = 100', 'n = 10,000')
 )
-
-# n-per-arm-versus-effect curve (Block 3 asset). p1 fixed at streptomycin's
-# control-arm proportion (0.33, real data), p2 swept across a range so the
-# two worked points (0.36 gap and 0.12 gap) sit on a real curve.
-gap_seq <- seq(0.05, 0.55, by = 0.01)
-n_vs_effect <- tibble(
-  gap = gap_seq,
-  n_per_arm = sapply(gap_seq, function(g) {
-    power.prop.test(p1 = 0.33, p2 = 0.33 + g, sig.level = 0.05, power = 0.8)$n
-  })
-)
-n_vs_effect_points <- tibble(
-  gap = c(0.36, 0.12),
-  n_per_arm = c(power_big$n, power_small$n),
-  label = c('0.36 difference: 29 per arm', '0.12 difference: 258 per arm')
-)
 ```
 
 ## What you have learnt so far {.smaller}
@@ -159,7 +135,7 @@ n_vs_effect_points <- tibble(
 - **Epi.**
   - **Weeks 1 and 5.** External validity and selection bias. This week adds another source of problem: sampling variation, precision instead of bias and validity
   - **Week 2.** Risk, odds, RR and OR calculated as point estimates. This week calculates also the confidence as well as that for a difference in proportions
-  - **Week 3.** Underpower was discussed and this week defines it statistically and does the sample size arithmetic
+  - **Week 3.** Underpower was discussed. This week does the sample size arithmetic behind it, and Week 9 returns to define power itself
 
 ## By the end of this session, you will be able to {.smaller}
 
@@ -168,11 +144,9 @@ n_vs_effect_points <- tibble(
 - Distinguish the standard deviation from the standard error, and calculate the standard error of a mean and of a proportion
 - Construct a 95% confidence interval for a mean, a proportion, a difference in means, and a difference in proportions
 - Interpret a confidence interval correctly, and identify the common misinterpretation
-- Explain how sample size, variability, and effect size jointly determine an estimate's precision, and calculate an approximate sample size for a two-group comparison, explaining why post-hoc power is uninformative
+- Explain how sample size and variability jointly determine an estimate's precision, and calculate the sample size a target margin of error requires
 
 ## Block 1: estimation and the confidence interval {background-image="assets/skyline.jpg" background-size="cover" .divider}
-
-Building an interval, then saying what it means
 
 ## A different 34,434 people {.smaller}
 
@@ -187,10 +161,7 @@ Building an interval, then saying what it means
 ## Population and sample
 
 - The **population** is what we want to measure (e.g., UK general population, type 2 diabetes patients)
-- The **sample** is what we can measure, usually a subset of the target population
-
-\ 
-
+- The **sample** is what we can measure, usually a subset of the target population[]{.gap}
 - We must compute statistics from the sample
 - But what we want to say is about the population
 
@@ -203,10 +174,7 @@ Building an interval, then saying what it means
 - The **estimator**: the method that produces a number from a sample
   - It is a random variable, because who ends up in the sample is random
 - The **estimate**: one particular result the estimator produced
-  - It is 'realised' (i.e. occurred), so it is fixed
-
-\ 
-
+  - It is 'realised' (i.e., occurred), so it is fixed[]{.gap}
 - Abstract, but it is the foundation for how we define precision
 :::
 
@@ -516,10 +484,7 @@ cat('
 - The biased coin's data distribution is skewed
   - At n = 1, three in four flips land at 0
 - Move up through n = 1, 5, 10, 30, 100, for either coin
-- The sample mean's own distribution drifts toward a bell shape
-
-\ 
-
+- The sample mean's own distribution drifts toward a bell shape[]{.gap}
 - **The data does not have to be normal.** Skewed data still end up with a bell-shaped sampling distribution, only with a larger n needed to get there than a symmetric parent needs
 - The skewed case that matters for this course is `sed`, right-skewed, in Chapter 4, which refers back to what this seminar showed
 
@@ -527,10 +492,7 @@ cat('
 
 - The distribution of the sample mean approaches a normal distribution as n grows
 - It applies no matter the shape of the underlying data
-  - If the data is highly skewed, a larger sample is needed for the sample mean to follow a normal distribution approximately
-
-\ 
-
+  - If the data is highly skewed, a larger sample is needed for the sample mean to follow a normal distribution approximately[]{.gap}
 - Textbooks often suggest rules of thumb, e.g., n ≥ 30, for the CLT to hold
 - Reality is more complicated
   - For data that follows a symmetric distribution (a fair coin), n = 10 or 20 is fairly close to normal already
@@ -542,9 +504,8 @@ cat('
 - The sampling distribution is a normal distribution too
   - Its centre is the sample mean
   - Its spread is the **standard error (SE)**
-- The SD describes the data
-- The SE describes the estimator
-- To quantify precision, we need the SE
+- The SD describes the data; the SE describes the estimator
+- To quantify the precision, we need the SE
 
 $$SE = \frac{SD}{\sqrt{n}}$$
 
@@ -554,8 +515,8 @@ $$SE = \frac{SD}{\sqrt{n}}$$
 
 - Sedentary time: mean `r round(sed_stats$mean_sed, 2)` hours/day, SD `r round(sed_stats$sd_sed, 1)` hours/day, SE `r round(sed_stats$se_sed, 2)` hours/day (n = `r format(sed_stats$n_sed, big.mark = ',')`)
 - Which number says how much individual people's sedentary time differs from person to person?
-- **A.** The SD, `r round(sed_stats$sd_sed, 1)` hours/day
-- **B.** The SE, `r round(sed_stats$se_sed, 2)` hours/day
+  - **A.** The SD, `r round(sed_stats$sd_sed, 1)` hours/day
+  - **B.** The SE, `r round(sed_stats$se_sed, 2)` hours/day
 - Discuss in pairs: what does the other number tell us instead?
 
 ## Sedentary time: the standard error of its mean
@@ -581,22 +542,24 @@ tibble(
 - An estimate on its own says nothing about how far off it might be
 - Everything above, the sampling distribution and the SE, exists to build a confidence interval (CI)
 - A CI attaches precision to the sampling process
-  - It is why a result is reported as a range
-  - It is built from the standard error
-  - Its width is the margin of error, the amount of imprecision from sample to sample
+  - Always reported as a range
+  - Built from the standard error
+  - Its width is the margin of error
 - In its simplest form, a 95% CI is calculated as:
   - estimate ± 1.96 * standard errors
 
-## Why 1.96, and when t replaces it {.smaller}
+## Why 95% and 1.96, and when t replaces it {.smaller}
 
 :::: {.columns}
 
 ::: {.column width="52%"}
-- 1.96 comes from the normal distribution the CLT delivers
-- It is tied to the '95% confidence level' ('5% significance level')
-- '95%' / '5%' are just convention, rarely changed
-- With a small sample we do not know the SD; we estimate it from the sample itself
-- The t distribution allows for that extra uncertainty
+- CIs are mostly reported as '95% CI'
+  - 95% confidence level, or equivalently 5% (1-0.95) significance level
+  - The confidence/significance level is almost always fixed at this arbitrary level
+  - 1.96 comes from the normal distribution the CLT delivers
+
+- With a small sample, we are less certain about our SD estimate
+  - The t distribution allows for that extra uncertainty
   - Same bell shape, heavier tails
   - Bigger than 1.96, growing as n shrinks
   - At n = 10 it is about `r round(qt(0.975, df = 9), 2)`. At n = 30, about `r round(qt(0.975, df = 29), 2)`
@@ -675,10 +638,9 @@ tibble(
 ## A range of compatibility {.smaller}
 
 - A CI is not a single verdict about one number
-- Every value inside a CI is a value the data are reasonably compatible with
-- Every value outside it is one the data sit poorly with
+  - Any value inside a CI is compatible with the data
 - `r round(sed_stats$ci_lower, 2)` to `r round(sed_stats$ci_upper, 2)` hours/day says a population mean of 6.5 is compatible with what we saw, and so is 6.6. A mean of 7.2 is not
-- Compatibility is a matter of degree, not a line: values near the middle sit better than values near the ends
+- Compatibility is a matter of degree: values near the middle sit better than values near the ends
 - This is what makes a CI more informative than any test that only presents a p-value, which Week 9 covers
 
 ## What a 95% confidence interval means {.smaller}
@@ -687,12 +649,14 @@ tibble(
 - The population value is fixed. It is the *CI* that moves from sample to sample
 - This is counterintuitive, and it is why the result gets misinterpreted so often
 - It comes from what is called **frequentist statistics**, which is easier to compute
-- An alternative, **credible intervals** from Bayesian statistics, is more intuitive to interpret but harder to compute
+- An alternative, **credible intervals** from Bayesian statistics, are more intuitive to interpret but harder to compute
+  - We won't be learning this in the MPH
 
 ## Seeing coverage {.smaller}
 
-- Each click draws 1000 fresh 95% CIs against the true mean (navy line); navy bars miss it
-- Excludes `r sum(nhanes$sed > 24, na.rm = TRUE)` physically impossible values (over 24 hours/day). True mean here is `r round(mean(nhanes$sed[!is.na(nhanes$sed) & nhanes$sed <= 24]), 2)` hours/day, not the `r round(sed_stats$mean_sed, 2)` used elsewhere
+- Below is a simulator for 95% CIs on `sed`
+  - Excludes `r sum(nhanes$sed > 24, na.rm = TRUE)` physically impossible values (over 24 hours/day), so the true mean here is 5.89 hours/day, not the 6.56 used elsewhere in this deck
+  - Each click draws 1,000 95% CIs against the true mean (navy line)
 
 ```{r}
 #| label: coverage-interactive
@@ -815,24 +779,25 @@ cat(sprintf('
 
 ## Try it: is this interpretation sound?
 
-- The sedentary-time CI: `r round(sed_stats$ci_lower, 2)` to `r round(sed_stats$ci_upper, 2)` hours/day
-- **A.** 'We are 95% confident the true mean lies in this range'
-- **B.** 'There is a 95% probability the true mean lies in this range'
-- **C.** 'If we repeated this study many times, 95% of the resulting CIs would contain the true mean'
+- The sedentary time CI: `r round(sed_stats$ci_lower, 2)` to `r round(sed_stats$ci_upper, 2)` hours/day
+  - **A.** 'There is a 95% probability the true mean lies in this range'
+  - **B.** 'We are 95% confident the true mean lies in this range'
+  - **C.** 'If we repeated this study many times, 95% of the resulting CIs would contain the true mean'
 - Which are wrong, and what exactly is wrong with each?
 
 ## Try it: the answer
 
-- **A. Wrong**, despite sounding careful: 'confident' is standing in for 'probability', the same error as B
-- **B. Wrong**: the true mean is not a random variable with a 95% chance of falling anywhere. It is fixed
-- **C. Right**: the coverage statement, about the procedure across repeated samples, not about this one CI
-- Keep C's wording. It is the one worth writing on an exam
+- **A. Wrong**: both the 95% CI and the true mean are fixed
+- **B. Wrong**: despite sounding careful, 'confident' is standing in for 'probability', the same error as A
+- **C. Right**: the coverage statement about the procedure across repeated samples, not about this one CI; doesn't assume the true mean or the CI to be random
 
 ## A common misconception {.smaller}
 
 - The intuitive objection behind A and B: if 95% of all such CIs cover the true value, surely this one has a 95% chance of covering it too?
-- It does not. The population mean is fixed, and this one CI either contains it or does not. Once both are fixed, there is no probability left in the situation
-- The practical way to avoid the confusion: write the result and let it stand, with no probability sentence attached
+  - It does not. The population mean is fixed, and this one CI either contains it or does not
+  - Once both are fixed, there is no probability left in the situation[]{.gap}
+- The correct interpretation (Answer C) is awkward to say
+  - So the practical way to avoid the confusion is to write the result and let it stand, with no probability sentence attached
   - `r round(sed_stats$mean_sed, 2)` hours/day (95% CI: `r round(sed_stats$ci_lower, 2)` to `r round(sed_stats$ci_upper, 2)`)
 
 ## This week's methodological anchor {.smaller}
@@ -856,15 +821,13 @@ cat(sprintf('
 
 ## A proportion is a mean too {.smaller}
 
-- We work with a lot of binary data in public health, e.g., whether someone died
+- Everything above focused on continuous data; we also work with a lot of binary data in public health, e.g., whether someone died
 - Binary data are often summarised as a proportion
 - **A proportion is a sample mean**
   - Code the outcome 1 for everyone who has it, 0 for everyone who does not
   - The proportion with the outcome is exactly the mean of that column of 0s and 1s
-  - Example:
-    - 3 of 5 patients improved
-    - The column is 1, 1, 1, 0, 0,
-    - its mean is 0.6, which is also the proportion: 60% (3/5)
+  - Example: 3 of 5 patients improved, so the column is 1, 1, 1, 0, 0
+    - Its mean is 0.6, which is also the proportion: 60% (3/5)
 - The CLT applies to proportions for the same reason it applies to any other mean
 - We already saw its sampling distribution build live: coin flips coded 0 and 1 are the same thing (<a href="#/10">back to the demonstration</a>)
 
@@ -879,8 +842,8 @@ $$SE = \sqrt{\frac{p(1-p)}{n}}$$
 - For a binary variable, the spread is fixed by the proportion itself
 - The formal name of the distribution of a binary variable is **binomial distribution**
 - Like the normal distribution, the binomial distribution is also characterised by two numbers only:
-  - The number of trials
-  - The proportion with the event
+  - The number of observations (i.e., sample size, *n*)
+  - The proportion with the event (*p*)
 
 ## An example of a proportion and its standard error
 
@@ -914,16 +877,14 @@ tibble(
 
 - `r round(tb_stats$p_improved, 3)` ± 1.96 × `r round(tb_stats$se_improved, 4)`
 - `r round(tb_stats$ci_lower, 3)` to `r round(tb_stats$ci_upper, 3)`
-- Everything above about compatibility and interpretation applies here too: a proportion's CI is read the same way
+- Everything above about compatibility and interpretation applies here too
 
 ## Block 2: comparing two groups {background-image="assets/skyline.jpg" background-size="cover" .divider}
 
-CIs of a difference of two means
-
 ## One mean is rarely the question
 
-- We can put a CI round one mean, the basis of a descriptive study
-- The analytic studies make comparisons: men against women, treated against untreated
+- We can put a CI around one mean, the basis of a descriptive study
+- Analytic studies make comparisons: men against women, treated against untreated
 - In these cases, we are interested in the differences and ratios between these means
 
 ## A CI for a difference in means {.smaller}
@@ -934,7 +895,7 @@ CIs of a difference of two means
   - Each group's mean follows an approximately normal sampling distribution, based on CLT
   - The difference between two normal quantities is itself normal (proven mathematically)
 - Since the difference is approximately normal, it takes the same estimate ± 1.96 SE calculation as before
-  - Hand-calculating the CI of a difference or a ratio is outside the scope of the MPH, and rests on a more complex formula
+  - Hand-calculating the CI of a difference or a ratio is outside the scope of the MPH, and rests on more complex formulae
   - We will learn how to do it in R, and how to interpret the result
 
 ## Does cholesterol differ between women and men?
@@ -956,9 +917,10 @@ tibble(
 ## A CI for a difference in proportions {.smaller}
 
 - Same argument as the difference in means, with one qualification
-  - For a proportion the normal shape is an approximation, not an exact consequence, since the underlying variable takes only two values
-  - The approximation is good when both groups have a reasonable number of events **and** non-events
-- Exact methods exist for when it is small (more in the labs)
+  - For a proportion the normal shape is an approximation
+  - The approximation won't be as good as when the underlying data is continuous
+  - Good enough when both groups have a reasonable number of events **and** non-events
+- Exact methods exist for when either count is small (more in the labs)
 
 ## Streptomycin: 69% against 33% improved
 
@@ -968,8 +930,7 @@ tibble(
 tibble(
   Quantity = 'Improved, streptomycin minus control',
   Estimate = round(arm_diff, 3),
-  `95% CI` = paste0(round(pt_arm$conf.int[1], 3), ' to ', round(pt_arm$conf.int[2], 3)),
-  p = '< 0.001'
+  `95% CI` = paste0(round(pt_arm$conf.int[1], 3), ' to ', round(pt_arm$conf.int[2], 3))
 ) |>
   gt()
 ```
@@ -981,11 +942,6 @@ tibble(
 - This CI excludes zero
 - Zero is not among the values these data are compatible with
 - People often read this as a 'real' difference, and Week 9 will introduce this more formally
-
-## When the approximation breaks down
-
-- The approximations above hold when the counts are not tiny, the same qualification from the difference-in-proportions slide
-- Exact methods exist for when they are. R has both, and the lab shows which function to reach for
 
 ## Try it: a CI for a difference in proportions
 
@@ -1000,8 +956,7 @@ tibble(
   gt()
 ```
 
-- Given the difference and its SE above, find the 95% CI, and say whether it is compatible with no difference at all
-- Two steps, phone-feasible
+- Given the difference and its SE above, find the 95% CI
 
 ## Try it: the answer
 
@@ -1010,8 +965,6 @@ tibble(
 - `r smoke_zero_note`, between men and women in current smoking
 
 ## Block 3: how big a study needs to be {background-image="assets/skyline.jpg" background-size="cover" .divider}
-
-Turning a wanted precision into a required n
 
 ## Before any comparison runs
 
@@ -1022,17 +975,11 @@ Turning a wanted precision into a required n
 ## What determines the margin of error?
 
 - In polling, people sample based on their desired margin of error
-- The same for descriptive epidemiological studies
-
-\ 
-
-- Three things decide a margin of error (i.e. CI's width)
-  1. How much confidence is being claimed ('95%')
+- The same for descriptive epidemiological studies[]{.gap}
+- Three things decide a margin of error (i.e., CI's width)
+  1. How much confidence is required ('95%')
   2. How variable the data are (SD)
-  3. How many observations there are (n)
-
-\ 
-
+  3. How many observations there are (n)[]{.gap}
 - 1 is usually fixed; 2 is based on the measurement; 3 is often what people try to determine
 
 ## Width and the square root of n
@@ -1065,120 +1012,40 @@ ggplot(width_curve, aes(n, width)) +
   theme_minimal(base_size = 13)
 ```
 
-- The width shrinks with one over the square root of n: steeply at first, then flattening
+- The CI width shrinks with one over the square root of n: steeply at first, then flattening
 - Cut the sample in half, the CI gets about 40% wider. Cut it to a tenth, roughly three times wider
 
-## From precision to sample size
+## From precision to sample size {.smaller}
 
-- Four linked quantities
-  - The effect size worth detecting (i.e. how big the difference between two proportions?)
-  - The variability (i.e. how noisy the measurement is?)
+- Three linked quantities
+  - The wanted margin of error
+  - The expected data spread (i.e., how noisy the measurement is)
   - The sample size
-  - The power
-- Fix any three, and the fourth follows
+- Fix the first two, and the formula gives the third
 
-## Statistical power {.smaller}
+$$n = \frac{1.96^2 \times p(1-p)}{m^2}$$
 
-- **Power**: the probability of detecting an effect of a given size, if it is really there
-- Power rises with a larger effect to detect, a bigger sample, or less variable data
-- Power falls when a stricter significance level is demanded (Week 9 formalises this 5% threshold)
+- *m* is the wanted margin of error, half the CI's width
+- *p* is the expected proportion, playing the same role the SD plays for a mean
+- *m* is squared, so it dominates: halve the margin, and n roughly quadruples
 
-$$n \approx \frac{7.8 \times [p_1(1-p_1) + p_2(1-p_2)]}{(p_1 - p_2)^2}$$
+## Try it: how does n respond?
 
-- 7.8 is what 80% power at the 5% significance level costs
-- The top is the variability in the two arms being compared; the same slot holds the two SDs, squared, when comparing means instead of proportions
-- The bottom is the difference we want to detect, squared, so it moves n harder than anything else: halve it, and n roughly quadruples
-
-## How many per arm?
-
-```{r}
-#| label: power-big-table
-#| echo: false
-tibble(
-  `Proportion, control arm` = 0.33,
-  `Proportion, treatment arm` = 0.69,
-  `n per arm` = round(power_big$n)
-) |>
-  gt()
-```
-
-- For a difference the size of streptomycin's, about `r round(power_big$n)` patients per arm
-
-## Try it: which change moves n the most?
-
-```{r}
-#| label: tryit3-table
-#| echo: false
-tibble(
-  Scenario = c('Streptomycin baseline', 'Smaller difference', 'Higher power', 'Stricter significance'),
-  Difference = c(0.36, 0.12, 0.36, 0.36),
-  Power = c('80%', '80%', '90%', '80%'),
-  Significance = c('5%', '5%', '5%', '1%'),
-  `n per arm` = c(as.character(round(power_big$n)), '?', '?', '?')
-) |>
-  gt()
-```
-
-- Same control-arm proportion (0.33) throughout; each row after the first changes one thing only
-- Which single change moves n the most?
-- Roughly what n does the smaller difference need? Guess a number first
-- Five minutes
+- A poll wants to estimate a proportion around p = 0.5, with a 95% CI
+- At a margin of error of 3 percentage points (m = 0.03), the formula above gives n ≈ 1,067
+- Tightening the margin to 1.5 percentage points (m = 0.015) multiplies n by about how much?
+  - **A.** 2x
+  - **B.** 4x
+  - **C.** 10x
+- Two minutes
 
 ## Try it: the answer
 
-```{r}
-#| label: n-vs-effect-curve
-#| echo: false
-#| fig-width: 8
-#| fig-height: 3.6
-ggplot(n_vs_effect, aes(gap, n_per_arm)) +
-  geom_segment(
-    data = n_vs_effect_points, aes(x = gap, xend = gap, y = 0, yend = n_per_arm),
-    linetype = 'dashed', color = '#ABB5C5'
-  ) +
-  geom_segment(
-    data = n_vs_effect_points, aes(x = 0, xend = gap, y = n_per_arm, yend = n_per_arm),
-    linetype = 'dashed', color = '#ABB5C5'
-  ) +
-  geom_line(color = '#00213B', linewidth = 1) +
-  geom_point(data = n_vs_effect_points, aes(gap, n_per_arm), color = '#4386AF', size = 3) +
-  geom_text(
-    data = n_vs_effect_points, aes(gap, n_per_arm, label = label),
-    vjust = -1, hjust = c(-0.1, 0.15), size = 4
-  ) +
-  scale_x_continuous(expand = expansion(mult = c(0.02, 0.15))) +
-  scale_y_continuous(expand = expansion(mult = c(0, 0.15))) +
-  labs(x = 'Detectable difference in proportions', y = 'n per arm') +
-  theme_minimal(base_size = 13)
-```
-
-- Smaller difference (0.12): `r round(power_small$n)` per arm, nearly nine times as many
-- Higher power (90%): `r round(power_90$n)` per arm, a modest increase
-- Stricter significance (1%): `r round(power_sig01$n)` per arm, a modest increase
-- The difference is squared in the formula; power and significance enter far more gently, so shrinking the difference moves n the hardest
-
-## Why post-hoc power tells you nothing
-
-- Power asks how likely a study is to detect an effect, before it runs
-- Once the data are in, the estimate and its CI already say what the study could resolve
-- Power computed from the observed effect is just a re-expression of the p-value
-- A wide CI is the honest way to report a study that was too small
-- A common request from supervisors and reviewers, and one worth declining, for these reasons
-
-## What a protocol has to state {.smaller}
-
-- Four things
-  - The effect size assumed, and where it came from
-  - The variability assumed
-  - The power and significance level
-  - The resulting n per arm
-- A power calculation is only valid for the analysis it was actually done for
-  - A calculation for comparing two proportions does not licence a study analysed by regression with three covariates
-- Sample size and power are the same calculation, solved for different unknowns, and both sit downstream of the analysis plan
+- **B.** About 4x
+- Halving m halves the bottom of a squared term, so the whole fraction roughly quadruples: n ≈ 4,268
+- The same square-root relationship as the width curve, read the other way round
 
 ## Application {background-image="assets/skyline.jpg" background-size="cover" .divider}
-
-Judging the interpretation in somebody else's writing
 
 ## Three claims, three CIs {.smaller}
 
