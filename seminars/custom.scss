@@ -62,11 +62,11 @@ $code-block-font-size: 0.75em;
 
 // No plain non-bulleted body paragraph: every content list uses the theme's
 // own bullet and indent styling, untouched per level.
-.reveal .slides section ul {
+.reveal .slides section :is(ul, ol) {
   li {
     margin-bottom: 0.6em;
   }
-  ul {
+  :is(ul, ol) {
     margin-top: 0.2em;
   }
 }

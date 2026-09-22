@@ -139,12 +139,12 @@ width_points <- tibble(
 
 ## By the end of this session, you will be able to {.smaller}
 
-- Understand the difference between population and sample, and why statistical inference focuses on the population
-- Explain why a sample estimate varies from sample to sample, and state the practical consequence of the central limit theorem for the shape of that variation
-- Distinguish the standard deviation from the standard error, and calculate the standard error of a mean and of a proportion
-- Construct a 95% confidence interval for a mean, a proportion, a difference in means, and a difference in proportions
-- Interpret a confidence interval correctly, and identify the common misinterpretation
-- Explain how sample size and variability jointly determine an estimate's precision, and calculate the sample size a target margin of error requires
+1. Understand the difference between population and sample, and why statistical inference focuses on the population
+2. Explain why a sample estimate varies from sample to sample, and state the practical consequence of the central limit theorem for the shape of that variation
+3. Distinguish the standard deviation from the standard error, and calculate the standard error of a mean and of a proportion
+4. Construct a 95% confidence interval for a mean, a proportion, a difference in means, and a difference in proportions
+5. Interpret a confidence interval correctly, and identify the common misinterpretation
+6. Explain how sample size and variability jointly determine an estimate's precision, and calculate the sample size a target margin of error requires
 
 ## Block 1: estimation and the confidence interval {background-image="assets/skyline.jpg" background-size="cover" .divider}
 
@@ -1049,8 +1049,9 @@ $$n = \frac{1.96^2 \times p(1-p)}{m^2}$$
 
 ## Three claims, three CIs {.smaller}
 
-- Each result below is real: the paper's own reported statistic, and its own conclusion, quoted exactly, with a link to the paper
-- In pairs: does each sentence say what the CI supports? Where it does not, what would you write instead? Ten minutes
+- Read the papers' absract, and discuss in pairs: 
+- Does each sentence say what the CI supports? Where it does not, what would you write instead? 
+- Ten minutes
 
 ```{r}
 #| label: application-table
@@ -1079,7 +1080,7 @@ tibble(
   tab_options(table.font.size = px(17))
 ```
 
-- A hazard ratio (Williamson) is a ratio measure like the RR and OR from Week 2, with a null value of 1. Week 9 formalises it
+- A hazard ratio (Williamson) is a ratio measure like the RR and OR from Week 2, with a null value of 1. More details in Week 9.
 
 ## Three claims, judged {.smaller}
 

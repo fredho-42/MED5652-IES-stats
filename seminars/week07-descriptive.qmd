@@ -114,11 +114,11 @@ nrt_df <- tibble(
 
 ## By the end of this session, you will be able to
 
-- Classify a variable as nominal, ordinal, discrete, or continuous, and explain how variable type constrains the analysis available
-- Select and construct an appropriate table or plot for one or more variables of a given type
-- Calculate and interpret measures of central tendency and spread, and justify a choice between mean/SD and median/IQR by distributional shape
-- Describe the normal distribution and apply the 68-95-99.7 rule
-- Critique a published figure and identify design choices that mislead
+1. Classify a variable as nominal, ordinal, discrete, or continuous, and explain how variable type constrains the analysis available
+2. Select and construct an appropriate table or plot for one or more variables of a given type
+3. Calculate and interpret measures of central tendency and spread, and justify a choice between mean/SD and median/IQR by distributional shape
+4. Describe the normal distribution and apply the 68-95-99.7 rule
+5. Critique a published figure and identify design choices that mislead
 
 ## Tidy data, briefly revisited
 
