@@ -18,6 +18,9 @@ format:
     chalkboard: true
     preview-links: auto
     logo: assets/shw-crest.png
+    incremental: true
+    transition: slide
+    auto-animate: true
     # embed-resources (single-file HTML) is incompatible with the chalkboard
     # plugin (confirmed: quarto errors "RevealChalkboard is not compatible
     # with self-contained output"). Chalkboard was a stated reason for

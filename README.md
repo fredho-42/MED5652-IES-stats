@@ -1,4 +1,4 @@
-# MED5652 Statistical Labs
+# MED5652 Introduction to Statistics
 
 A [Quarto](https://quarto.org) ebook for the R lab MED5652 Introduction to Epidemiology and Statistics. It contains two preparatory chapters and five weekly chapters. The repo also holds the course's seminar slide decks, built in `seminars/` as a separate Quarto project (`revealjs`). The published site is at <https://fredho-42.github.io/MED5652-IES-stats/>, book and slides together.
 

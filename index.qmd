@@ -1,7 +1,7 @@
 # Introduction {.unnumbered}
 
 ::: {.content-visible unless-format='pdf'}
-![](images/cover.png){fig-alt='IES Statistical Labs: MED5652, Introduction to Epidemiology & Statistics' width='58%' fig-align='center'}
+![](images/cover.png){fig-alt='Introduction to Statistics: MED5652, Epidemiology & Statistics' width='58%' fig-align='center'}
 :::
 
 This is a companion ebook for the statistical labs of the course MED5652 Introduction to Epidemiology and Statistics for MPH students in the University of Glasgow. The principles and theories of statistics are taught in the seminars. This ebook, and the lab sessions, are to apply that knowledge in epidemiology and statistics to real data using R.

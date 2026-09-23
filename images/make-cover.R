@@ -1,4 +1,4 @@
-# Generates images/cover.png: the book cover for IES Statistical Labs.
+# Generates images/cover.png: the book cover for Introduction to Statistics.
 # One-off build utility, not sourced by any chapter. Re-run after design changes.
 
 library(ggplot2)
@@ -58,12 +58,18 @@ p <- ggplot() +
             lineend = "round") +
   geom_point(data = scatter, aes(x, y, size = size), colour = ink, alpha = 0.72) +
   scale_size_identity() +
-  annotate("text", x = 4, y = 4.1, label = "Statistical Labs",
-           colour = ink, size = 7.1, fontface = "bold", family = "sans") +
-  annotate("text", x = 4, y = 3.35, label = "MED5652",
-           colour = accent, size = 4.2, fontface = "bold", family = "sans") +
-  annotate("text", x = 4, y = 2.85, label = "Introduction to",
+  # "Introduction to Statistics" (the book's own title) is split across two
+  # sized lines rather than set on one, since at a single bold size it's too
+  # wide for the hexagon: a small muted lead-in above a big bold headline
+  # word, the same two-tier treatment a printed cover would use. Reuses the
+  # four original slots' y-positions unchanged; only the content and sizing
+  # per slot moved, so the vertical rhythm against the hexagon is untouched.
+  annotate("text", x = 4, y = 4.1, label = "Introduction to",
            colour = muted, size = 3.9, family = "sans") +
+  annotate("text", x = 4, y = 3.35, label = "Statistics",
+           colour = ink, size = 7.1, fontface = "bold", family = "sans") +
+  annotate("text", x = 4, y = 2.85, label = "MED5652",
+           colour = accent, size = 4.2, fontface = "bold", family = "sans") +
   annotate("text", x = 4, y = 2.45, label = "Epidemiology & Statistics",
            colour = muted, size = 3.9, family = "sans") +
   coord_fixed(ratio = 1, xlim = c(0, 8), ylim = c(0, 12), expand = FALSE) +
