@@ -2,7 +2,7 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Introduction to Statistics",
+    "title": "MED5652 IES Stats Manual",
     "section": "",
     "text": "Introduction\nThis is a companion ebook for the statistical labs of the course MED5652 Introduction to Epidemiology and Statistics for MPH students in the University of Glasgow. The principles and theories of statistics are taught in the seminars. This ebook, and the lab sessions, are to apply that knowledge in epidemiology and statistics to real data using R.\nThe first two preparatory sessions help us ease into the analysis environment. R is primarily a programming language, so it has a steeper learning curve than software like SPSS: we communicate with the computer using text commands instead of a mouse. It pays that curve back, though. R is versatile enough to find a software implementation for almost any statistical method we might need, and it’s a skill employers actively look for. This ebook is set up for complete beginners regardless, with no prior data analysis or programming experience expected. From Chapter 3 on, every chapter picks up from the theories taught in the seminars, but it doesn’t replace the seminar’s content. Think of the seminar as where an idea is introduced, and the lab as where we actually do it, in R, on real data.",
     "crumbs": [
@@ -12,7 +12,7 @@
   {
     "objectID": "index.html#course-map",
     "href": "index.html#course-map",
-    "title": "Introduction to Statistics",
+    "title": "MED5652 IES Stats Manual",
     "section": "Course map",
     "text": "Course map\nEach chapter of this ebook is one teaching week. The week number is in the chapter title, and the chapters run in week order. Week 6 is reading week and there is no teaching. The two preparatory chapters come before the statistics seminars begin, so they have no seminar of their own to link to.\nThe table below is the whole course in one place: what each week covers, where that week’s seminar slides live, and which chapter in this ebook is the matching lab.\n\n\n\nWeek\nWhat it covers\nSeminar slides\nChapter\n\n\n\n\n4\nR and R Studio\nNone\nChapter 1\n\n\n5\nData and data handling\nNone\nChapter 2\n\n\n7\nDescribing and visualising data\nSlides\nChapter 3\n\n\n8\nEstimation, precision, and sample size\nSlides\nChapter 4\n\n\n9\nHypothesis tests and measures of association\nSlides\nChapter 5\n\n\n10\nCorrelation and simple linear regression\nTo follow\nChapter 6\n\n\n11\nMultiple linear and logistic regression\nTo follow\nChapter 7",
     "crumbs": [
@@ -22,7 +22,7 @@
   {
     "objectID": "index.html#course-intended-learning-outcomes",
     "href": "index.html#course-intended-learning-outcomes",
-    "title": "Introduction to Statistics",
+    "title": "MED5652 IES Stats Manual",
     "section": "Course intended learning outcomes",
     "text": "Course intended learning outcomes\nMED5652 as a whole has four intended learning outcomes. By the end of the course, you will be able to:\n\nCritically assess the role of epidemiology and statistics within public health.\nCritically appraise key concepts in epidemiological design.\nCritically appraise and apply key statistical methods.\nCritically appraise and evaluate the concept of causality within public health literature.\n\nThis ebook is built primarily to get us through ILO 3. Along the way, it also touches on ILO 1, to understand how statistics can inform public health, and ILO 4, to explore how we can use statistics to explore causality.",
     "crumbs": [
@@ -32,7 +32,7 @@
   {
     "objectID": "index.html#structure-of-the-ebook",
     "href": "index.html#structure-of-the-ebook",
-    "title": "Introduction to Statistics",
+    "title": "MED5652 IES Stats Manual",
     "section": "Structure of the ebook",
     "text": "Structure of the ebook\nThe ebook is in two parts: two preparatory chapters worked through before seminars on statistics begin, then five weekly chapters, one per statistics week, each following that week’s seminar.\nAll weeks are interconnected, so please attend all classes. Missing one class would mean you lose the foundation of the next, with a knock-on effect on your overall learning. If you really can’t attend a class, please make sure you read and work through the relevant chapter in this ebook before the next class.\nAn appendix at the end of the ebook, the Glossary, collects every package, function, operator, and statistical term used across all seven chapters, grouped by package, with the chapter each one first appears in.",
     "crumbs": [
@@ -42,7 +42,7 @@
   {
     "objectID": "index.html#structure-of-a-chapter",
     "href": "index.html#structure-of-a-chapter",
-    "title": "Introduction to Statistics",
+    "title": "MED5652 IES Stats Manual",
     "section": "Structure of a chapter",
     "text": "Structure of a chapter\nEvery chapter has its intended learning outcomes, and all contents are centred around them. At the end of each chapter, there are exercises: most are for you to practise your R skills, but many also require you to understand and interpret the output. This is tailored towards helping you to complete the final assessment, where reporting and interpreting the results correctly are as important as arriving at the right numbers. These end-of-chapter exercises have a folded solution in the ebook. There are also occasional ‘Try it yourself’ boxes, a light-weight exercise that changes small parts of the code, with no provided solutions.",
     "crumbs": [
@@ -52,7 +52,7 @@
   {
     "objectID": "index.html#the-two-datasets",
     "href": "index.html#the-two-datasets",
-    "title": "Introduction to Statistics",
+    "title": "MED5652 IES Stats Manual",
     "section": "The two datasets",
     "text": "The two datasets\nMost of this ebook runs on one of two datasets. nhanes_mph is a curated extract of real health survey data in the US, linked to mortality records. Chapter 2 reads it in for the first time and gets us comfortable with it as data; Chapter 3 introduces it properly and is where it becomes the dataset the rest of the ebook runs on. strep_tb, from the medicaldata package, is the 1948 Medical Research Council (MRC) streptomycin trial, a historic randomised controlled trial, used from Chapter 4 onward wherever a binary outcome and a genuine trial design are useful. Both get introduced properly, in context, the first time that matters.",
     "crumbs": [
@@ -62,7 +62,7 @@
   {
     "objectID": "index.html#how-to-use-the-ebook",
     "href": "index.html#how-to-use-the-ebook",
-    "title": "Introduction to Statistics",
+    "title": "MED5652 IES Stats Manual",
     "section": "How to use the ebook",
     "text": "How to use the ebook\nThe best thing to do is to work through the corresponding chapter before you come to the lab. Very likely you will encounter some errors you can’t fix, or exercises you can’t complete. The labs will be particularly useful to help you with these. The labs will also include demonstration of some key commands but will not be able to cover all the details in this ebook.\nWhen you work on the ebook, attempt the exercises yourself before you open the solutions. Work along in a script of your own as you go, as taught in Chapter 2. The ebook can stay as a reference whenever you need a reminder. If a function’s name is only half-remembered, the Glossary at the end is the place to look it up.",
     "crumbs": [
