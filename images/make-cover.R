@@ -1,4 +1,4 @@
-# Generates images/cover.png: the book cover for Introduction to Statistics.
+# Generates images/cover.png: the book cover for MED5652 IES Stats Manual.
 # One-off build utility, not sourced by any chapter. Re-run after design changes.
 
 library(ggplot2)
@@ -58,20 +58,20 @@ p <- ggplot() +
             lineend = "round") +
   geom_point(data = scatter, aes(x, y, size = size), colour = ink, alpha = 0.72) +
   scale_size_identity() +
-  # "Introduction to Statistics" (the book's own title) is split across two
-  # sized lines rather than set on one, since at a single bold size it's too
-  # wide for the hexagon: a small muted lead-in above a big bold headline
-  # word, the same two-tier treatment a printed cover would use. Reuses the
-  # four original slots' y-positions unchanged; only the content and sizing
-  # per slot moved, so the vertical rhythm against the hexagon is untouched.
-  annotate("text", x = 4, y = 4.1, label = "Introduction to",
-           colour = muted, size = 3.9, family = "sans") +
-  annotate("text", x = 4, y = 3.35, label = "Statistics",
-           colour = ink, size = 7.1, fontface = "bold", family = "sans") +
-  annotate("text", x = 4, y = 2.85, label = "MED5652",
+  # Three lines, smallest to biggest, top to bottom: the course code, the
+  # course name (wrapped to two lines, or it runs wider than the canvas),
+  # and "Statistics Manual" as the headline the cover's built around, since
+  # that's the book's own title now (renamed from "Introduction to
+  # Statistics", 2026-09-23; see root CLAUDE.md's Numbering and title
+  # conventions section). Y-positions are chosen fresh for this three-line
+  # shape, not inherited from the old four-slot layout.
+  annotate("text", x = 4, y = 4.35, label = "MED5652",
            colour = accent, size = 4.2, fontface = "bold", family = "sans") +
-  annotate("text", x = 4, y = 2.45, label = "Epidemiology & Statistics",
-           colour = muted, size = 3.9, family = "sans") +
+  annotate("text", x = 4, y = 3.55,
+           label = "Introduction to Epidemiology\nand Statistics",
+           colour = muted, size = 3.3, family = "sans", lineheight = 1.15) +
+  annotate("text", x = 4, y = 2.15, label = "Statistics Manual",
+           colour = ink, size = 6.6, fontface = "bold", family = "sans") +
   coord_fixed(ratio = 1, xlim = c(0, 8), ylim = c(0, 12), expand = FALSE) +
   theme_void() +
   theme(

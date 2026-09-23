@@ -2,7 +2,7 @@ project:
   type: book
 
 book:
-  title: "Introduction to Statistics"
+  title: "MED5652 IES Stats Manual"
   author: "Fred Ho"
   date: today
   date-format: "D MMMM YYYY"
