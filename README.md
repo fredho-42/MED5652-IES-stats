@@ -1,4 +1,4 @@
-# MED5652 Introduction to Statistics
+# MED5652 IES Stats Manual
 
 A [Quarto](https://quarto.org) ebook for the R lab MED5652 Introduction to Epidemiology and Statistics. It contains two preparatory chapters and five weekly chapters. The repo also holds the course's seminar slide decks, built in `seminars/` as a separate Quarto project (`revealjs`). The published site is at <https://fredho-42.github.io/MED5652-IES-stats/>, book and slides together.
 
@@ -59,3 +59,15 @@ quarto publish gh-pages                                 # publish everything in 
 ```
 
 Publishing pushes to the `gh-pages` branch, which GitHub Pages serves directly. This has to be done manually, and the two render steps above have to run first if the decks have changed, since `quarto publish` on its own only re-renders the book. 
+
+## Viewing the site locally, without publishing
+
+`gh-pages` is a live site students are pointed at, so "render, publish, look" isn't an acceptable way to check a change. `serve-site.sh` serves the already-built `_book/` over local HTTP instead:
+
+```
+quarto render                                          # render whatever changed
+quarto render seminars --output-dir ../_book/seminars   # (if a deck changed)
+./serve-site.sh
+```
+
+It binds the machine's Tailscale address by default, so the book and decks are viewable from a browser on another device on the same tailnet, with nothing to download and no port forwarding to set up. Pass `--local` to bind `127.0.0.1` instead (for example, if Tailscale isn't available). It serves whatever was last rendered and never renders or publishes anything itself; the live site only changes when `quarto publish gh-pages` is run deliberately.
