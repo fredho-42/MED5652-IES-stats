@@ -144,40 +144,40 @@ Fred Ho
 <section id="what-you-have-learnt-so-far" class="slide level2 smaller">
 <h2>What you have learnt so far</h2>
 <ul>
-<li>From Epi:
+<li class="fragment">From Epi:
 <ul>
-<li>Study type: descriptive vs.&nbsp;analytic</li>
-<li>Study design: observational and experimental</li>
-<li>Measures of occurrence and association</li>
-<li>Non-causal explanations of associations
+<li class="fragment">Study type: descriptive vs.&nbsp;analytic</li>
+<li class="fragment">Study design: observational and experimental</li>
+<li class="fragment">Measures of occurrence and association</li>
+<li class="fragment">Non-causal explanations of associations
 <ul>
-<li>Confounding bias</li>
-<li>Mediator bias</li>
-<li>Collider bias</li>
+<li class="fragment">Confounding bias</li>
+<li class="fragment">Mediator bias</li>
+<li class="fragment">Collider bias</li>
 </ul></li>
 </ul></li>
-<li>From Stats:
+<li class="fragment">From Stats:
 <ul>
-<li>Prep sessions: tidy data, file paths, CSV structure</li>
+<li class="fragment">Prep sessions: tidy data, file paths, CSV structure</li>
 </ul></li>
 </ul>
 </section>
 <section id="by-the-end-of-this-session-you-will-be-able-to" class="slide level2">
 <h2>By the end of this session, you will be able to</h2>
 <ol type="1">
-<li>Classify a variable as nominal, ordinal, discrete, or continuous, and explain how variable type constrains the analysis available</li>
-<li>Select and construct an appropriate table or plot for one or more variables of a given type</li>
-<li>Calculate and interpret measures of central tendency and spread, and justify a choice between mean/SD and median/IQR by distributional shape</li>
-<li>Describe the normal distribution and apply the 68-95-99.7 rule</li>
-<li>Critique a published figure and identify design choices that mislead</li>
+<li class="fragment">Classify a variable as nominal, ordinal, discrete, or continuous, and explain how variable type constrains the analysis available</li>
+<li class="fragment">Select and construct an appropriate table or plot for one or more variables of a given type</li>
+<li class="fragment">Calculate and interpret measures of central tendency and spread, and justify a choice between mean/SD and median/IQR by distributional shape</li>
+<li class="fragment">Describe the normal distribution and apply the 68-95-99.7 rule</li>
+<li class="fragment">Critique a published figure and identify design choices that mislead</li>
 </ol>
 </section>
 <section id="tidy-data-briefly-revisited" class="slide level2">
 <h2>Tidy data, briefly revisited</h2>
 <ul>
-<li>One row per observation, one column per variable</li>
-<li><code>nhanes_mph</code>: 41,765 rows, 27 columns</li>
-<li>No reshaping needed before we start</li>
+<li class="fragment">One row per observation, one column per variable</li>
+<li class="fragment"><code>nhanes_mph</code>: 41,765 rows, 27 columns</li>
+<li class="fragment">No reshaping needed before we start</li>
 </ul>
 </section>
 <section id="block-1-summarising-and-visualising" class="slide level2 divider" data-background-image="assets/skyline.jpg" data-background-size="cover">
@@ -186,45 +186,45 @@ Fred Ho
 <section id="why-summary" class="slide level2 smaller">
 <h2>Why summary?</h2>
 <ul>
-<li>Four people’s data fits on a slide</li>
-<li>41,765 people’s does not</li>
-<li>A statistic compresses a column to a few numbers</li>
-<li>These measures are known as descriptive, or summary, statistics</li>
-<li>Also called ‘exploratory data analysis’<span class="gap"></span></li>
-<li>The goal: get a feel for one variable at a time</li>
-<li>Spot quirks before any transformation or analysis</li>
+<li class="fragment">Four people’s data fits on a slide</li>
+<li class="fragment">41,765 people’s does not</li>
+<li class="fragment">A statistic compresses a column to a few numbers</li>
+<li class="fragment">These measures are known as descriptive, or summary, statistics</li>
+<li class="fragment">Also called ‘exploratory data analysis’<span class="gap"></span></li>
+<li class="fragment">The goal: get a feel for one variable at a time</li>
+<li class="fragment">Spot quirks before any transformation or analysis</li>
 </ul>
 </section>
 <section id="the-mean" class="slide level2">
 <h2>The mean</h2>
 <ul>
-<li>One of the most widely used measures of central tendency</li>
-<li>Add up every value, divide by how many there are</li>
+<li class="fragment">One of the most widely used measures of central tendency</li>
+<li class="fragment">Add up every value, divide by how many there are</li>
 </ul>
 <p><span class="math display">\[\bar{x} = \frac{1}{n}\sum_{i=1}^{n} x_i\]</span></p>
 <ul>
-<li>A fair ‘typical value’ when the distribution is roughly symmetric</li>
+<li class="fragment">A fair ‘typical value’ when the distribution is roughly symmetric</li>
 </ul>
 </section>
 <section id="the-standard-deviation" class="slide level2">
 <h2>The standard deviation</h2>
 <ul>
-<li>Often reported with the mean, a widely used measure of spread</li>
-<li>How spread out the values are around the mean, in the variable’s own units</li>
+<li class="fragment">Often reported with the mean, a widely used measure of spread</li>
+<li class="fragment">How spread out the values are around the mean, in the variable’s own units</li>
 </ul>
 <p><span class="math display">\[s = \sqrt{\frac{1}{n-1}\sum_{i=1}^{n} (x_i - \bar{x})^2}\]</span></p>
 <ul>
-<li>How much individuals typically differ from the mean</li>
+<li class="fragment">How much individuals typically differ from the mean</li>
 </ul>
 </section>
 <section id="distribution" class="slide level2">
 <h2>Distribution</h2>
 <ul>
-<li>A variable’s <strong>distribution</strong> is how its values are spread out</li>
-<li>Which values are common, which are rare, and how far apart they reach</li>
-<li>Mean, SD, median and IQR are all attempts to describe it in a few numbers</li>
-<li>The shape itself decides which of those numbers is honest</li>
-<li>We see shape by counting values into bins and plotting the counts, named properly later</li>
+<li class="fragment">A variable’s <strong>distribution</strong> is how its values are spread out</li>
+<li class="fragment">Which values are common, which are rare, and how far apart they reach</li>
+<li class="fragment">Mean, SD, median and IQR are all attempts to describe it in a few numbers</li>
+<li class="fragment">The shape itself decides which of those numbers is honest</li>
+<li class="fragment">We see shape by counting values into bins and plotting the counts, named properly later</li>
 </ul>
 </section>
 <section id="three-shapes-three-variables" class="slide level2">
@@ -241,9 +241,9 @@ Fred Ho
 </div>
 </div>
 <ul>
-<li>Roughly symmetric</li>
-<li><code>chol</code>, mmol/L</li>
-<li>Mean 4.97, median 4.89</li>
+<li class="fragment">Roughly symmetric</li>
+<li class="fragment"><code>chol</code>, mmol/L</li>
+<li class="fragment">Mean 4.97, median 4.89</li>
 </ul>
 </div><div class="column" style="width:33%;">
 <div class="cell">
@@ -256,9 +256,9 @@ Fred Ho
 </div>
 </div>
 <ul>
-<li>Skewed to the right</li>
-<li><code>sed</code>, hours/day</li>
-<li>Mean 6.56, median 5.00</li>
+<li class="fragment">Skewed to the right</li>
+<li class="fragment"><code>sed</code>, hours/day</li>
+<li class="fragment">Mean 6.56, median 5.00</li>
 </ul>
 </div><div class="column" style="width:34%;">
 <div class="cell">
@@ -271,9 +271,9 @@ Fred Ho
 </div>
 </div>
 <ul>
-<li>Heavily skewed</li>
-<li><code>vpa_t</code>, hours/day</li>
-<li>Median 0.00: 64% report none</li>
+<li class="fragment">Heavily skewed</li>
+<li class="fragment"><code>vpa_t</code>, hours/day</li>
+<li class="fragment">Median 0.00: 64% report none</li>
 </ul>
 </div></div>
 </section>
@@ -282,14 +282,14 @@ Fred Ho
 <div class="columns">
 <div class="column" style="width:38%;">
 <ul>
-<li>A <strong>normal distribution</strong> is symmetric, bell-shaped</li>
-<li>Any normal distribution is fully described by two numbers
+<li class="fragment">A <strong>normal distribution</strong> is symmetric, bell-shaped</li>
+<li class="fragment">Any normal distribution is fully described by two numbers
 <ul>
-<li><strong>mean</strong>: central peak of the bell</li>
-<li><strong>SD</strong>: spread of the bell</li>
+<li class="fragment"><strong>mean</strong>: central peak of the bell</li>
+<li class="fragment"><strong>SD</strong>: spread of the bell</li>
 </ul></li>
-<li>Mean and median are the same, because it is fully symmetric</li>
-<li>The <strong>68-95-99.7 rule</strong>: about 68% within 1 SD, 95% within 2, 99.7% within 3</li>
+<li class="fragment">Mean and median are the same, because it is fully symmetric</li>
+<li class="fragment">The <strong>68-95-99.7 rule</strong>: about 68% within 1 SD, 95% within 2, 99.7% within 3</li>
 </ul>
 </div><div class="column" style="width:62%;">
 <div class="cell">
@@ -306,22 +306,22 @@ Fred Ho
 <section id="median-and-iqr" class="slide level2">
 <h2>Median and IQR</h2>
 <ul>
-<li>Mean and SD are commonly used, but they can mislead</li>
-<li>When the data is skewed, we should consider:
+<li class="fragment">Mean and SD are commonly used, but they can mislead</li>
+<li class="fragment">When the data is skewed, we should consider:
 <ul>
-<li><strong>Median</strong>: the middle value once sorted, half the data below it, half above</li>
-<li><strong>IQR</strong>: the width of the middle 50% of the data</li>
+<li class="fragment"><strong>Median</strong>: the middle value once sorted, half the data below it, half above</li>
+<li class="fragment"><strong>IQR</strong>: the width of the middle 50% of the data</li>
 </ul></li>
 </ul>
 <p><span class="math display">\[\text{IQR} = Q_3 - Q_1\]</span></p>
 <ul>
-<li>Often reported as the range, Q1 to Q3, not just one number</li>
+<li class="fragment">Often reported as the range, Q1 to Q3, not just one number</li>
 </ul>
 </section>
 <section id="which-do-we-report-meansd-or-medianiqr" class="slide level2">
 <h2>Which do we report: mean/SD, or median/IQR?</h2>
 <ul>
-<li>The choice depends on <strong>shape</strong>, not preference</li>
+<li class="fragment">The choice depends on <strong>shape</strong>, not preference</li>
 </ul>
 <table class="caption-top">
 <thead>
@@ -342,7 +342,7 @@ Fred Ho
 </tbody>
 </table>
 <ul>
-<li>On skewed data, a mean and SD are technically correct and practically misleading</li>
+<li class="fragment">On skewed data, a mean and SD are technically correct and practically misleading</li>
 </ul>
 </section>
 <section id="detecting-skewness" class="slide level2">
@@ -350,9 +350,9 @@ Fred Ho
 <div class="columns">
 <div class="column" style="width:42%;">
 <ul>
-<li>Altman and Bland (1996), BMJ <em>Statistics Notes</em>: ‘Detecting skewness from summary information’</li>
-<li>Tells skew from summary numbers alone</li>
-<li>Reused across the course</li>
+<li class="fragment">Altman and Bland (1996), BMJ <em>Statistics Notes</em>: ‘Detecting skewness from summary information’</li>
+<li class="fragment">Tells skew from summary numbers alone</li>
+<li class="fragment">Reused across the course</li>
 </ul>
 </div><div class="column" style="width:58%;">
 <div class="cell">
@@ -365,18 +365,18 @@ Fred Ho
 </div>
 </div>
 <ul>
-<li>Solid: mean. Dashed: median.</li>
+<li class="fragment">Solid: mean. Dashed: median.</li>
 </ul>
 </div></div>
 </section>
 <section id="the-five-number-summary" class="slide level2">
 <h2>The five-number summary</h2>
 <ul>
-<li>Mean, SD, median and IQR give a crude description</li>
-<li>Five numbers give a fuller picture: minimum, Q1, median, Q3, maximum<span class="gap"></span></li>
-<li><strong>Q1</strong>, the 25th percentile: a quarter of the data falls at or below it</li>
-<li><strong>Q3</strong>, the 75th percentile: three quarters of the data falls at or below it</li>
-<li>Together, the five numbers split the data into four equal-sized chunks</li>
+<li class="fragment">Mean, SD, median and IQR give a crude description</li>
+<li class="fragment">Five numbers give a fuller picture: minimum, Q1, median, Q3, maximum<span class="gap"></span></li>
+<li class="fragment"><strong>Q1</strong>, the 25th percentile: a quarter of the data falls at or below it</li>
+<li class="fragment"><strong>Q3</strong>, the 75th percentile: three quarters of the data falls at or below it</li>
+<li class="fragment">Together, the five numbers split the data into four equal-sized chunks</li>
 </ul>
 </section>
 <section id="the-five-number-summary-sedentary-time" class="slide level2">
@@ -858,18 +858,18 @@ Fred Ho
 </div>
 </div>
 <ul>
-<li>Sedentary time (<code>sed</code>), hours/day, 34,434 participants with a value recorded</li>
+<li class="fragment">Sedentary time (<code>sed</code>), hours/day, 34,434 participants with a value recorded</li>
 </ul>
 </section>
 <section id="try-it-which-summary" class="slide level2">
 <h2>Try it: which summary?</h2>
 <ul>
-<li>Ten patients’ waiting times, in minutes: 3, 22, 4, 3, 5, 2, 30, 4, 5, 3</li>
-<li>Would you report the mean and SD, or the median and IQR? Why?</li>
-<li>Work out the five-number summary: minimum, Q1, median, Q3, maximum</li>
-<li>Then give the IQR</li>
-<li>Made-up numbers, for the arithmetic only</li>
-<li>Five minutes, in pairs</li>
+<li class="fragment">Ten patients’ waiting times, in minutes: 3, 22, 4, 3, 5, 2, 30, 4, 5, 3</li>
+<li class="fragment">Would you report the mean and SD, or the median and IQR? Why?</li>
+<li class="fragment">Work out the five-number summary: minimum, Q1, median, Q3, maximum</li>
+<li class="fragment">Then give the IQR</li>
+<li class="fragment">Made-up numbers, for the arithmetic only</li>
+<li class="fragment">Five minutes, in pairs</li>
 </ul>
 </section>
 <section id="try-it-the-answer" class="slide level2">
@@ -877,10 +877,10 @@ Fred Ho
 <div class="columns">
 <div class="column" style="width:45%;">
 <ul>
-<li>Sorted: 2, 3, 3, 3, 4, 4, 5, 5, 22, 30</li>
-<li>Minimum 2, Q1 3, median 4, Q3 5, maximum 30 minutes</li>
-<li>IQR: 3 to 5 minutes</li>
-<li>The mean, 8.1 minutes, is longer than eight of the ten waits: the two long waits pulled it</li>
+<li class="fragment">Sorted: 2, 3, 3, 3, 4, 4, 5, 5, 22, 30</li>
+<li class="fragment">Minimum 2, Q1 3, median 4, Q3 5, maximum 30 minutes</li>
+<li class="fragment">IQR: 3 to 5 minutes</li>
+<li class="fragment">The mean, 8.1 minutes, is longer than eight of the ten waits: the two long waits pulled it</li>
 </ul>
 </div><div class="column" style="width:55%;">
 <div class="cell">
@@ -899,10 +899,10 @@ Fred Ho
 <div class="columns">
 <div class="column" style="width:55%;">
 <ul>
-<li>Box: Q1 to Q3, so its width is the IQR</li>
-<li>Line inside the box: the median</li>
-<li>Whiskers reach 1.5 x IQR beyond the box; further points are drawn individually</li>
-<li>Whiskers are <strong>not</strong> the minimum and maximum; <code>sed</code> above 24 sits off this axis</li>
+<li class="fragment">Box: Q1 to Q3, so its width is the IQR</li>
+<li class="fragment">Line inside the box: the median</li>
+<li class="fragment">Whiskers reach 1.5 x IQR beyond the box; further points are drawn individually</li>
+<li class="fragment">Whiskers are <strong>not</strong> the minimum and maximum; <code>sed</code> above 24 sits off this axis</li>
 </ul>
 </div><div class="column" style="width:45%;">
 <div class="cell">
@@ -921,10 +921,10 @@ Fred Ho
 <div class="columns">
 <div class="column" style="width:52%;">
 <ul>
-<li>Does total cholesterol differ between men and women?</li>
-<li>One box per group, read side by side</li>
-<li>Centres are close and the boxes overlap: a small difference, not two separate distributions</li>
-<li>A description, not a test: tests come in Week 9</li>
+<li class="fragment">Does total cholesterol differ between men and women?</li>
+<li class="fragment">One box per group, read side by side</li>
+<li class="fragment">Centres are close and the boxes overlap: a small difference, not two separate distributions</li>
+<li class="fragment">A description, not a test: tests come in Week 9</li>
 </ul>
 </div><div class="column" style="width:48%;">
 <div class="cell">
@@ -1415,29 +1415,29 @@ Fred Ho
 </div>
 </div>
 <ul>
-<li>Sedentary time (<code>sed</code>), hours/day</li>
-<li>Mean and median disagree by over an hour: the first clue</li>
+<li class="fragment">Sedentary time (<code>sed</code>), hours/day</li>
+<li class="fragment">Mean and median disagree by over an hour: the first clue</li>
 </ul>
 </section>
 <section id="which-plot-for-which-variable" class="slide level2">
 <h2>Which plot, for which variable?</h2>
 <ul>
-<li>We have used plots already: to see shape, and to compare groups</li>
-<li>Which plot works depends on the kind of variable</li>
-<li>Some variables are measured on a scale; some record which group someone is in</li>
-<li>Next: a plot for each kind</li>
-<li>The proper names for those kinds come after the break</li>
+<li class="fragment">We have used plots already: to see shape, and to compare groups</li>
+<li class="fragment">Which plot works depends on the kind of variable</li>
+<li class="fragment">Some variables are measured on a scale; some record which group someone is in</li>
+<li class="fragment">Next: a plot for each kind</li>
+<li class="fragment">The proper names for those kinds come after the break</li>
 </ul>
 </section>
 <section id="values-on-a-scale-the-histogram" class="slide level2">
 <h2>Values on a scale: the histogram</h2>
 <ul>
-<li>A <strong>histogram</strong> bins values on a scale, plots the count in each bin</li>
-<li>Shows the shape mean/SD or median/IQR can only summarise</li>
+<li class="fragment">A <strong>histogram</strong> bins values on a scale, plots the count in each bin</li>
+<li class="fragment">Shows the shape mean/SD or median/IQR can only summarise</li>
 </ul>
 
 <img data-src="week07-descriptive_files/figure-revealjs/hist-sed-1.png" width="768" class="r-stretch"><ul>
-<li>145 of 34,434 (0.4%) report over 24 hours/day and sit off this axis</li>
+<li class="fragment">145 of 34,434 (0.4%) report over 24 hours/day and sit off this axis</li>
 </ul>
 </section>
 <section id="bin-width-changes-the-picture" class="slide level2">
@@ -1445,10 +1445,10 @@ Fred Ho
 <div class="columns">
 <div class="column" style="width:34%;">
 <ul>
-<li>The same values, drawn three ways</li>
-<li>Too narrow: every wobble looks real</li>
-<li>Too wide: detail is lost</li>
-<li>Vertical scales are not shared</li>
+<li class="fragment">The same values, drawn three ways</li>
+<li class="fragment">Too narrow: every wobble looks real</li>
+<li class="fragment">Too wide: detail is lost</li>
+<li class="fragment">Vertical scales are not shared</li>
 </ul>
 </div><div class="column" style="width:66%;">
 <div class="cell">
@@ -1461,7 +1461,7 @@ Fred Ho
 </div>
 </div>
 <ul>
-<li>If in doubt, look at more than one bins before choosing</li>
+<li class="fragment">If in doubt, look at more than one bins before choosing</li>
 </ul>
 </div></div>
 </section>
@@ -1470,10 +1470,10 @@ Fred Ho
 <div class="columns">
 <div class="column" style="width:42%;">
 <ul>
-<li>A histogram needs values on a scale to sort into bins</li>
-<li><code>smoking</code> has no scale, just groups: Never, Previous, Current</li>
-<li>We count how many fall in each group instead</li>
-<li>That count is a <strong>frequency table</strong></li>
+<li class="fragment">A histogram needs values on a scale to sort into bins</li>
+<li class="fragment"><code>smoking</code> has no scale, just groups: Never, Previous, Current</li>
+<li class="fragment">We count how many fall in each group instead</li>
+<li class="fragment">That count is a <strong>frequency table</strong></li>
 </ul>
 </div><div class="column" style="width:58%;">
 <div class="cell">
@@ -1963,13 +1963,13 @@ Fred Ho
 <section id="values-that-are-labels-the-bar-chart" class="slide level2">
 <h2>Values that are labels: the bar chart</h2>
 <ul>
-<li>A <strong>bar chart</strong>: one bar per group, count or percentage</li>
+<li class="fragment">A <strong>bar chart</strong>: one bar per group, count or percentage</li>
 </ul>
 
 <img data-src="week07-descriptive_files/figure-revealjs/bar-smoking-1.png" width="768" class="r-stretch"><ul>
-<li>Bars separated, axis has no numeric meaning between categories</li>
-<li>Unlike a histogram: bars touch, drawn along one scale</li>
-<li>The gap indicates the variable is not a scale</li>
+<li class="fragment">Bars separated, axis has no numeric meaning between categories</li>
+<li class="fragment">Unlike a histogram: bars touch, drawn along one scale</li>
+<li class="fragment">The gap indicates the variable is not a scale</li>
 </ul>
 </section>
 <section id="the-pie-chart-and-why-we-avoid-it" class="slide level2">
@@ -1977,10 +1977,10 @@ Fred Ho
 <div class="columns">
 <div class="column" style="width:42%;">
 <ul>
-<li>One slice per group, the whole circle is 100%</li>
-<li>We judge angle and area less accurately than length</li>
-<li>Similar slices can’t be ranked by eye; two pies can’t be compared</li>
-<li>The last bar chart holds the same counts, readable</li>
+<li class="fragment">One slice per group, the whole circle is 100%</li>
+<li class="fragment">We judge angle and area less accurately than length</li>
+<li class="fragment">Similar slices can’t be ranked by eye; two pies can’t be compared</li>
+<li class="fragment">The last bar chart holds the same counts, readable</li>
 </ul>
 </div><div class="column" style="width:58%;">
 <div class="cell">
@@ -1999,10 +1999,10 @@ Fred Ho
 <div class="columns">
 <div class="column" style="width:42%;">
 <ul>
-<li>Does smoking status differ between men and women?</li>
-<li>One bar per group, scaled to 100%</li>
-<li>Every bar starts at the same baseline: the bottom segment compares directly</li>
-<li>Higher segments are harder to compare</li>
+<li class="fragment">Does smoking status differ between men and women?</li>
+<li class="fragment">One bar per group, scaled to 100%</li>
+<li class="fragment">Every bar starts at the same baseline: the bottom segment compares directly</li>
+<li class="fragment">Higher segments are harder to compare</li>
 </ul>
 </div><div class="column" style="width:58%;">
 <div class="cell">
@@ -2022,50 +2022,50 @@ Fred Ho
 <section id="which-columns-can-we-take-a-mean-of" class="slide level2">
 <h2>Which columns can we take a mean of?</h2>
 <ul>
-<li>We treated <code>sed</code> as a number and <code>smoking</code> as labels, without much thought</li>
-<li>Both were obvious</li>
-<li><code>nhanes_mph</code> has 27 columns</li>
-<li><code>gender</code> and <code>blm.cvd</code> are stored as numbers, but they are groups</li>
-<li>Which of the rest can you take a mean of, and how do you know?</li>
+<li class="fragment">We treated <code>sed</code> as a number and <code>smoking</code> as labels, without much thought</li>
+<li class="fragment">Both were obvious</li>
+<li class="fragment"><code>nhanes_mph</code> has 27 columns</li>
+<li class="fragment"><code>gender</code> and <code>blm.cvd</code> are stored as numbers, but they are groups</li>
+<li class="fragment">Which of the rest can you take a mean of, and how do you know?</li>
 </ul>
 </section>
 <section id="two-kinds-of-variable" class="slide level2">
 <h2>Two kinds of variable</h2>
 <ul>
-<li><strong>Categorical</strong>: puts each participant into one of a fixed set of groups</li>
-<li><strong>Numeric</strong>: a number</li>
-<li>We used a categorical variable already: <code>smoking</code></li>
-<li>We used a numeric variable already: <code>sed</code>, <code>chol</code></li>
-<li>Both kinds split further</li>
+<li class="fragment"><strong>Categorical</strong>: puts each participant into one of a fixed set of groups</li>
+<li class="fragment"><strong>Numeric</strong>: a number</li>
+<li class="fragment">We used a categorical variable already: <code>smoking</code></li>
+<li class="fragment">We used a numeric variable already: <code>sed</code>, <code>chol</code></li>
+<li class="fragment">Both kinds split further</li>
 </ul>
 </section>
 <section id="categorical-nominal-ordinal-binary" class="slide level2">
 <h2>Categorical: nominal, ordinal, binary</h2>
 <ul>
-<li><strong>Nominal</strong>: the categories have no natural order
+<li class="fragment"><strong>Nominal</strong>: the categories have no natural order
 <ul>
-<li><code>eth</code>, ethnicity: Mexican American, Other Hispanic, White, Black, Others</li>
+<li class="fragment"><code>eth</code>, ethnicity: Mexican American, Other Hispanic, White, Black, Others</li>
 </ul></li>
-<li><strong>Ordinal</strong>: the categories run in a genuine order
+<li class="fragment"><strong>Ordinal</strong>: the categories run in a genuine order
 <ul>
-<li><code>phq.c</code>, depression classification: Normal, Mild symptoms, Possible depression</li>
+<li class="fragment"><code>phq.c</code>, depression classification: Normal, Mild symptoms, Possible depression</li>
 </ul></li>
-<li><strong>Binary</strong>: a two-category special case, present or absent
+<li class="fragment"><strong>Binary</strong>: a two-category special case, present or absent
 <ul>
-<li><code>blm.cvd</code>, baseline cardiovascular disease: No, Yes</li>
+<li class="fragment"><code>blm.cvd</code>, baseline cardiovascular disease: No, Yes</li>
 </ul></li>
 </ul>
 </section>
 <section id="numeric-count-and-continuous" class="slide level2">
 <h2>Numeric: count and continuous</h2>
 <ul>
-<li><strong>Count</strong> (sometimes called discrete): whole numbers only
+<li class="fragment"><strong>Count</strong> (sometimes called discrete): whole numbers only
 <ul>
-<li><code>phq</code>, the raw depression symptom score behind <code>phq.c</code>: 0 through 6</li>
+<li class="fragment"><code>phq</code>, the raw depression symptom score behind <code>phq.c</code>: 0 through 6</li>
 </ul></li>
-<li><strong>Continuous</strong>: any value in a range is possible
+<li class="fragment"><strong>Continuous</strong>: any value in a range is possible
 <ul>
-<li><code>chol</code>, mmol/L; <code>age</code>, years; <code>sed</code>, hours/day</li>
+<li class="fragment"><code>chol</code>, mmol/L; <code>age</code>, years; <code>sed</code>, hours/day</li>
 </ul></li>
 </ul>
 </section>
@@ -2074,10 +2074,10 @@ Fred Ho
 <div class="columns">
 <div class="column" style="width:42%;">
 <ul>
-<li><code>blm.cvd</code> is binary; R read its 0s and 1s as plain numbers</li>
-<li><code>gender</code> and <code>edu</code>: numbers standing in for a label</li>
-<li>How data is stored doesn’t change the variable’s statistical type</li>
-<li>Check the dictionary, not the raw values</li>
+<li class="fragment"><code>blm.cvd</code> is binary; R read its 0s and 1s as plain numbers</li>
+<li class="fragment"><code>gender</code> and <code>edu</code>: numbers standing in for a label</li>
+<li class="fragment">How data is stored doesn’t change the variable’s statistical type</li>
+<li class="fragment">Check the dictionary, not the raw values</li>
 </ul>
 </div><div class="column" style="width:58%;">
 <div class="cell">
@@ -2575,11 +2575,11 @@ Fred Ho
 <section id="where-the-boundary-blurs" class="slide level2">
 <h2>Where the boundary blurs</h2>
 <ul>
-<li><code>age</code> is recorded in whole years, but treated as continuous</li>
-<li>A count with many possible values is often handled as continuous too</li>
-<li>Ordinal categories are sometimes scored as numbers for convenience</li>
-<li>Or treated as nominal categories, for reasons we will see later<span class="gap"></span></li>
-<li>This is sometimes a judgement call depending on the analysis need</li>
+<li class="fragment"><code>age</code> is recorded in whole years, but treated as continuous</li>
+<li class="fragment">A count with many possible values is often handled as continuous too</li>
+<li class="fragment">Ordinal categories are sometimes scored as numbers for convenience</li>
+<li class="fragment">Or treated as nominal categories, for reasons we will see later<span class="gap"></span></li>
+<li class="fragment">This is sometimes a judgement call depending on the analysis need</li>
 </ul>
 </section>
 <section id="try-it-what-kind-of-variable-is-each-column" class="slide level2">
@@ -3135,19 +3135,19 @@ Fred Ho
 </div>
 </div>
 <ul>
-<li>The 1948 MRC streptomycin trial: ten of 107 patients shown</li>
-<li>Name each column’s type, and which you could average</li>
+<li class="fragment">The 1948 MRC streptomycin trial: ten of 107 patients shown</li>
+<li class="fragment">Name each column’s type, and which you could average</li>
 </ul>
 </section>
 <section id="try-it-the-answer-1" class="slide level2">
 <h2>Try it: the answer</h2>
 <ul>
-<li><code>patient_id</code>: nominal; it is a number, but it labels an individual</li>
-<li><code>arm</code>: nominal (binary); Streptomycin or Control</li>
-<li><code>gender</code>: nominal (binary); the values are the letters F and M</li>
-<li><code>baseline_condition</code>: ordinal; Good, Fair, Poor run in a real order</li>
-<li><code>rad_num</code>: a 1 to 6 score standing for an ordered category; or a count</li>
-<li><code>improved</code>: binary, stored as TRUE/FALSE; storage is not type</li>
+<li class="fragment"><code>patient_id</code>: nominal; it is a number, but it labels an individual</li>
+<li class="fragment"><code>arm</code>: nominal (binary); Streptomycin or Control</li>
+<li class="fragment"><code>gender</code>: nominal (binary); the values are the letters F and M</li>
+<li class="fragment"><code>baseline_condition</code>: ordinal; Good, Fair, Poor run in a real order</li>
+<li class="fragment"><code>rad_num</code>: a 1 to 6 score standing for an ordered category; or a count</li>
+<li class="fragment"><code>improved</code>: binary, stored as TRUE/FALSE; storage is not type</li>
 </ul>
 </section>
 <section id="which-summary-which-plot-for-which-type" class="slide level2">
@@ -3674,8 +3674,8 @@ Fred Ho
 </div>
 </div>
 <ul>
-<li>Rows: <code>smoking</code>. Columns: <code>gender</code></li>
-<li>One cell per combination of the two variables</li>
+<li class="fragment">Rows: <code>smoking</code>. Columns: <code>gender</code></li>
+<li class="fragment">One cell per combination of the two variables</li>
 </ul>
 </section>
 <section id="row-or-column-percentages" class="slide level2">
@@ -4651,7 +4651,7 @@ Fred Ho
 </div>
 </div></div>
 <ul>
-<li>Percentage of what depends on the question being asked</li>
+<li class="fragment">Percentage of what depends on the question being asked</li>
 </ul>
 </section>
 <section id="the-2x2-table-from-the-epi-half" class="slide level2">
@@ -5134,10 +5134,10 @@ Fred Ho
 </div>
 </div>
 <ul>
-<li>Gender by baseline cardiovascular disease</li>
-<li>The same layout from epi weeks 1 to 5, reactivated here</li>
-<li>No risk ratio or odds ratio yet: <code>blm.cvd</code> is measured at the same visit as the exposure</li>
-<li>Week 9 covers the formulae</li>
+<li class="fragment">Gender by baseline cardiovascular disease</li>
+<li class="fragment">The same layout from epi weeks 1 to 5, reactivated here</li>
+<li class="fragment">No risk ratio or odds ratio yet: <code>blm.cvd</code> is measured at the same visit as the exposure</li>
+<li class="fragment">Week 9 covers the formulae</li>
 </ul>
 </section>
 <section id="try-it-build-the-2x2" class="slide level2">
@@ -5145,10 +5145,10 @@ Fred Ho
 <div class="columns">
 <div class="column" style="width:60%;">
 <ul>
-<li>Same ten patients as before, two columns only: <code>arm</code>, <code>improved</code></li>
-<li>Build the 2x2 table for these ten patients</li>
-<li>Which variable goes in the rows, and which in the columns? Why?</li>
-<li>Ten patients only: this is not the trial’s result</li>
+<li class="fragment">Same ten patients as before, two columns only: <code>arm</code>, <code>improved</code></li>
+<li class="fragment">Build the 2x2 table for these ten patients</li>
+<li class="fragment">Which variable goes in the rows, and which in the columns? Why?</li>
+<li class="fragment">Ten patients only: this is not the trial’s result</li>
 </ul>
 </div><div class="column" style="width:40%;">
 <div class="cell">
@@ -6139,22 +6139,22 @@ Fred Ho
 </div>
 </div>
 <ul>
-<li>Treatment in the rows, outcome in the columns, as in the epi half</li>
-<li>Streptomycin: 4 improved, 1 not</li>
-<li>Control: 2 improved, 3 not</li>
-<li>The exposure defines the groups being compared, so it gets the rows<span class="gap"></span></li>
-<li>Ten patients cannot support a measure of association</li>
-<li>The real trial has 107, and Week 9 does it</li>
+<li class="fragment">Treatment in the rows, outcome in the columns, as in the epi half</li>
+<li class="fragment">Streptomycin: 4 improved, 1 not</li>
+<li class="fragment">Control: 2 improved, 3 not</li>
+<li class="fragment">The exposure defines the groups being compared, so it gets the rows<span class="gap"></span></li>
+<li class="fragment">Ten patients cannot support a measure of association</li>
+<li class="fragment">The real trial has 107, and Week 9 does it</li>
 </ul>
 </section>
 <section id="what-is-a-table-1" class="slide level2">
 <h2>What is a ‘Table 1’?</h2>
 <ul>
-<li>The conventional first table in a paper, describing the participants</li>
-<li>Often stratified by the exposure or group of interest</li>
-<li>Each row shows the appropriate summary for that variable’s type<span class="gap"></span></li>
-<li>Mean/SD or median/IQR for numeric, count/percentage for categorical</li>
-<li>The same choice from a few slides ago</li>
+<li class="fragment">The conventional first table in a paper, describing the participants</li>
+<li class="fragment">Often stratified by the exposure or group of interest</li>
+<li class="fragment">Each row shows the appropriate summary for that variable’s type<span class="gap"></span></li>
+<li class="fragment">Mean/SD or median/IQR for numeric, count/percentage for categorical</li>
+<li class="fragment">The same choice from a few slides ago</li>
 </ul>
 </section>
 <section id="a-table-1" class="slide level2">
@@ -6714,7 +6714,7 @@ N = 3,460<span class="gt_footnote_marks" style="white-space:nowrap;font-style:it
 </div>
 </div>
 <ul>
-<li>37,266 of 41,765 classified</li>
+<li class="fragment">37,266 of 41,765 classified</li>
 </ul>
 </section>
 <section id="application" class="slide level2 divider" data-background-image="assets/skyline.jpg" data-background-size="cover">
@@ -6723,9 +6723,9 @@ N = 3,460<span class="gt_footnote_marks" style="white-space:nowrap;font-style:it
 <section id="what-does-each-chart-make-you-believe" class="slide level2 smaller">
 <h2>What does each chart make you believe?</h2>
 <ul>
-<li>In pairs: name the type of variable on each axis</li>
-<li>Say whether a line chart suits them</li>
-<li>Spot the one design choice that changes the impression</li>
+<li class="fragment">In pairs: name the type of variable on each axis</li>
+<li class="fragment">Say whether a line chart suits them</li>
+<li class="fragment">Spot the one design choice that changes the impression</li>
 </ul>
 <div class="columns">
 <div class="column" style="width:50%;">
@@ -6739,7 +6739,7 @@ N = 3,460<span class="gt_footnote_marks" style="white-space:nowrap;font-style:it
 </div>
 </div>
 <ul>
-<li>Axis starts at zero</li>
+<li class="fragment">Axis starts at zero</li>
 </ul>
 </div><div class="column" style="width:50%;">
 <div class="cell">
@@ -6752,27 +6752,27 @@ N = 3,460<span class="gt_footnote_marks" style="white-space:nowrap;font-style:it
 </div>
 </div>
 <ul>
-<li>Axis zoomed to the data</li>
+<li class="fragment">Axis zoomed to the data</li>
 </ul>
 </div></div>
 </section>
 <section id="same-data-one-misleading-axis" class="slide level2">
 <h2>Same data, one misleading axis</h2>
 <ul>
-<li><code>year</code>: a count variable, evenly spaced</li>
-<li>Prescriptions of NRT per 100,000 population: a continuous variable</li>
-<li>A line chart suits both: an ordered numeric variable tracked over time</li>
-<li>The right chart’s y-axis does not start at zero, so a modest rise looks dramatic</li>
-<li>Always check where a y-axis starts before trusting the shape of a trend</li>
+<li class="fragment"><code>year</code>: a count variable, evenly spaced</li>
+<li class="fragment">Prescriptions of NRT per 100,000 population: a continuous variable</li>
+<li class="fragment">A line chart suits both: an ordered numeric variable tracked over time</li>
+<li class="fragment">The right chart’s y-axis does not start at zero, so a modest rise looks dramatic</li>
+<li class="fragment">Always check where a y-axis starts before trusting the shape of a trend</li>
 </ul>
 </section>
 <section id="key-points-and-what-the-lab-does" class="slide level2">
 <h2>Key points, and what the lab does</h2>
 <ul>
-<li>Variable type decides the summary and the plot: nominal, ordinal, binary, count, continuous</li>
-<li>Shape decides mean/SD against median/IQR: check it before choosing</li>
-<li>A histogram, box plot, bar chart, or stacked bar each suit a different question</li>
-<li>The lab builds all of this in R, on <code>nhanes_mph</code>, start to finish</li>
+<li class="fragment">Variable type decides the summary and the plot: nominal, ordinal, binary, count, continuous</li>
+<li class="fragment">Shape decides mean/SD against median/IQR: check it before choosing</li>
+<li class="fragment">A histogram, box plot, bar chart, or stacked bar each suit a different question</li>
+<li class="fragment">The lab builds all of this in R, on <code>nhanes_mph</code>, start to finish</li>
 </ul>
 
 </section>
@@ -6940,7 +6940,7 @@ N = 3,460<span class="gt_footnote_marks" style="white-space:nowrap;font-style:it
         previewLinks: false,
 
         // Transition style (none/fade/slide/convex/concave/zoom)
-        transition: 'none',
+        transition: 'slide',
 
         // Transition speed (default/fast/slow)
         transitionSpeed: 'default',

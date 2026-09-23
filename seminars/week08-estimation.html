@@ -144,24 +144,24 @@ Fred Ho
 <section id="what-you-have-learnt-so-far" class="slide level2 smaller">
 <h2>What you have learnt so far</h2>
 <ul>
-<li><strong>Stats, Week 7.</strong> <code>sed</code> was described with a mean of 6.56 and an SD of 10.9 hours/day from 34,434 people, then the median (5 hours/day) and the IQR (3 to 8 hours/day).</li>
-<li><strong>Epi.</strong>
+<li class="fragment"><strong>Stats, Week 7.</strong> <code>sed</code> was described with a mean of 6.56 and an SD of 10.9 hours/day from 34,434 people, then the median (5 hours/day) and the IQR (3 to 8 hours/day).</li>
+<li class="fragment"><strong>Epi.</strong>
 <ul>
-<li><strong>Weeks 1 and 5.</strong> External validity and selection bias. This week adds another source of problem: sampling variation, precision instead of bias and validity</li>
-<li><strong>Week 2.</strong> Risk, odds, RR and OR calculated as point estimates. This week calculates also the confidence as well as that for a difference in proportions</li>
-<li><strong>Week 3.</strong> Underpower was discussed. This week does the sample size arithmetic behind it, and Week 9 returns to define power itself</li>
+<li class="fragment"><strong>Weeks 1 and 5.</strong> External validity and selection bias. This week adds another source of problem: sampling variation, precision instead of bias and validity</li>
+<li class="fragment"><strong>Week 2.</strong> Risk, odds, RR and OR calculated as point estimates. This week calculates also the confidence as well as that for a difference in proportions</li>
+<li class="fragment"><strong>Week 3.</strong> Underpower was discussed. This week does the sample size arithmetic behind it, and Week 9 returns to define power itself</li>
 </ul></li>
 </ul>
 </section>
 <section id="by-the-end-of-this-session-you-will-be-able-to" class="slide level2 smaller">
 <h2>By the end of this session, you will be able to</h2>
 <ol type="1">
-<li>Understand the difference between population and sample, and why statistical inference focuses on the population</li>
-<li>Explain why a sample estimate varies from sample to sample, and state the practical consequence of the central limit theorem for the shape of that variation</li>
-<li>Distinguish the standard deviation from the standard error, and calculate the standard error of a mean and of a proportion</li>
-<li>Construct a 95% confidence interval for a mean, a proportion, a difference in means, and a difference in proportions</li>
-<li>Interpret a confidence interval correctly, and identify the common misinterpretation</li>
-<li>Explain how sample size and variability jointly determine an estimate’s precision, and calculate the sample size a target margin of error requires</li>
+<li class="fragment">Understand the difference between population and sample, and why statistical inference focuses on the population</li>
+<li class="fragment">Explain why a sample estimate varies from sample to sample, and state the practical consequence of the central limit theorem for the shape of that variation</li>
+<li class="fragment">Distinguish the standard deviation from the standard error, and calculate the standard error of a mean and of a proportion</li>
+<li class="fragment">Construct a 95% confidence interval for a mean, a proportion, a difference in means, and a difference in proportions</li>
+<li class="fragment">Interpret a confidence interval correctly, and identify the common misinterpretation</li>
+<li class="fragment">Explain how sample size and variability jointly determine an estimate’s precision, and calculate the sample size a target margin of error requires</li>
 </ol>
 </section>
 <section id="block-1-estimation-and-the-confidence-interval" class="slide level2 divider" data-background-image="assets/skyline.jpg" data-background-size="cover">
@@ -170,24 +170,24 @@ Fred Ho
 <section id="a-different-34434-people" class="slide level2 smaller">
 <h2>A different 34,434 people</h2>
 <ul>
-<li>Last week’s mean sedentary time, 6.56 hours/day, came from one sample</li>
-<li>A different 34,434 people would have given a different number</li>
-<li>How different, and does it matter?</li>
-<li>An estimate is only useful when we know how accurate and how precise it is</li>
-<li>In common public health applications:
+<li class="fragment">Last week’s mean sedentary time, 6.56 hours/day, came from one sample</li>
+<li class="fragment">A different 34,434 people would have given a different number</li>
+<li class="fragment">How different, and does it matter?</li>
+<li class="fragment">An estimate is only useful when we know how accurate and how precise it is</li>
+<li class="fragment">In common public health applications:
 <ul>
-<li>Accuracy is mainly an epidemiological question</li>
-<li>Precision is what we try to quantify here in statistics</li>
+<li class="fragment">Accuracy is mainly an epidemiological question</li>
+<li class="fragment">Precision is what we try to quantify here in statistics</li>
 </ul></li>
 </ul>
 </section>
 <section id="population-and-sample" class="slide level2">
 <h2>Population and sample</h2>
 <ul>
-<li>The <strong>population</strong> is what we want to measure (e.g., UK general population, type 2 diabetes patients)</li>
-<li>The <strong>sample</strong> is what we can measure, usually a subset of the target population<span class="gap"></span></li>
-<li>We must compute statistics from the sample</li>
-<li>But what we want to say is about the population</li>
+<li class="fragment">The <strong>population</strong> is what we want to measure (e.g., UK general population, type 2 diabetes patients)</li>
+<li class="fragment">The <strong>sample</strong> is what we can measure, usually a subset of the target population<span class="gap"></span></li>
+<li class="fragment">We must compute statistics from the sample</li>
+<li class="fragment">But what we want to say is about the population</li>
 </ul>
 </section>
 <section id="the-parameter-and-the-estimate" class="slide level2 smaller">
@@ -195,16 +195,16 @@ Fred Ho
 <div class="columns">
 <div class="column" style="width:42%;">
 <ul>
-<li>The <strong>estimand</strong>: the fixed, unknown population value the question is about</li>
-<li>The <strong>estimator</strong>: the method that produces a number from a sample
+<li class="fragment">The <strong>estimand</strong>: the fixed, unknown population value the question is about</li>
+<li class="fragment">The <strong>estimator</strong>: the method that produces a number from a sample
 <ul>
-<li>It is a random variable, because who ends up in the sample is random</li>
+<li class="fragment">It is a random variable, because who ends up in the sample is random</li>
 </ul></li>
-<li>The <strong>estimate</strong>: one particular result the estimator produced
+<li class="fragment">The <strong>estimate</strong>: one particular result the estimator produced
 <ul>
-<li>It is ‘realised’ (i.e., occurred), so it is fixed<span class="gap"></span></li>
+<li class="fragment">It is ‘realised’ (i.e., occurred), so it is fixed<span class="gap"></span></li>
 </ul></li>
-<li>Abstract, but it is the foundation for how we define precision</li>
+<li class="fragment">Abstract, but it is the foundation for how we define precision</li>
 </ul>
 </div><div class="column" style="width:58%;">
 <div class="cell">
@@ -217,21 +217,21 @@ Fred Ho
 </div>
 </div>
 <ul>
-<li>Black line: the fixed, unknown population mean</li>
-<li>Each row is one sample: circles are its observations, the bar its mean, the estimate</li>
-<li>Estimates scatter around the population mean; none lands on it exactly</li>
+<li class="fragment">Black line: the fixed, unknown population mean</li>
+<li class="fragment">Each row is one sample: circles are its observations, the bar its mean, the estimate</li>
+<li class="fragment">Estimates scatter around the population mean; none lands on it exactly</li>
 </ul>
 </div></div>
 </section>
 <section id="random-sampling-and-what-can-go-wrong" class="slide level2">
 <h2>Random sampling, and what can go wrong</h2>
 <ul>
-<li>Random sampling ensures we can generalise findings from the sample to the population</li>
-<li>Problems can arise from:
+<li class="fragment">Random sampling ensures we can generalise findings from the sample to the population</li>
+<li class="fragment">Problems can arise from:
 <ul>
-<li>Who was reachable (incomplete sampling frame)</li>
-<li>Who agreed (healthy volunteer bias)</li>
-<li>Who was excluded (sampling frame / missing data bias)</li>
+<li class="fragment">Who was reachable (incomplete sampling frame)</li>
+<li class="fragment">Who agreed (healthy volunteer bias)</li>
+<li class="fragment">Who was excluded (sampling frame / missing data bias)</li>
 </ul></li>
 </ul>
 </section>
@@ -240,18 +240,18 @@ Fred Ho
 <div class="columns">
 <div class="column" style="width:42%;">
 <ul>
-<li><strong>Bias.</strong> How accurate on average the estimator is, also called validity
+<li class="fragment"><strong>Bias.</strong> How accurate on average the estimator is, also called validity
 <ul>
-<li>Week 5’s selection bias is an example</li>
+<li class="fragment">Week 5’s selection bias is an example</li>
 </ul></li>
-<li><strong>Variance.</strong> How precise the estimator is, also called precision
+<li class="fragment"><strong>Variance.</strong> How precise the estimator is, also called precision
 <ul>
-<li>The general statistical term for how much it scatters from sample to sample</li>
-<li>A confidence interval addresses this, and does nothing about bias</li>
+<li class="fragment">The general statistical term for how much it scatters from sample to sample</li>
+<li class="fragment">A confidence interval addresses this, and does nothing about bias</li>
 </ul></li>
-<li>A confidence interval states its precision but not the accuracy
+<li class="fragment">A confidence interval states its precision but not the accuracy
 <ul>
-<li>A tight CI can still be biased</li>
+<li class="fragment">A tight CI can still be biased</li>
 </ul></li>
 </ul>
 </div><div class="column" style="width:58%;">
@@ -265,35 +265,35 @@ Fred Ho
 </div>
 </div>
 <ul>
-<li>Accuracy reads across, precision reads down</li>
-<li>The black cross is the true value; each blue dot is one estimate</li>
+<li class="fragment">Accuracy reads across, precision reads down</li>
+<li class="fragment">The black cross is the true value; each blue dot is one estimate</li>
 </ul>
 </div></div>
 </section>
 <section id="the-sampling-distribution" class="slide level2 smaller">
 <h2>The sampling distribution</h2>
 <ul>
-<li>We report a confidence interval to state precision
+<li class="fragment">We report a confidence interval to state precision
 <ul>
-<li>The interval is built from the standard error</li>
-<li>The standard error is the estimated spread of the estimator</li>
-<li>That spread is a property of the estimator’s own distribution</li>
+<li class="fragment">The interval is built from the standard error</li>
+<li class="fragment">The standard error is the estimated spread of the estimator</li>
+<li class="fragment">That spread is a property of the estimator’s own distribution</li>
 </ul></li>
-<li>Imagine applying the same estimator to different random samples repeatedly
+<li class="fragment">Imagine applying the same estimator to different random samples repeatedly
 <ul>
-<li>The results of these samples will have a distribution</li>
-<li><strong>Sampling distribution</strong>: each sample yields one estimate, a single fixed draw from it</li>
+<li class="fragment">The results of these samples will have a distribution</li>
+<li class="fragment"><strong>Sampling distribution</strong>: each sample yields one estimate, a single fixed draw from it</li>
 </ul></li>
-<li>Everything from here to the confidence interval rests on this distribution</li>
+<li class="fragment">Everything from here to the confidence interval rests on this distribution</li>
 </ul>
 </section>
 <section id="seeing-it-happen" class="slide level2 smaller">
 <h2>Seeing it happen</h2>
 <ul>
-<li>Three coins, fair (p = 0.5), biased (p = 0.25) and very biased (p = 0.1), and five sample sizes: n = 1, 5, 10, 30, 100</li>
-<li>Buttons repeat 1, 5, 20, 100 or 1000 samples, so the shape of the sample mean builds live</li>
-<li>Head = 1; tail = 0</li>
-<li>The mean of the samples is the proportion of heads</li>
+<li class="fragment">Three coins, fair (p = 0.5), biased (p = 0.25) and very biased (p = 0.1), and five sample sizes: n = 1, 5, 10, 30, 100</li>
+<li class="fragment">Buttons repeat 1, 5, 20, 100 or 1000 samples, so the shape of the sample mean builds live</li>
+<li class="fragment">Head = 1; tail = 0</li>
+<li class="fragment">The mean of the samples is the proportion of heads</li>
 </ul>
 <div id="coin-widget" style="text-align:center;">
 <div style="margin-bottom:0.25em;">
@@ -477,63 +477,63 @@ Reset
 <section id="what-the-demonstration-shows" class="slide level2 smaller">
 <h2>What the demonstration shows</h2>
 <ul>
-<li>The fair coin’s data distribution is symmetric
+<li class="fragment">The fair coin’s data distribution is symmetric
 <ul>
-<li>At n = 1 it is two equal spikes, at 0 and at 1</li>
+<li class="fragment">At n = 1 it is two equal spikes, at 0 and at 1</li>
 </ul></li>
-<li>The biased coin’s data distribution is skewed
+<li class="fragment">The biased coin’s data distribution is skewed
 <ul>
-<li>At n = 1, three in four flips land at 0</li>
+<li class="fragment">At n = 1, three in four flips land at 0</li>
 </ul></li>
-<li>Move up through n = 1, 5, 10, 30, 100, for either coin</li>
-<li>The sample mean’s own distribution drifts toward a bell shape<span class="gap"></span></li>
-<li><strong>The data does not have to be normal.</strong> Skewed data still end up with a bell-shaped sampling distribution, only with a larger n needed to get there than a symmetric parent needs</li>
-<li>The skewed case that matters for this course is <code>sed</code>, right-skewed, in Chapter 4, which refers back to what this seminar showed</li>
+<li class="fragment">Move up through n = 1, 5, 10, 30, 100, for either coin</li>
+<li class="fragment">The sample mean’s own distribution drifts toward a bell shape<span class="gap"></span></li>
+<li class="fragment"><strong>The data does not have to be normal.</strong> Skewed data still end up with a bell-shaped sampling distribution, only with a larger n needed to get there than a symmetric parent needs</li>
+<li class="fragment">The skewed case that matters for this course is <code>sed</code>, right-skewed, in Chapter 4, which refers back to what this seminar showed</li>
 </ul>
 </section>
 <section id="the-central-limit-theorem" class="slide level2 smaller">
 <h2>The central limit theorem</h2>
 <ul>
-<li>The distribution of the sample mean approaches a normal distribution as n grows</li>
-<li>It applies no matter the shape of the underlying data
+<li class="fragment">The distribution of the sample mean approaches a normal distribution as n grows</li>
+<li class="fragment">It applies no matter the shape of the underlying data
 <ul>
-<li>If the data is highly skewed, a larger sample is needed for the sample mean to follow a normal distribution approximately<span class="gap"></span></li>
+<li class="fragment">If the data is highly skewed, a larger sample is needed for the sample mean to follow a normal distribution approximately<span class="gap"></span></li>
 </ul></li>
-<li>Textbooks often suggest rules of thumb, e.g., n ≥ 30, for the CLT to hold</li>
-<li>Reality is more complicated
+<li class="fragment">Textbooks often suggest rules of thumb, e.g., n ≥ 30, for the CLT to hold</li>
+<li class="fragment">Reality is more complicated
 <ul>
-<li>For data that follows a symmetric distribution (a fair coin), n = 10 or 20 is fairly close to normal already</li>
-<li>For highly skewed data (a very biased coin), n = 100 is not necessarily enough</li>
+<li class="fragment">For data that follows a symmetric distribution (a fair coin), n = 10 or 20 is fairly close to normal already</li>
+<li class="fragment">For highly skewed data (a very biased coin), n = 100 is not necessarily enough</li>
 </ul></li>
 </ul>
 </section>
 <section id="standard-deviation-and-standard-error" class="slide level2 smaller">
 <h2>Standard deviation and standard error</h2>
 <ul>
-<li>Recall: any normal distribution is fully described by two numbers, its mean and its SD</li>
-<li>The sampling distribution is a normal distribution too
+<li class="fragment">Recall: any normal distribution is fully described by two numbers, its mean and its SD</li>
+<li class="fragment">The sampling distribution is a normal distribution too
 <ul>
-<li>Its centre is the sample mean</li>
-<li>Its spread is the <strong>standard error (SE)</strong></li>
+<li class="fragment">Its centre is the sample mean</li>
+<li class="fragment">Its spread is the <strong>standard error (SE)</strong></li>
 </ul></li>
-<li>The SD describes the data; the SE describes the estimator</li>
-<li>To quantify the precision, we need the SE</li>
+<li class="fragment">The SD describes the data; the SE describes the estimator</li>
+<li class="fragment">To quantify the precision, we need the SE</li>
 </ul>
 <p><span class="math display">\[SE = \frac{SD}{\sqrt{n}}\]</span></p>
 <ul>
-<li>The SE inherits the SD, but shrinks with the square root of n</li>
+<li class="fragment">The SE inherits the SD, but shrinks with the square root of n</li>
 </ul>
 </section>
 <section id="try-it-sd-or-se" class="slide level2">
 <h2>Try it: SD or SE?</h2>
 <ul>
-<li>Sedentary time: mean 6.56 hours/day, SD 10.9 hours/day, SE 0.06 hours/day (n = 34,434)</li>
-<li>Which number says how much individual people’s sedentary time differs from person to person?
+<li class="fragment">Sedentary time: mean 6.56 hours/day, SD 10.9 hours/day, SE 0.06 hours/day (n = 34,434)</li>
+<li class="fragment">Which number says how much individual people’s sedentary time differs from person to person?
 <ul>
-<li><strong>A.</strong> The SD, 10.9 hours/day</li>
-<li><strong>B.</strong> The SE, 0.06 hours/day</li>
+<li class="fragment"><strong>A.</strong> The SD, 10.9 hours/day</li>
+<li class="fragment"><strong>B.</strong> The SE, 0.06 hours/day</li>
 </ul></li>
-<li>Discuss in pairs: what does the other number tell us instead?</li>
+<li class="fragment">Discuss in pairs: what does the other number tell us instead?</li>
 </ul>
 </section>
 <section id="sedentary-time-the-standard-error-of-its-mean" class="slide level2">
@@ -1015,24 +1015,24 @@ Reset
 </div>
 </div>
 <ul>
-<li>The SE, 0.059 hours/day, is far smaller than the SD of the data, 10.9 hours/day</li>
-<li>The estimate is precise because the sample size is so large</li>
+<li class="fragment">The SE, 0.059 hours/day, is far smaller than the SD of the data, 10.9 hours/day</li>
+<li class="fragment">The estimate is precise because the sample size is so large</li>
 </ul>
 </section>
 <section id="what-a-confidence-interval-is-and-why-we-report-one" class="slide level2 smaller">
 <h2>What a confidence interval is, and why we report one</h2>
 <ul>
-<li>An estimate on its own says nothing about how far off it might be</li>
-<li>Everything above, the sampling distribution and the SE, exists to build a confidence interval (CI)</li>
-<li>A CI attaches precision to the sampling process
+<li class="fragment">An estimate on its own says nothing about how far off it might be</li>
+<li class="fragment">Everything above, the sampling distribution and the SE, exists to build a confidence interval (CI)</li>
+<li class="fragment">A CI attaches precision to the sampling process
 <ul>
-<li>Always reported as a range</li>
-<li>Built from the standard error</li>
-<li>Its width is the margin of error</li>
+<li class="fragment">Always reported as a range</li>
+<li class="fragment">Built from the standard error</li>
+<li class="fragment">Its width is the margin of error</li>
 </ul></li>
-<li>In its simplest form, a 95% CI is calculated as:
+<li class="fragment">In its simplest form, a 95% CI is calculated as:
 <ul>
-<li>estimate ± 1.96 * standard errors</li>
+<li class="fragment">estimate ± 1.96 * standard errors</li>
 </ul></li>
 </ul>
 </section>
@@ -1041,20 +1041,20 @@ Reset
 <div class="columns">
 <div class="column" style="width:52%;">
 <ul>
-<li>CIs are mostly reported as ‘95% CI’
+<li class="fragment">CIs are mostly reported as ‘95% CI’
 <ul>
-<li>95% confidence level, or equivalently 5% (1-0.95) significance level</li>
-<li>The confidence/significance level is almost always fixed at this arbitrary level</li>
-<li>1.96 comes from the normal distribution the CLT delivers</li>
+<li class="fragment">95% confidence level, or equivalently 5% (1-0.95) significance level</li>
+<li class="fragment">The confidence/significance level is almost always fixed at this arbitrary level</li>
+<li class="fragment">1.96 comes from the normal distribution the CLT delivers</li>
 </ul></li>
-<li>With a small sample, we are less certain about our SD estimate
+<li class="fragment">With a small sample, we are less certain about our SD estimate
 <ul>
-<li>The t distribution allows for that extra uncertainty</li>
-<li>Same bell shape, heavier tails</li>
-<li>Bigger than 1.96, growing as n shrinks</li>
-<li>At n = 10 it is about 2.26. At n = 30, about 2.05</li>
+<li class="fragment">The t distribution allows for that extra uncertainty</li>
+<li class="fragment">Same bell shape, heavier tails</li>
+<li class="fragment">Bigger than 1.96, growing as n shrinks</li>
+<li class="fragment">At n = 10 it is about 2.26. At n = 30, about 2.05</li>
 </ul></li>
-<li>As n grows, t converges back to the normal and 1.96</li>
+<li class="fragment">As n grows, t converges back to the normal and 1.96</li>
 </ul>
 </div><div class="column" style="width:48%;">
 <div class="cell">
@@ -1547,9 +1547,9 @@ Reset
 </div>
 </div>
 <ul>
-<li>6.56 ± 1.96 × 0.0588</li>
-<li>6.56 ± 0.12</li>
-<li>6.45 to 6.68 hours/day</li>
+<li class="fragment">6.56 ± 1.96 × 0.0588</li>
+<li class="fragment">6.56 ± 0.12</li>
+<li class="fragment">6.45 to 6.68 hours/day</li>
 </ul>
 </section>
 <section id="try-it-a-ci-from-scratch" class="slide level2">
@@ -2029,50 +2029,50 @@ Reset
 </div>
 </div>
 <ul>
-<li>Given the mean, SD and n above, find the standard error, then the 95% CI</li>
-<li>Three lines, five minutes</li>
+<li class="fragment">Given the mean, SD and n above, find the standard error, then the 95% CI</li>
+<li class="fragment">Three lines, five minutes</li>
 </ul>
 </section>
 <section id="try-it-the-answer" class="slide level2">
 <h2>Try it: the answer</h2>
 <ul>
-<li>SE = 18.5 / sqrt(41,765) = 0.091 years</li>
-<li>CI: 47.5 ± 1.96 × 0.091</li>
-<li>47.3 to 47.7 years</li>
+<li class="fragment">SE = 18.5 / sqrt(41,765) = 0.091 years</li>
+<li class="fragment">CI: 47.5 ± 1.96 × 0.091</li>
+<li class="fragment">47.3 to 47.7 years</li>
 </ul>
 </section>
 <section id="a-range-of-compatibility" class="slide level2 smaller">
 <h2>A range of compatibility</h2>
 <ul>
-<li>A CI is not a single verdict about one number
+<li class="fragment">A CI is not a single verdict about one number
 <ul>
-<li>Any value inside a CI is compatible with the data</li>
+<li class="fragment">Any value inside a CI is compatible with the data</li>
 </ul></li>
-<li>6.45 to 6.68 hours/day says a population mean of 6.5 is compatible with what we saw, and so is 6.6. A mean of 7.2 is not</li>
-<li>Compatibility is a matter of degree: values near the middle sit better than values near the ends</li>
-<li>This is what makes a CI more informative than any test that only presents a p-value, which Week 9 covers</li>
+<li class="fragment">6.45 to 6.68 hours/day says a population mean of 6.5 is compatible with what we saw, and so is 6.6. A mean of 7.2 is not</li>
+<li class="fragment">Compatibility is a matter of degree: values near the middle sit better than values near the ends</li>
+<li class="fragment">This is what makes a CI more informative than any test that only presents a p-value, which Week 9 covers</li>
 </ul>
 </section>
 <section id="what-a-95-confidence-interval-means" class="slide level2 smaller">
 <h2>What a 95% confidence interval means</h2>
 <ul>
-<li>95% CI definition: Of all the CIs this estimator could build, 95% of them would contain the true population value</li>
-<li>The population value is fixed. It is the <em>CI</em> that moves from sample to sample</li>
-<li>This is counterintuitive, and it is why the result gets misinterpreted so often</li>
-<li>It comes from what is called <strong>frequentist statistics</strong>, which is easier to compute</li>
-<li>An alternative, <strong>credible intervals</strong> from Bayesian statistics, are more intuitive to interpret but harder to compute
+<li class="fragment">95% CI definition: Of all the CIs this estimator could build, 95% of them would contain the true population value</li>
+<li class="fragment">The population value is fixed. It is the <em>CI</em> that moves from sample to sample</li>
+<li class="fragment">This is counterintuitive, and it is why the result gets misinterpreted so often</li>
+<li class="fragment">It comes from what is called <strong>frequentist statistics</strong>, which is easier to compute</li>
+<li class="fragment">An alternative, <strong>credible intervals</strong> from Bayesian statistics, are more intuitive to interpret but harder to compute
 <ul>
-<li>We won’t be learning this in the MPH</li>
+<li class="fragment">We won’t be learning this in the MPH</li>
 </ul></li>
 </ul>
 </section>
 <section id="seeing-coverage" class="slide level2 smaller">
 <h2>Seeing coverage</h2>
 <ul>
-<li>Below is a simulator for 95% CIs on <code>sed</code>
+<li class="fragment">Below is a simulator for 95% CIs on <code>sed</code>
 <ul>
-<li>Excludes 145 physically impossible values (over 24 hours/day), so the true mean here is 5.89 hours/day, not the 6.56 used elsewhere in this deck</li>
-<li>Each click draws 1,000 95% CIs against the true mean (navy line)</li>
+<li class="fragment">Excludes 145 physically impossible values (over 24 hours/day), so the true mean here is 5.89 hours/day, not the 6.56 used elsewhere in this deck</li>
+<li class="fragment">Each click draws 1,000 95% CIs against the true mean (navy line)</li>
 </ul></li>
 </ul>
 <div id="coverage-widget" style="text-align:center;">
@@ -2172,35 +2172,35 @@ New sample
 <section id="try-it-is-this-interpretation-sound" class="slide level2">
 <h2>Try it: is this interpretation sound?</h2>
 <ul>
-<li>The sedentary time CI: 6.45 to 6.68 hours/day
+<li class="fragment">The sedentary time CI: 6.45 to 6.68 hours/day
 <ul>
-<li><strong>A.</strong> ‘There is a 95% probability the true mean lies in this range’</li>
-<li><strong>B.</strong> ‘We are 95% confident the true mean lies in this range’</li>
-<li><strong>C.</strong> ‘If we repeated this study many times, 95% of the resulting CIs would contain the true mean’</li>
+<li class="fragment"><strong>A.</strong> ‘There is a 95% probability the true mean lies in this range’</li>
+<li class="fragment"><strong>B.</strong> ‘We are 95% confident the true mean lies in this range’</li>
+<li class="fragment"><strong>C.</strong> ‘If we repeated this study many times, 95% of the resulting CIs would contain the true mean’</li>
 </ul></li>
-<li>Which are wrong, and what exactly is wrong with each?</li>
+<li class="fragment">Which are wrong, and what exactly is wrong with each?</li>
 </ul>
 </section>
 <section id="try-it-the-answer-1" class="slide level2">
 <h2>Try it: the answer</h2>
 <ul>
-<li><strong>A. Wrong</strong>: both the 95% CI and the true mean are fixed</li>
-<li><strong>B. Wrong</strong>: despite sounding careful, ‘confident’ is standing in for ‘probability’, the same error as A</li>
-<li><strong>C. Right</strong>: the coverage statement about the procedure across repeated samples, not about this one CI; doesn’t assume the true mean or the CI to be random</li>
+<li class="fragment"><strong>A. Wrong</strong>: both the 95% CI and the true mean are fixed</li>
+<li class="fragment"><strong>B. Wrong</strong>: despite sounding careful, ‘confident’ is standing in for ‘probability’, the same error as A</li>
+<li class="fragment"><strong>C. Right</strong>: the coverage statement about the procedure across repeated samples, not about this one CI; doesn’t assume the true mean or the CI to be random</li>
 </ul>
 </section>
 <section id="a-common-misconception" class="slide level2 smaller">
 <h2>A common misconception</h2>
 <ul>
-<li>The intuitive objection behind A and B: if 95% of all such CIs cover the true value, surely this one has a 95% chance of covering it too?
+<li class="fragment">The intuitive objection behind A and B: if 95% of all such CIs cover the true value, surely this one has a 95% chance of covering it too?
 <ul>
-<li>It does not. The population mean is fixed, and this one CI either contains it or does not</li>
-<li>Once both are fixed, there is no probability left in the situation<span class="gap"></span></li>
+<li class="fragment">It does not. The population mean is fixed, and this one CI either contains it or does not</li>
+<li class="fragment">Once both are fixed, there is no probability left in the situation<span class="gap"></span></li>
 </ul></li>
-<li>The correct interpretation (Answer C) is awkward to say
+<li class="fragment">The correct interpretation (Answer C) is awkward to say
 <ul>
-<li>So the practical way to avoid the confusion is to write the result and let it stand, with no probability sentence attached</li>
-<li>6.56 hours/day (95% CI: 6.45 to 6.68)</li>
+<li class="fragment">So the practical way to avoid the confusion is to write the result and let it stand, with no probability sentence attached</li>
+<li class="fragment">6.56 hours/day (95% CI: 6.45 to 6.68)</li>
 </ul></li>
 </ul>
 </section>
@@ -2209,10 +2209,10 @@ New sample
 <div class="columns">
 <div class="column" style="width:42%;">
 <ul>
-<li>Greenland et al.&nbsp;(2016), <em>European Journal of Epidemiology</em>: ‘Statistical tests, P values, confidence intervals, and power: a guide to misinterpretations’</li>
-<li>Names the specific wrong readings, not just the general warning</li>
-<li><a href="https://pubmed.ncbi.nlm.nih.gov/27209009/">PubMed</a></li>
-<li>Judging whether a sentence says what the numbers support is where half the assessment marks are</li>
+<li class="fragment">Greenland et al.&nbsp;(2016), <em>European Journal of Epidemiology</em>: ‘Statistical tests, P values, confidence intervals, and power: a guide to misinterpretations’</li>
+<li class="fragment">Names the specific wrong readings, not just the general warning</li>
+<li class="fragment"><a href="https://pubmed.ncbi.nlm.nih.gov/27209009/">PubMed</a></li>
+<li class="fragment">Judging whether a sentence says what the numbers support is where half the assessment marks are</li>
 </ul>
 </div><div class="column" style="width:58%;">
 <blockquote>
@@ -2226,36 +2226,36 @@ New sample
 <section id="a-proportion-is-a-mean-too" class="slide level2 smaller">
 <h2>A proportion is a mean too</h2>
 <ul>
-<li>Everything above focused on continuous data; we also work with a lot of binary data in public health, e.g., whether someone died</li>
-<li>Binary data are often summarised as a proportion</li>
-<li><strong>A proportion is a sample mean</strong>
+<li class="fragment">Everything above focused on continuous data; we also work with a lot of binary data in public health, e.g., whether someone died</li>
+<li class="fragment">Binary data are often summarised as a proportion</li>
+<li class="fragment"><strong>A proportion is a sample mean</strong>
 <ul>
-<li>Code the outcome 1 for everyone who has it, 0 for everyone who does not</li>
-<li>The proportion with the outcome is exactly the mean of that column of 0s and 1s</li>
-<li>Example: 3 of 5 patients improved, so the column is 1, 1, 1, 0, 0
+<li class="fragment">Code the outcome 1 for everyone who has it, 0 for everyone who does not</li>
+<li class="fragment">The proportion with the outcome is exactly the mean of that column of 0s and 1s</li>
+<li class="fragment">Example: 3 of 5 patients improved, so the column is 1, 1, 1, 0, 0
 <ul>
-<li>Its mean is 0.6, which is also the proportion: 60% (3/5)</li>
+<li class="fragment">Its mean is 0.6, which is also the proportion: 60% (3/5)</li>
 </ul></li>
 </ul></li>
-<li>The CLT applies to proportions for the same reason it applies to any other mean</li>
-<li>We already saw its sampling distribution build live: coin flips coded 0 and 1 are the same thing (<a href="#/10">back to the demonstration</a>)</li>
+<li class="fragment">The CLT applies to proportions for the same reason it applies to any other mean</li>
+<li class="fragment">We already saw its sampling distribution build live: coin flips coded 0 and 1 are the same thing (<a href="#/10">back to the demonstration</a>)</li>
 </ul>
 </section>
 <section id="the-standard-error-of-a-proportion" class="slide level2 smaller">
 <h2>The standard error of a proportion</h2>
 <ul>
-<li>Because a proportion is also a mean, the CLT applies to it too</li>
-<li>First we need its SE</li>
+<li class="fragment">Because a proportion is also a mean, the CLT applies to it too</li>
+<li class="fragment">First we need its SE</li>
 </ul>
 <p><span class="math display">\[SE = \sqrt{\frac{p(1-p)}{n}}\]</span></p>
 <ul>
-<li>The same SD-over-root-n shape as the formula for a mean, with sqrt(p(1-p)) playing the part of the SD</li>
-<li>For a binary variable, the spread is fixed by the proportion itself</li>
-<li>The formal name of the distribution of a binary variable is <strong>binomial distribution</strong></li>
-<li>Like the normal distribution, the binomial distribution is also characterised by two numbers only:
+<li class="fragment">The same SD-over-root-n shape as the formula for a mean, with sqrt(p(1-p)) playing the part of the SD</li>
+<li class="fragment">For a binary variable, the spread is fixed by the proportion itself</li>
+<li class="fragment">The formal name of the distribution of a binary variable is <strong>binomial distribution</strong></li>
+<li class="fragment">Like the normal distribution, the binomial distribution is also characterised by two numbers only:
 <ul>
-<li>The number of observations (i.e., sample size, <em>n</em>)</li>
-<li>The proportion with the event (<em>p</em>)</li>
+<li class="fragment">The number of observations (i.e., sample size, <em>n</em>)</li>
+<li class="fragment">The proportion with the event (<em>p</em>)</li>
 </ul></li>
 </ul>
 </section>
@@ -2736,7 +2736,7 @@ New sample
 </div>
 </div>
 <ul>
-<li>The 1948 MRC streptomycin trial: 55 of 107 patients improved</li>
+<li class="fragment">The 1948 MRC streptomycin trial: 55 of 107 patients improved</li>
 </ul>
 </section>
 <section id="a-95-ci-for-a-proportion" class="slide level2">
@@ -3216,9 +3216,9 @@ New sample
 </div>
 </div>
 <ul>
-<li>0.514 ± 1.96 × 0.0483</li>
-<li>0.419 to 0.609</li>
-<li>Everything above about compatibility and interpretation applies here too</li>
+<li class="fragment">0.514 ± 1.96 × 0.0483</li>
+<li class="fragment">0.419 to 0.609</li>
+<li class="fragment">Everything above about compatibility and interpretation applies here too</li>
 </ul>
 </section>
 <section id="block-2-comparing-two-groups" class="slide level2 divider" data-background-image="assets/skyline.jpg" data-background-size="cover">
@@ -3227,27 +3227,27 @@ New sample
 <section id="one-mean-is-rarely-the-question" class="slide level2">
 <h2>One mean is rarely the question</h2>
 <ul>
-<li>We can put a CI around one mean, the basis of a descriptive study</li>
-<li>Analytic studies make comparisons: men against women, treated against untreated</li>
-<li>In these cases, we are interested in the differences and ratios between these means</li>
+<li class="fragment">We can put a CI around one mean, the basis of a descriptive study</li>
+<li class="fragment">Analytic studies make comparisons: men against women, treated against untreated</li>
+<li class="fragment">In these cases, we are interested in the differences and ratios between these means</li>
 </ul>
 </section>
 <section id="a-ci-for-a-difference-in-means" class="slide level2 smaller">
 <h2>A CI for a difference in means</h2>
 <ul>
-<li>The estimate is the difference between two groups’ means
+<li class="fragment">The estimate is the difference between two groups’ means
 <ul>
-<li>The standard error combines the two groups’ own</li>
+<li class="fragment">The standard error combines the two groups’ own</li>
 </ul></li>
-<li>This works because:
+<li class="fragment">This works because:
 <ul>
-<li>Each group’s mean follows an approximately normal sampling distribution, based on CLT</li>
-<li>The difference between two normal quantities is itself normal (proven mathematically)</li>
+<li class="fragment">Each group’s mean follows an approximately normal sampling distribution, based on CLT</li>
+<li class="fragment">The difference between two normal quantities is itself normal (proven mathematically)</li>
 </ul></li>
-<li>Since the difference is approximately normal, it takes the same estimate ± 1.96 SE calculation as before
+<li class="fragment">Since the difference is approximately normal, it takes the same estimate ± 1.96 SE calculation as before
 <ul>
-<li>Hand-calculating the CI of a difference or a ratio is outside the scope of the MPH, and rests on more complex formulae</li>
-<li>We will learn how to do it in R, and how to interpret the result</li>
+<li class="fragment">Hand-calculating the CI of a difference or a ratio is outside the scope of the MPH, and rests on more complex formulae</li>
+<li class="fragment">We will learn how to do it in R, and how to interpret the result</li>
 </ul></li>
 </ul>
 </section>
@@ -3728,19 +3728,19 @@ New sample
 </div>
 </div>
 <ul>
-<li>Check the direction before reading the CI: the software’s own output names which group was subtracted from which</li>
+<li class="fragment">Check the direction before reading the CI: the software’s own output names which group was subtracted from which</li>
 </ul>
 </section>
 <section id="a-ci-for-a-difference-in-proportions" class="slide level2 smaller">
 <h2>A CI for a difference in proportions</h2>
 <ul>
-<li>Same argument as the difference in means, with one qualification
+<li class="fragment">Same argument as the difference in means, with one qualification
 <ul>
-<li>For a proportion the normal shape is an approximation</li>
-<li>The approximation won’t be as good as when the underlying data is continuous</li>
-<li>Good enough when both groups have a reasonable number of events <strong>and</strong> non-events</li>
+<li class="fragment">For a proportion the normal shape is an approximation</li>
+<li class="fragment">The approximation won’t be as good as when the underlying data is continuous</li>
+<li class="fragment">Good enough when both groups have a reasonable number of events <strong>and</strong> non-events</li>
 </ul></li>
-<li>Exact methods exist for when either count is small (more in the labs)</li>
+<li class="fragment">Exact methods exist for when either count is small (more in the labs)</li>
 </ul>
 </section>
 <section id="streptomycin-69-against-33-improved" class="slide level2">
@@ -4218,15 +4218,15 @@ New sample
 </div>
 </div>
 <ul>
-<li>The same trial we met in Week 7</li>
+<li class="fragment">The same trial we met in Week 7</li>
 </ul>
 </section>
 <section id="the-ci-and-the-null-value" class="slide level2">
 <h2>The CI and the null value</h2>
 <ul>
-<li>This CI excludes zero</li>
-<li>Zero is not among the values these data are compatible with</li>
-<li>People often read this as a ‘real’ difference, and Week 9 will introduce this more formally</li>
+<li class="fragment">This CI excludes zero</li>
+<li class="fragment">Zero is not among the values these data are compatible with</li>
+<li class="fragment">People often read this as a ‘real’ difference, and Week 9 will introduce this more formally</li>
 </ul>
 </section>
 <section id="try-it-a-ci-for-a-difference-in-proportions" class="slide level2">
@@ -4704,15 +4704,15 @@ New sample
 </div>
 </div>
 <ul>
-<li>Given the difference and its SE above, find the 95% CI</li>
+<li class="fragment">Given the difference and its SE above, find the 95% CI</li>
 </ul>
 </section>
 <section id="try-it-the-answer-2" class="slide level2">
 <h2>Try it: the answer</h2>
 <ul>
-<li>CI: 0.076 ± 1.96 × 0.004</li>
-<li>0.068 to 0.084</li>
-<li>The CI excludes zero, between men and women in current smoking</li>
+<li class="fragment">CI: 0.076 ± 1.96 × 0.004</li>
+<li class="fragment">0.068 to 0.084</li>
+<li class="fragment">The CI excludes zero, between men and women in current smoking</li>
 </ul>
 </section>
 <section id="block-3-how-big-a-study-needs-to-be" class="slide level2 divider" data-background-image="assets/skyline.jpg" data-background-size="cover">
@@ -4721,71 +4721,71 @@ New sample
 <section id="before-any-comparison-runs" class="slide level2">
 <h2>Before any comparison runs</h2>
 <ul>
-<li>Every comparison in Block 2 assumed the data were already collected</li>
-<li>In practice, someone decides how many people to recruit before a single measurement is taken</li>
-<li>How large does a study need to be, and what decides the answer?</li>
+<li class="fragment">Every comparison in Block 2 assumed the data were already collected</li>
+<li class="fragment">In practice, someone decides how many people to recruit before a single measurement is taken</li>
+<li class="fragment">How large does a study need to be, and what decides the answer?</li>
 </ul>
 </section>
 <section id="what-determines-the-margin-of-error" class="slide level2">
 <h2>What determines the margin of error?</h2>
 <ul>
-<li>In polling, people sample based on their desired margin of error</li>
-<li>The same for descriptive epidemiological studies<span class="gap"></span></li>
-<li>Three things decide a margin of error (i.e., CI’s width)
+<li class="fragment">In polling, people sample based on their desired margin of error</li>
+<li class="fragment">The same for descriptive epidemiological studies<span class="gap"></span></li>
+<li class="fragment">Three things decide a margin of error (i.e., CI’s width)
 <ol type="1">
-<li>How much confidence is required (‘95%’)</li>
-<li>How variable the data are (SD)</li>
-<li>How many observations there are (n)<span class="gap"></span></li>
+<li class="fragment">How much confidence is required (‘95%’)</li>
+<li class="fragment">How variable the data are (SD)</li>
+<li class="fragment">How many observations there are (n)<span class="gap"></span></li>
 </ol></li>
-<li>1 is usually fixed; 2 is based on the measurement; 3 is often what people try to determine</li>
+<li class="fragment">1 is usually fixed; 2 is based on the measurement; 3 is often what people try to determine</li>
 </ul>
 </section>
 <section id="width-and-the-square-root-of-n" class="slide level2">
 <h2>Width and the square root of n</h2>
 
 <img data-src="week08-estimation_files/figure-revealjs/width-curve-1.png" width="768" class="r-stretch"><ul>
-<li>The CI width shrinks with one over the square root of n: steeply at first, then flattening</li>
-<li>Cut the sample in half, the CI gets about 40% wider. Cut it to a tenth, roughly three times wider</li>
+<li class="fragment">The CI width shrinks with one over the square root of n: steeply at first, then flattening</li>
+<li class="fragment">Cut the sample in half, the CI gets about 40% wider. Cut it to a tenth, roughly three times wider</li>
 </ul>
 </section>
 <section id="from-precision-to-sample-size" class="slide level2 smaller">
 <h2>From precision to sample size</h2>
 <ul>
-<li>Three linked quantities
+<li class="fragment">Three linked quantities
 <ul>
-<li>The wanted margin of error</li>
-<li>The expected data spread (i.e., how noisy the measurement is)</li>
-<li>The sample size</li>
+<li class="fragment">The wanted margin of error</li>
+<li class="fragment">The expected data spread (i.e., how noisy the measurement is)</li>
+<li class="fragment">The sample size</li>
 </ul></li>
-<li>Fix the first two, and the formula gives the third</li>
+<li class="fragment">Fix the first two, and the formula gives the third</li>
 </ul>
 <p><span class="math display">\[n = \frac{1.96^2 \times p(1-p)}{m^2}\]</span></p>
 <ul>
-<li><em>m</em> is the wanted margin of error, half the CI’s width</li>
-<li><em>p</em> is the expected proportion, playing the same role the SD plays for a mean</li>
-<li><em>m</em> is squared, so it dominates: halve the margin, and n roughly quadruples</li>
+<li class="fragment"><em>m</em> is the wanted margin of error, half the CI’s width</li>
+<li class="fragment"><em>p</em> is the expected proportion, playing the same role the SD plays for a mean</li>
+<li class="fragment"><em>m</em> is squared, so it dominates: halve the margin, and n roughly quadruples</li>
 </ul>
 </section>
 <section id="try-it-how-does-n-respond" class="slide level2">
 <h2>Try it: how does n respond?</h2>
 <ul>
-<li>A poll wants to estimate a proportion around p = 0.5, with a 95% CI</li>
-<li>At a margin of error of 3 percentage points (m = 0.03), the formula above gives n ≈ 1,067</li>
-<li>Tightening the margin to 1.5 percentage points (m = 0.015) multiplies n by about how much?
+<li class="fragment">A poll wants to estimate a proportion around p = 0.5, with a 95% CI</li>
+<li class="fragment">At a margin of error of 3 percentage points (m = 0.03), the formula above gives n ≈ 1,067</li>
+<li class="fragment">Tightening the margin to 1.5 percentage points (m = 0.015) multiplies n by about how much?
 <ul>
-<li><strong>A.</strong> 2x</li>
-<li><strong>B.</strong> 4x</li>
-<li><strong>C.</strong> 10x</li>
+<li class="fragment"><strong>A.</strong> 2x</li>
+<li class="fragment"><strong>B.</strong> 4x</li>
+<li class="fragment"><strong>C.</strong> 10x</li>
 </ul></li>
-<li>Two minutes</li>
+<li class="fragment">Two minutes</li>
 </ul>
 </section>
 <section id="try-it-the-answer-3" class="slide level2">
 <h2>Try it: the answer</h2>
 <ul>
-<li><strong>B.</strong> About 4x</li>
-<li>Halving m halves the bottom of a squared term, so the whole fraction roughly quadruples: n ≈ 4,268</li>
-<li>The same square-root relationship as the width curve, read the other way round</li>
+<li class="fragment"><strong>B.</strong> About 4x</li>
+<li class="fragment">Halving m halves the bottom of a squared term, so the whole fraction roughly quadruples: n ≈ 4,268</li>
+<li class="fragment">The same square-root relationship as the width curve, read the other way round</li>
 </ul>
 </section>
 <section id="application" class="slide level2 divider" data-background-image="assets/skyline.jpg" data-background-size="cover">
@@ -4794,9 +4794,9 @@ New sample
 <section id="three-claims-three-cis" class="slide level2 smaller">
 <h2>Three claims, three CIs</h2>
 <ul>
-<li>Read the papers’ absract, and discuss in pairs:</li>
-<li>Does each sentence say what the CI supports? Where it does not, what would you write instead?</li>
-<li>Ten minutes</li>
+<li class="fragment">Read the papers’ absract, and discuss in pairs:</li>
+<li class="fragment">Does each sentence say what the CI supports? Where it does not, what would you write instead?</li>
+<li class="fragment">Ten minutes</li>
 </ul>
 <div class="cell">
 <div class="cell-output-display">
@@ -5291,38 +5291,38 @@ New sample
 </div>
 </div>
 <ul>
-<li>A hazard ratio (Williamson) is a ratio measure like the RR and OR from Week 2, with a null value of 1. More details in Week 9.</li>
+<li class="fragment">A hazard ratio (Williamson) is a ratio measure like the RR and OR from Week 2, with a null value of 1. More details in Week 9.</li>
 </ul>
 </section>
 <section id="three-claims-judged" class="slide level2 smaller">
 <h2>Three claims, judged</h2>
 <ul>
-<li><strong>Cao et al.: too imprecise to support ‘no benefit’</strong>
+<li class="fragment"><strong>Cao et al.: too imprecise to support ‘no benefit’</strong>
 <ul>
-<li>The CI runs from a 17-point reduction in mortality to a 6-point increase, compatible with both a large benefit and real harm</li>
-<li>The trial’s own next sentence half-admits this</li>
+<li class="fragment">The CI runs from a 17-point reduction in mortality to a 6-point increase, compatible with both a large benefit and real harm</li>
+<li class="fragment">The trial’s own next sentence half-admits this</li>
 </ul></li>
-<li><strong>Radonovich et al.: precise, but the sentence is potentially misleading</strong>
+<li class="fragment"><strong>Radonovich et al.: precise, but the sentence is potentially misleading</strong>
 <ul>
-<li>The narrow CI already shows any difference either way is small. ‘No significant difference’ throws that away</li>
-<li>Cao’s imprecision and this one point in opposite directions: one CI is too wide to conclude ‘no difference’, the other narrow enough to conclude it</li>
-<li>Source: <a href="https://pubmed.ncbi.nlm.nih.gov/33440457/">Hemming and Taljaard, <em>Medical Journal of Australia</em> 2021</a></li>
+<li class="fragment">The narrow CI already shows any difference either way is small. ‘No significant difference’ throws that away</li>
+<li class="fragment">Cao’s imprecision and this one point in opposite directions: one CI is too wide to conclude ‘no difference’, the other narrow enough to conclude it</li>
+<li class="fragment">Source: <a href="https://pubmed.ncbi.nlm.nih.gov/33440457/">Hemming and Taljaard, <em>Medical Journal of Australia</em> 2021</a></li>
 </ul></li>
-<li><strong>Williamson et al.: sound</strong>
+<li class="fragment"><strong>Williamson et al.: sound</strong>
 <ul>
-<li>The CI is well away from 1, and the claim matches it, correctly hedged</li>
-<li>The honest question is what the estimate was adjusted for, not whether the arithmetic is right</li>
+<li class="fragment">The CI is well away from 1, and the claim matches it, correctly hedged</li>
+<li class="fragment">The honest question is what the estimate was adjusted for, not whether the arithmetic is right</li>
 </ul></li>
 </ul>
 </section>
 <section id="key-points-and-what-the-lab-does" class="slide level2 smaller">
 <h2>Key points, and what the lab does</h2>
 <ul>
-<li>An estimate from a sample is not the population value. The CI says how far off it might be</li>
-<li>The SD describes the data. The SE describes the estimator</li>
-<li>A 95% CI is the range of values the data are compatible with, and it covers the population value 95% of the time in the long run: not the same as being 95% sure about this one</li>
-<li>Precision is bought with n, but scaled slowly</li>
-<li>The lab builds every one of these CIs in R, on <code>nhanes_mph</code> and <code>strep_tb</code>, and reconciles the hand calculations from today against the software’s answers</li>
+<li class="fragment">An estimate from a sample is not the population value. The CI says how far off it might be</li>
+<li class="fragment">The SD describes the data. The SE describes the estimator</li>
+<li class="fragment">A 95% CI is the range of values the data are compatible with, and it covers the population value 95% of the time in the long run: not the same as being 95% sure about this one</li>
+<li class="fragment">Precision is bought with n, but scaled slowly</li>
+<li class="fragment">The lab builds every one of these CIs in R, on <code>nhanes_mph</code> and <code>strep_tb</code>, and reconciles the hand calculations from today against the software’s answers</li>
 </ul>
 
 </section>
@@ -5490,7 +5490,7 @@ New sample
         previewLinks: false,
 
         // Transition style (none/fade/slide/convex/concave/zoom)
-        transition: 'none',
+        transition: 'slide',
 
         // Transition speed (default/fast/slow)
         transitionSpeed: 'default',
