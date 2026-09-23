@@ -20,7 +20,7 @@ The table below is the whole course in one place: what each week covers, where t
 | 5 | Data and data handling | None | [Chapter 2](chapters/05-prep2.qmd) |
 | 7 | Describing and visualising data | [Slides](https://fredho-42.github.io/MED5652-IES-stats/seminars/week07-descriptive.html) | [Chapter 3](chapters/07-descriptive.qmd) |
 | 8 | Estimation, precision, and sample size | [Slides](https://fredho-42.github.io/MED5652-IES-stats/seminars/week08-estimation.html) | [Chapter 4](chapters/08-estimation.qmd) |
-| 9 | Hypothesis tests and measures of association | To follow | [Chapter 5](chapters/09-comparison.qmd) |
+| 9 | Hypothesis tests and measures of association | [Slides](https://fredho-42.github.io/MED5652-IES-stats/seminars/week09-comparison.html) | [Chapter 5](chapters/09-comparison.qmd) |
 | 10 | Correlation and simple linear regression | To follow | [Chapter 6](chapters/10-regression.qmd) |
 | 11 | Multiple linear and logistic regression | To follow | [Chapter 7](chapters/11-adjustment.qmd) |
 
