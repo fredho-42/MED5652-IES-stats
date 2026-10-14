@@ -256,6 +256,7 @@ This appendix is a reference: packages, functions, R syntax, and statistical ter
 |---|---|---|
 | Confounder | A variable that's a common cause of both the exposure and the outcome, distorting the crude association between them unless properly adjusted for. | Chapter 7 |
 | Mediator | A variable that sits on the causal path between an exposure and an outcome. Adjusting for one, unlike a confounder, removes part of the effect itself, not a distortion, which is why the same variable can't be treated both ways. | Chapter 7 |
+| Prognostic factor | A variable associated with the outcome but not with the exposure. Adjusting for it doesn't remove confounding, but can make the estimate more precise. | Chapter 7 |
 | Adjustment set | The variables chosen, before fitting a model, to adjust an association for. | Chapter 7 |
 | Sensitivity analysis | Fitting a model more than one way, on purpose, to see how much a result depends on an assumption that can't be settled from the data. | Chapter 7 |
 | Collider bias | Distortion introduced by adjusting for a variable that's a common *effect* of the exposure and the outcome, not a common cause. | Summary |

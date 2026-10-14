@@ -136,7 +136,7 @@ Rebuild `dead_10yr` using a five-year window (60 months) instead of ten. Report 
 
 ## Extending the Chapter 6 model
 
-This section adjusts for known confounders: age, gender, and education. Chapter 6 fitted total cholesterol (`chol`, in mmol/L) against sedentary time alone (`sed`, in hours/day), `chol ~ sed`, and found a small, non-significant slope: it adjusted for nothing else, so it couldn't rule out age, gender, and education masking the association. We now add them using `+` to an `lm()` formula.
+This section adjusts for known confounders: age, gender, and education. Chapter 6 fitted total cholesterol (`chol`, in mmol/L) against sedentary time alone (`sed`, in hours/day), `chol ~ sed`, and found a small, non-significant slope: it adjusted for nothing else, so it couldn't rule out age, gender, and education masking the association. We now add them using `+` to an `lm()` formula. A variable associated with cholesterol but not with sedentary time would not be a confounder: it would be a **prognostic factor**, and adjusting for it would make the estimate more precise without removing any confounding.
 
 **Null hypothesis.** In the population, the adjusted slope of cholesterol on `sed` is zero, once age, gender, and education are held constant.
 

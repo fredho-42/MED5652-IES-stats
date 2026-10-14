@@ -884,7 +884,7 @@ tibble(
   gt()
 ```
 
-- H0: mean total cholesterol is the same in men and women
+- H0: in the population, mean total cholesterol is the same in men and women
 - H1: it differs[]{.gap}
 - Mean total cholesterol was `r round(slope_gender$estimate, 2)` mmol/L higher in women than in men (95% CI `r round(slope_gender$conf.low, 2)` to `r round(slope_gender$conf.high, 2)` mmol/L, p < 0.001)
 
@@ -926,7 +926,7 @@ tibble(
   gt()
 ```
 
-- H0: a non-reference category's mean cholesterol equals the reference category's
+- H0: in the population, a non-reference category's mean cholesterol equals the reference category's
 - H1: it differs[]{.gap}
 - 'High school graduate' against 'less than high school': a difference in mean cholesterol of `r round(hs_edu$estimate, 3)` mmol/L (95% CI `r round(hs_edu$conf.low, 3)` to `r round(hs_edu$conf.high, 3)` mmol/L, p = `r format(round(hs_edu$p.value, 3), nsmall = 3)`)
 - 'Above high school' against 'less than high school': `r round(above_edu$estimate, 3)` mmol/L (95% CI `r round(above_edu$conf.low, 3)` to `r round(above_edu$conf.high, 3)` mmol/L, p = `r format(round(above_edu$p.value, 3), nsmall = 3)`)[]{.gap}
@@ -1076,7 +1076,8 @@ tibble(
 ```
 - Each additional hour/day of sedentary time was associated with a difference in cholesterol of `r round(slope_sed$estimate, 4)` mmol/L (95% CI `r round(slope_sed$conf.low, 4)` to `r round(slope_sed$conf.high, 4)` mmol/L, p = `r format(round(slope_sed$p.value, 3), nsmall = 3)`)
 - The slope is close to zero, and small next to its own 95% CI[]{.gap}
-- The CI includes zero, so these data are consistent with no association. R squared is essentially zero
+- The CI includes zero: consistent with no association, and with small associations either way
+- R squared is essentially zero
 - Cholesterol varies with age, and sedentary time might too
 - Is age a confounder? Can we deal with it in the regression model?
 - Next week answers that question

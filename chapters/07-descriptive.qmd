@@ -330,6 +330,8 @@ nhanes |>
   tbl_summary()
 ```
 
+Two rows in the table read 'Unknown', one under `smoking` and one under `chol`. Each counts the participants with no value recorded for that variable: `r format(sum(is.na(nhanes$smoking)), big.mark = ',')` for smoking and `r format(sum(is.na(nhanes$chol)), big.mark = ',')` for cholesterol. The percentages and the median above each 'Unknown' row describe only the participants who do have a value.
+
 Adding `by =` splits the table by a grouping variable, giving one column per group:
 
 ```{r}
@@ -351,7 +353,21 @@ nhanes |>
   )
 ```
 
-Three things in that line are new. `list()`, from base R, bundles several settings together, one per variable or group of variables, which is what `statistic` needs when there's more than one display rule to give. `all_continuous()`, from `gtsummary`, means 'every continuous variable in this table', so one line covers both `age` and `chol` at once instead of naming each separately. The `~` between it and the text that follows pairs the two: which variables, and what to show for them. This book properly introduces `~` as formula syntax in Chapter 4; here it's doing a related but different job, pairing a selection with a display rule instead of pairing the variable being modelled with the one it's modelled on. And `'{mean} ({sd})'` is a piece of text with slots in it. `gtsummary` works out the mean and the standard deviation for each variable, then drops each number into the spot where its name appears in curly braces. It comes out as something like `47.3 (18.1)`. Everything outside the braces, here a space and a pair of round brackets, is printed as written. `tbl_summary()` is highly customisable. We can change the statistic for any specific variable, or format different variables differently. That's outside the scope of this course, and left as an exploration exercise for anyone interested.
+Three things in that line are new. `list()`, from base R, bundles several settings together, one per variable or group of variables, which is what `statistic` needs when there's more than one display rule to give. `all_continuous()`, from `gtsummary`, means 'every continuous variable in this table', so one line covers both `age` and `chol` at once instead of naming each separately. The `~` between it and the text that follows pairs the two: which variables, and what to show for them. This book properly introduces `~` as formula syntax in Chapter 4; here it's doing a related but different job, pairing a selection with a display rule instead of pairing the variable being modelled with the one it's modelled on. And `'{mean} ({sd})'` is a piece of text with slots in it. `gtsummary` works out the mean and the standard deviation for each variable, then drops each number into the spot where its name appears in curly braces. It comes out as something like `47.3 (18.1)`. Everything outside the braces, here a space and a pair of round brackets, is printed as written.
+
+We can also set the statistic for one variable at a time, by naming it on the left of `~` in place of `all_continuous()`. Here `age` is shown as mean (SD), and `chol`, with no rule of its own, keeps the default median (Q1, Q3):
+
+```{r}
+#| label: table1-by-gender-3
+nhanes |>
+  select(age, gender, eth, smoking, chol) |>
+  tbl_summary(
+    by = gender,
+    statistic = list(age ~ '{mean} ({sd})')
+  )
+```
+
+A second variable with its own rule goes inside the same `list()`, after a comma.
 
 ## Worked example: describing age
 

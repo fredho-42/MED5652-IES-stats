@@ -496,6 +496,9 @@ dag_pair_plot()
 | C | Alcohol intake | Lung cancer | Smoking | Confounder or prognostic factor | Reduces confounding bias or improves precision |
 | D | Sedentary time | Death | Baseline cardiovascular disease | Cannot be settled from these data | Block 3 returns to it |
 
+- A prognostic factor is associated with the outcome but not with the exposure
+  - Adjusting for it doesn't remove confounding, but can make the estimate more precise
+
 ## This week's methodological anchor {.smaller}
 
 - Which variables to adjust for depends on causal assumptions, not on patterns in the data[]{.gap}
@@ -573,10 +576,10 @@ edu_means |>
   gt()
 ```
 
-- H0: mean cholesterol is the same in all three education groups
+- H0: in the population, mean cholesterol is the same in all three education groups
 - H1: at least one group's mean differs[]{.gap}
 - F = `r dp3(glance_edu$statistic)` on `r glance_edu$df` and `r format(glance_edu$df.residual, big.mark = ',')` degrees of freedom, p = `r dp3(glance_edu$p.value)`
-- No evidence of a difference in mean cholesterol between the three groups
+- Little evidence of a difference; the data are consistent with no difference and with small differences
 - The same model as Week 10, read as one question across all three groups
 
 ## Try it: how far apart are the groups?
@@ -968,8 +971,8 @@ forest_plot(
 #| label: sensitivity-table
 #| echo: false
 result_table(
-  c('Without baseline cardiovascular disease (assumes a mediator), odds ratio per hour/day',
-    'With baseline cardiovascular disease (assumes a confounder), odds ratio per hour/day'),
+  c('Not adjusted for baseline cardiovascular disease (assumes a mediator), odds ratio per hour/day',
+    'Adjusted for baseline cardiovascular disease (assumes a confounder), odds ratio per hour/day'),
   bind_rows(or_without, or_with), digits = 3)
 ```
 
