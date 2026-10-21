@@ -8,6 +8,10 @@ This is a companion ebook for the statistical labs of the course MED5652 Introdu
 
 The first two preparatory sessions will help us become familiar with the R analysis environment. R is primarily a programming language, so it has a steeper learning curve than other software such as SPSS: we communicate with the computer using text commands instead of a mouse. R is versatile enough to find a software implementation for almost any statistical method we might need, and it's a skill employers actively look for. This ebook is set up for complete beginners regardless, with no prior data analysis or programming experience expected. From Chapter 3 on, every chapter picks up from the theories taught in the lectures, but it doesn't replace the lecture's content. In the lecture, an idea is introduced; in the lab, we put it into practice, in R, on real data.
 
+::: {.content-visible unless-format='pdf'}
+The whole ebook is also available as a [PDF](MED5652-IES-Stats-Manual.pdf), to download and read offline. The PDF icon next to the book's title, at the top of the sidebar, links to the same file.
+:::
+
 ## Course map
 
 Each chapter of this ebook is one teaching week. The week number is in the chapter title, and the chapters run in week order. Week 6 is reading week and there is no teaching. The two preparatory chapters come before the statistics lectures begin, so they have no lecture of their own to link to.

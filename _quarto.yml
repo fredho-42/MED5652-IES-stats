@@ -6,6 +6,7 @@ book:
   author: "Fred Ho"
   date: today
   date-format: "D MMMM YYYY"
+  downloads: [pdf]
   chapters:
     - index.qmd
     - chapters/04-prep1.qmd
